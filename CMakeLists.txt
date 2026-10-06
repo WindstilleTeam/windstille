@@ -160,6 +160,7 @@ add_custom_target(GenerateWrapper
 
 # compile libwindstille
 file(GLOB LIBWINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  src/display/*.cpp
   src/scenegraph/*.cpp
   src/font/*.cpp
   src/math/*.cpp
@@ -182,6 +183,9 @@ target_compile_definitions(libwindstille PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
 target_include_directories(libwindstille PUBLIC
   src/
   ${CMAKE_CURRENT_BINARY_DIR}/src/)
+if(WINDSTILLE_USE_GLES)
+  target_compile_definitions(libwindstille PUBLIC WINDSTILLE_USE_GLES=1)
+endif()
 target_link_libraries(libwindstille PUBLIC
   biio::biio
   prio::prio

@@ -31,6 +31,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class ControlPoint;
 typedef std::shared_ptr<ControlPoint> ControlPointHandle;
@@ -50,7 +52,7 @@ public:
   ControlPoint(wstdisplay::SurfacePtr surface, glm::vec2 const& pos);
   virtual ~ControlPoint();
 
-  virtual void draw(wstdisplay::SceneContext& sc);
+  virtual void draw(SceneContext& sc);
 
   virtual geom::frect get_bounding_box() const;
 

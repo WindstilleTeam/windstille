@@ -44,7 +44,7 @@ public:
   VirtualGamepad();
   ~VirtualGamepad() override = default;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
   void handle_event(const SDL_Event& event) override;
 
@@ -92,14 +92,14 @@ private:
     float y = 0.f;
   };
 
-  void ensure_layout(wstdisplay::GraphicsContext& gc);
+  void ensure_layout(wstdisplay::Canvas& canvas);
   Region const* hit_test(float x, float y) const;
   void on_down(float x, float y, int64_t finger_id);
   void on_move(float x, float y, int64_t finger_id);
   void on_up(int64_t finger_id);
   void release_control(Control c);
   void inject_into_controller();
-  void draw_region(wstdisplay::GraphicsContext& gc, Region const& r, bool pressed) const;
+  void draw_region(wstdisplay::Canvas& canvas, Region const& r, bool pressed) const;
 
   bool m_enabled = true;
   int m_layout_w = 0;

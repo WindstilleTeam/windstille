@@ -21,312 +21,161 @@
 
 #include <stdexcept>
 
-#include "sprite2d/data.hpp"
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/draw_params.hpp>
 
 namespace windstille {
 
 Sprite::Sprite() :
-  data(),
-  current_action(nullptr),
-  frame(0),
-  speed(0),
-  pingpong(),
-  reverse(),
-  vflip(),
-  blend_sfactor(),
-  blend_dfactor(),
-  scale(),
-  color()
+  m_manager(nullptr),
+  m_id(),
+  m_state(),
+  m_hflip(false),
+  m_blend(wstdisplay::Blend::Alpha),
+  m_scale(1.0f),
+  m_color(1.0f, 1.0f, 1.0f)
 {
 }
 
 Sprite::Sprite(std::filesystem::path const& filename, SpriteManager& sprite_manager) :
-  data(),
-  current_action(nullptr),
-  frame(0),
-  speed(0),
-  pingpong(),
-  reverse(),
-  vflip(),
-  blend_sfactor(),
-  blend_dfactor(),
-  scale(),
-  color()
+  m_manager(&sprite_manager),
+  m_id(sprite_manager.load(filename)),
+  m_state(),
+  m_hflip(false),
+  m_blend(wstdisplay::Blend::Alpha),
+  m_scale(1.0f),
+  m_color(1.0f, 1.0f, 1.0f)
 {
-  data = sprite_manager.create_data(filename);
-
-  current_action = data->actions[0];
-  vflip    = false;
-  frame    = 0;
-  speed    = 1.0;
-  pingpong = false;
-  reverse  = false;
-  scale = current_action->scale;
-  color    = surf::Color(1.0f, 1.0f, 1.0f);
-  blend_sfactor = GL_SRC_ALPHA;
-  blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+  reset_appearance();
 }
 
-Sprite::Sprite(const SpriteDataPtr data_) :
-  data(data_),
-  current_action(nullptr),
-  frame(0),
-  speed(0),
-  pingpong(),
-  reverse(),
-  vflip(),
-  blend_sfactor(),
-  blend_dfactor(),
-  scale(),
-  color()
+wstsprite::SpriteData const&
+Sprite::data() const
 {
-  current_action = data->actions[0];
-  vflip = false;
-  frame = 0;
-  speed = 1.0;
-  pingpong = false;
-  reverse = false;
-  scale = current_action->scale;
-  color    = surf::Color(1.0f, 1.0f, 1.0f);
-  blend_sfactor = GL_SRC_ALPHA;
-  blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+  return m_manager->get(m_id);
 }
 
-Sprite::Sprite(Sprite const& rhs) :
-  data(rhs.data),
-  current_action(rhs.current_action),
-  frame(rhs.frame),
-  speed(rhs.speed),
-  pingpong(rhs.pingpong),
-  reverse(rhs.reverse),
-  vflip(rhs.vflip),
-  blend_sfactor(rhs.blend_sfactor),
-  blend_dfactor(rhs.blend_dfactor),
-  scale(rhs.scale),
-  color(rhs.color)
+void
+Sprite::reset_appearance()
 {
-}
-
-Sprite&
-Sprite::operator=(Sprite const& rhs)
-{
-  if (this != &rhs)
-  {
-    data           = rhs.data;
-    current_action = rhs.current_action;
-    frame          = rhs.frame;
-    speed          = rhs.speed;
-    pingpong       = rhs.pingpong;
-    reverse        = rhs.reverse;
-    vflip          = rhs.vflip;
-    blend_sfactor  = rhs.blend_sfactor;
-    blend_dfactor  = rhs.blend_dfactor;
-    scale          = rhs.scale;
-    color          = rhs.color;
-  }
-  return *this;
-}
-
-Sprite::~Sprite()
-{
+  m_hflip = false;
+  m_blend = wstdisplay::Blend::Alpha;
+  m_scale = wstsprite::current_action(m_state, data()).scale;
+  m_color = surf::Color(1.0f, 1.0f, 1.0f);
 }
 
 void
 Sprite::update(float delta)
 {
-  float step = delta * speed * current_action->speed;
-  if(reverse)
-    step = -step;
+  wstsprite::advance(m_state, data(), delta);
+}
 
-  frame = fmodf(frame + static_cast<float>(current_action->surfaces.size()) + step,
-                static_cast<float>(current_action->surfaces.size()));
+void
+Sprite::draw(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float z_pos) const
+{
+  wstsprite::Action const& action = wstsprite::current_action(m_state, data());
+  if (action.frames.empty()) {
+    return;
+  }
+
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(z_pos);
+  canvas.set_blend(m_blend);
+  canvas.draw(action.frames[static_cast<size_t>(m_state.frame)].surface,
+              wstdisplay::DrawParams()
+              .set_pos(geom::fpoint(pos.x, pos.y))
+              .set_offset(geom::foffset(-action.origin.x(), -action.origin.y()))
+              .set_scale(m_scale)
+              .set_color(m_color)
+              .set_hflip(m_hflip != action.hflip));
 }
 
 void
 Sprite::set_action(std::string const& name)
 {
-  for(SpriteData::Actions::const_iterator i = data->actions.begin();
-      i != data->actions.end(); ++i)
-  {
-    SpriteAction const* action = *i;
-    if(action->name == name)
-    {
-      // FIXME: This should be per-action and not get reset, shouldn't they?
-      current_action = action;
-      pingpong = false;
-      reverse  = false;
-      speed    = 1.0;
-      frame    = 0;
-      vflip    = false;
-      scale    = current_action->scale;
-      color    = surf::Color(1.0f, 1.0f, 1.0f);
-      blend_sfactor = GL_SRC_ALPHA;
-      blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-      return;
-    }
+  if (!wstsprite::set_action(m_state, data(), name)) {
+    throw std::runtime_error("No action '" + name + "' defined");
   }
+  m_state.speed = 1.0f;
+  reset_appearance();
+}
 
-  std::ostringstream msg;
-  msg << "No action '" << name << "' defined";
-  throw std::runtime_error(msg.str());
+std::string const&
+Sprite::get_action() const
+{
+  return wstsprite::current_action(m_state, data()).name;
 }
 
 void
-Sprite::set_blend_func(GLenum sfactor, GLenum dfactor)
+Sprite::set_hflip(bool hflip)
 {
-  blend_sfactor = sfactor;
-  blend_dfactor = dfactor;
+  m_hflip = hflip;
 }
 
 void
-Sprite::set_vflip(bool vflip_)
+Sprite::set_speed(float speed)
 {
-  vflip = vflip_;
-}
-
-bool
-Sprite::get_vflip() const
-{
-  return vflip;
-}
-
-void
-Sprite::set_pingpong(bool pingpong_)
-{
-  pingpong = pingpong_;
-}
-
-bool
-Sprite::get_pingpong() const
-{
-  return pingpong;
-}
-
-void
-Sprite::set_speed(float speed_)
-{
-  speed = speed_;
+  m_state.speed = speed;
 }
 
 float
 Sprite::get_speed() const
 {
-  return speed;
+  return m_state.speed;
 }
 
 void
 Sprite::set_alpha(float alpha)
 {
-  color.a = alpha;
+  m_color.a = alpha;
 }
 
 float
 Sprite::get_alpha() const
 {
-  return color.a;
-}
-
-wstdisplay::SurfacePtr
-Sprite::get_current_surface() const
-{
-  return current_action->surfaces[ static_cast<int> (frame) ];
-}
-
-glm::vec2
-Sprite::get_offset() const
-{
-  return current_action->offset;
-}
-
-void
-Sprite::draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos) const
-{
-  wstdisplay::SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
-  surface->draw(gc,
-                wstdisplay::SurfaceDrawingParameters()
-                .set_pos(pos + (current_action->offset * scale))
-                .set_blend_func(blend_sfactor, blend_dfactor)
-                .set_scale(scale)
-                .set_color(color));
-}
-
-void
-Sprite::draw(wstdisplay::DrawingContext& ctx, glm::vec2 const& pos, float z_pos)
-{
-  ctx.draw(get_current_surface(),
-           wstdisplay::SurfaceDrawingParameters()
-           .set_pos(pos + get_offset() * get_scale())
-           .set_blend_func(get_blend_sfactor(), get_blend_dfactor())
-           .set_color(get_color())
-           .set_scale(get_scale()),
-           z_pos);
+  return m_color.a;
 }
 
 bool
 Sprite::is_finished() const
 {
-  // FIXME: Implement me
-  return false;
+  return m_state.finished;
 }
 
-void
-Sprite::set_scale(float s)
+wstdisplay::Surface
+Sprite::get_current_surface() const
 {
-  scale = s;
+  return wstsprite::current_frame(m_state, data()).surface;
 }
 
-void
-Sprite::set_color(surf::Color const& c)
+glm::vec2
+Sprite::get_offset() const
 {
-  color = c;
-}
-
-float
-Sprite::get_scale() const
-{
-  return scale;
-}
-
-surf::Color
-Sprite::get_color() const
-{
-  return color;
-}
-
-Sprite::operator bool() const
-{
-  return data != nullptr;
-}
-
-GLenum
-Sprite::get_blend_sfactor() const
-{
-  return blend_sfactor;
-}
-
-GLenum
-Sprite::get_blend_dfactor() const
-{
-  return blend_dfactor;
+  wstsprite::Action const& action = wstsprite::current_action(m_state, data());
+  return glm::vec2(-action.origin.x(), -action.origin.y());
 }
 
 float
 Sprite::get_width() const
 {
-  return current_action->surfaces[ static_cast<int>(frame) ]->get_width();
+  return get_current_surface().get_width();
 }
 
 float
 Sprite::get_height() const
 {
-  return current_action->surfaces[ static_cast<int>(frame) ]->get_height();
+  return get_current_surface().get_height();
 }
 
 geom::fsize
 Sprite::get_size() const
 {
   return {get_width(), get_height()};
+}
+
+Sprite::operator bool() const
+{
+  return m_manager != nullptr && m_manager->find(m_id) != nullptr;
 }
 
 } // namespace windstille

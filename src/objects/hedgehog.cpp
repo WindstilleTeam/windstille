@@ -18,6 +18,8 @@
 
 #include "objects/hedgehog.hpp"
 
+#include "display/scene_context.hpp"
+
 #include "app/app.hpp"
 #include "objects/player.hpp"
 #include "util/pathname.hpp"
@@ -36,8 +38,8 @@ Hedgehog::Hedgehog(ReaderMapping const& props) :
   props.read("name", name);
   props.read("pos",  pos);
 
-  light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+  light.set_blend(wstdisplay::Blend::Add);
+  highlight.set_blend(wstdisplay::Blend::Add);
 }
 
 Hedgehog::~Hedgehog()
@@ -45,7 +47,7 @@ Hedgehog::~Hedgehog()
 }
 
 void
-Hedgehog::draw(wstdisplay::SceneContext& sc)
+Hedgehog::draw(SceneContext& sc)
 {
   Sprite* s;
 
@@ -55,9 +57,9 @@ Hedgehog::draw(wstdisplay::SceneContext& sc)
     s = &sprite;
 
   if (direction_left)
-    s->set_vflip(true);
+    s->set_hflip(true);
   else
-    s->set_vflip(false);
+    s->set_hflip(false);
 
   s->draw(sc.color(), pos, 2);
   //s->draw(int(pos.x), int(pos.y));

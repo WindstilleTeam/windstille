@@ -61,7 +61,7 @@ public:
           Entity const& entity,
           surf::Color const& color = surf::Color(1.0f, 1.0f, 1.0f));
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas);
   void update(float delta);
 
 private:

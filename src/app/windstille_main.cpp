@@ -32,7 +32,6 @@
 #endif
 
 #include <surf/save.hpp>
-#include <wstdisplay/font/ttf_font_manager.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
@@ -93,7 +92,7 @@ WindstilleMain::main(int argc, char** argv)
 
     config.parse_args(argc, argv);
 
-    wstsys::System system;
+    wstsystem::System system;
 
     config.load();
 
@@ -121,6 +120,9 @@ WindstilleMain::main(int argc, char** argv)
       wstdisplay::OpenGLWindow::Params wparams;
       wparams.title = "Windstille";
       wparams.size = geom::isize(w, h);
+#if defined(WINDSTILLE_USE_GLES)
+      wparams.api = wstdisplay::OpenGLWindow::Api::GLES2;
+#endif
 #if defined(WINDSTILLE_R36S)
       wparams.resizable = false;
       wparams.mode = wstdisplay::OpenGLWindow::Mode::Fullscreen;
@@ -137,23 +139,27 @@ WindstilleMain::main(int argc, char** argv)
         : wstdisplay::OpenGLWindow::Mode::Window;
 #endif
       auto window = system.create_window(wparams);
-      wstdisplay::TTFFontManager    ttffont_manager;
-      Fonts             fonts(ttffont_manager);
+      Fonts             fonts(window->get_device());
       Console           console;
       SoundManager      sound_manager;
-      wstdisplay::TextureManager    texture_manager;
-      wstdisplay::SurfaceManager    surface_manager;
+      wstdisplay::TextureManager    texture_manager(window->get_device());
+      wstdisplay::SurfaceManager    surface_manager(window->get_device());
       SpriteManager     sprite_manager(surface_manager);
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
       wstinput::ControllerDescription controller_description = get_windstille_controller_description();
       wstinput::InputManagerSDL   input_manager(controller_description);
       wstgui::ScreenManager screen_manager(system, *window, input_manager);
-      TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
-      wstgui::Style     style(fonts.vera20.get());
+      TileFactory       tile_factory(Pathname("tiles.scm"), window->get_device());
+      wstgui::Style     style(fonts.vera20);
 
       screen_manager.sig_update().connect([&](float dt){
         sound_manager.update(dt);
+        console.update(dt);
+      });
+
+      screen_manager.sig_draw_end().connect([&](wstdisplay::Canvas& canvas){
+        console.draw(canvas);
       });
 
       g_app.m_sound_manager = &sound_manager;
@@ -163,13 +169,13 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_sprite_manager = &sprite_manager;
       g_app.m_sprite3d_manager = &sprite3d_manager;
       g_app.m_window = window.get();
-      g_app.m_ttffont_manager = &ttffont_manager;
       g_app.m_screen_manager = &screen_manager;
       g_app.m_fonts = &fonts;
       g_app.m_style = &style;
 
       window->set_icon(Pathname("icon.png"));
       texture_manager.set_fallback(Pathname("images/404.png"));
+      surface_manager.set_fallback(surface_manager.get(Pathname("images/404.png")));
 
       init_modules();
 

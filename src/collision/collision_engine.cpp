@@ -47,11 +47,11 @@ CollisionEngine::~CollisionEngine()
 }
 
 void
-CollisionEngine::draw(wstdisplay::DrawingContext& dc)
+CollisionEngine::draw(wstdisplay::Canvas& canvas)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {
-    (*i)->draw(dc);
+    (*i)->draw(canvas);
   }
 }
 

@@ -17,6 +17,8 @@
 */
 
 #include "app/app.hpp"
+
+#include "display/scene_context.hpp"
 #include "collision/collision_engine.hpp"
 #include "engine/sector.hpp"
 #include "objects/grenade.hpp"
@@ -40,7 +42,7 @@ Grenade::~Grenade()
 }
 
 void
-Grenade::draw(wstdisplay::SceneContext& sc)
+Grenade::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 0);
 }

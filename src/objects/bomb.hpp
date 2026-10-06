@@ -24,6 +24,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Bomb : public GameObject
 {
 private:
@@ -43,7 +45,7 @@ public:
   ~Bomb() override;
 
   void update(float delta) override;
-  void draw(wstdisplay::SceneContext& gc) override;
+  void draw(SceneContext& gc) override;
 private:
   void explode();
   Bomb (Bomb const&);

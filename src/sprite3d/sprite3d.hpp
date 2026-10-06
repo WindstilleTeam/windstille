@@ -20,12 +20,15 @@
 #define HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_HPP
 
 #include <string>
+#include <vector>
 #include <stdint.h>
 
 #include <glm/glm.hpp>
 
-#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/blend.hpp>
+#include <wstdisplay/device.hpp>
 #include <wstdisplay/fwd.hpp>
+#include <wstdisplay/mesh.hpp>
 
 #include "sprite3d/data.hpp"
 
@@ -59,7 +62,11 @@ public:
    * You should call this every frame
    */
   void update(float delta);
-  void draw(wstdisplay::DrawingContext& sc, glm::vec2 const& pos, float z_pos);
+  /** Draw the current pose at \a pos with depth \a z_pos. The
+      meshes keep the pose until the canvas is rendered, so a sprite
+      is drawn once per frame. */
+  void draw(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float z_pos,
+            glm::mat4 const& model = glm::mat4(1.0f));
 
   /**
    * Changes action (after the currently shown animation frame)
@@ -123,11 +130,9 @@ public:
   /** true if the Sprite3D is valid and usable, false if not */
   bool is_valid() const;
 
-  void set_blend_func(GLenum sfactor, GLenum dfactor);
+  void set_blend(wstdisplay::Blend blend) { m_blend = blend; }
 
 private:
-  friend class Sprite3DDrawable;
-  void draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, glm::mat4 const& modelview);
 
   struct Frame {
     sprite3d::Action const* action;
@@ -156,8 +161,11 @@ private:
   Frame next_action;
   Frame abort_at_frame;
 
-  GLenum blend_sfactor;
-  GLenum blend_dfactor;
+  wstdisplay::Blend m_blend;
+
+  /** One per mesh of the data, created on the first draw */
+  std::vector<wstdisplay::Unique<wstdisplay::Mesh>> m_meshes;
+  std::vector<wstdisplay::MeshVertex> m_vertices;
 };
 
 } // namespace windstille

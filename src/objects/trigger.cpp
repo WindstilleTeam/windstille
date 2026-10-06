@@ -18,6 +18,8 @@
 
 #include "objects/trigger.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <iostream>
 
 #include "engine/sector.hpp"
@@ -57,7 +59,7 @@ Trigger::~Trigger()
 }
 
 void
-Trigger::draw (wstdisplay::SceneContext& )
+Trigger::draw (SceneContext& )
 {
 }
 

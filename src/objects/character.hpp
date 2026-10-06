@@ -24,6 +24,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Character : public Entity
 {
 private:
@@ -35,7 +37,7 @@ public:
   ~Character() override;
 
   void update(float delta) override;
-  void draw (wstdisplay::SceneContext& gc) override;
+  void draw (SceneContext& gc) override;
   void use() override;
 };
 

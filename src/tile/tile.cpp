@@ -22,9 +22,7 @@ namespace windstille {
 
 Tile::Tile(unsigned int arg_colmap) :
   id(),
-  packer(-1),
-  uv(),
-  texture(),
+  surface(),
   colmap(arg_colmap),
   desc(nullptr)
 {

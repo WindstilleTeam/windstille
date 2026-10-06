@@ -24,6 +24,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class DecalRotateControlPoint final : public ControlPoint
 {
@@ -40,7 +42,7 @@ public:
   void on_move_update(GdkEventMotion* event, glm::vec2 const& offset_) override;
   void on_move_end(GdkEventButton* event, glm::vec2 const& offset_) override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
 
 private:
   DecalRotateControlPoint (DecalRotateControlPoint const&);

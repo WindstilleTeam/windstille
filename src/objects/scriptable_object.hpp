@@ -26,6 +26,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 /** Can represent any generic object that the player may see or interact with that
     does not require collision physics or specialized C++ code. For example doors, trains,
     signs, objects you can pick up, and animations.
@@ -63,7 +65,7 @@ public:
   ScriptableObject(ReaderMapping const& reader);
   ~ScriptableObject() override;
 
-  void draw (wstdisplay::SceneContext& sc) override;
+  void draw (SceneContext& sc) override;
   void update (float delta) override;
   void use() override;
   void move_to(float x, float y, float arg_target_speed, float arg_acceleration);

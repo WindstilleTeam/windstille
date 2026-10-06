@@ -22,9 +22,10 @@
 #include <stdexcept>
 #include <sstream>
 
+#include <surf/software_surface.hpp>
+
+#include "app/globals.hpp"
 #include "tile/tile.hpp"
-#include "tile/tile_packer.hpp"
-#include <wstdisplay/software_surface.hpp>
 
 namespace windstille {
 
@@ -65,15 +66,11 @@ bool surface_empty(surf::SoftwareSurface const& image, int sx, int sy, int w, in
 
 } // namespace
 
-TileFactory::TileFactory(Pathname const& filename) :
+TileFactory::TileFactory(Pathname const& filename, wstdisplay::Device& device) :
   tiles(),
-  packers(),
-  color_packer(),
+  m_packer(device, geom::isize(1024, 1024)),
   descriptions()
 {
-  packers.push_back(new TilePacker({1024, 1024}));
-  packers.push_back(new TilePacker({1024, 1024}));
-  color_packer     = 0;
 
   ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path());
   if (doc.get_name() != "windstille-tiles") {
@@ -106,9 +103,6 @@ TileFactory::~TileFactory()
     delete *i;
   descriptions.clear();
 
-  for(TilePackers::iterator i = packers.begin(); i != packers.end(); ++i)
-    delete *i;
-  packers.clear();
 }
 
 void
@@ -161,18 +155,13 @@ TileFactory::pack(int id, int colmap, surf::SoftwareSurface const& image, geom::
 
     if (!surface_empty(image, rect.left(), rect.top(), rect.width(), rect.height()))
     {
-      if(packers[color_packer]->is_full())
-      {
-        packers.push_back(new TilePacker({1024, 1024}));
-        color_packer = static_cast<int>(packers.size()) - 1;
+      if (rect.width() != TILE_RESOLUTION || rect.height() != TILE_RESOLUTION) {
+        throw std::runtime_error("TileFactory::pack: tile size must be TILE_RESOLUTION");
       }
 
-      geom::frect uv = packers[color_packer]->pack(image,
-                                             rect.left(), rect.top(),
-                                             rect.width(), rect.height());
-      tiles[id]->uv      = uv;
-      tiles[id]->packer  = color_packer;
-      tiles[id]->texture = packers[color_packer]->get_texture();
+      surf::SoftwareSurface tile = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, rect.size());
+      surf::blit(image, rect, tile, geom::ipoint(0, 0));
+      tiles[id]->surface = m_packer.upload(tile);
     }
   }
 }

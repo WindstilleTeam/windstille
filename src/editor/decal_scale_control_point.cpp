@@ -18,7 +18,7 @@
 
 #include "editor/decal_scale_control_point.hpp"
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "util/pathname.hpp"
@@ -75,7 +75,7 @@ DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, glm::vec2 const& 
 }
 
 void
-DecalScaleControlPoint::draw(wstdisplay::SceneContext& sc)
+DecalScaleControlPoint::draw(SceneContext& sc)
 {
   geom::frect rect = get_bounding_box();
   rect += offset;

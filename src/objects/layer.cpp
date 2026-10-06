@@ -18,6 +18,8 @@
 
 #include "objects/layer.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <stdexcept>
 
 #include "engine/sector.hpp"
@@ -87,7 +89,7 @@ Layer::commit_removes()
 }
 
 void
-Layer::draw (wstdisplay::SceneContext& /*context*/)
+Layer::draw (SceneContext& /*context*/)
 {
   // do nothing
 }

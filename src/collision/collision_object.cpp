@@ -20,7 +20,7 @@
 #include "collision/collision_object.hpp"
 
 #include <surf/color.hpp>
-#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/canvas.hpp>
 
 namespace windstille {
 
@@ -72,22 +72,22 @@ CollisionObject::~CollisionObject()
 }
 
 void
-CollisionObject::draw(wstdisplay::DrawingContext& dc)
+CollisionObject::draw(wstdisplay::Canvas& canvas)
 {
   glm::vec2 v = get_pos();
   geom::frect  r = primitive;
 
   r += v;
 
-  dc.fill_rect(r, surf::Color(1.0f, 1.0f, 1.0f), 100.0f);
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(100.0f);
 
-  dc.draw_rect(r, surf::Color(0.6f, 0.6f, 0.6f), 100.0f);
+  canvas.fill_rect(r, surf::Color(1.0f, 1.0f, 1.0f));
+  canvas.draw_rect(r, surf::Color(0.6f, 0.6f, 0.6f));
 
-  dc.draw_line(glm::vec2(r.left() + r.width()/2,
-                        r.top()  + r.height()/2),
-               glm::vec2(r.left() + r.width()/2  + get_velocity().x,
-                        r.top()  + r.height()/2 + get_velocity().y),
-               surf::Color(1.0f, 0, 1.0f), 100.0f);
+  geom::fpoint const center(r.left() + r.width()/2, r.top() + r.height()/2);
+  canvas.draw_line(center, center + geom::foffset(get_velocity().x, get_velocity().y),
+                   surf::Color(1.0f, 0, 1.0f));
 }
 
 void CollisionObject::update(float delta)

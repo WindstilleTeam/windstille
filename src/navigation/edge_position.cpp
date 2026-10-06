@@ -24,7 +24,6 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>
 
-#include <wstdisplay/graphics_context.hpp>
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 

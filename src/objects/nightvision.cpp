@@ -18,23 +18,29 @@
 
 #include "objects/nightvision.hpp"
 
+#include "display/scene_context.hpp"
+
 #include "app/app.hpp"
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/texture_params.hpp>
+
 #include "math/random.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "util/pathname.hpp"
 
 namespace windstille {
 
 Nightvision::Nightvision(ReaderMapping const& props) :
   nightvision(g_app.sprite().create(Pathname("images/nightvision.sprite"))),
-  noise(g_app.texture().get(Pathname("images/noise.png")))
+  noise(g_app.texture().get(Pathname("images/noise.png"),
+                            wstdisplay::TextureParams{
+                              .filter = wstdisplay::TextureFilter::Linear,
+                              .wrap_x = wstdisplay::TextureWrap::Repeat,
+                              .wrap_y = wstdisplay::TextureWrap::Repeat
+                            }).get_texture())
 {
   name = "nightvision";
-  noise->set_wrap(GL_REPEAT);
-  noise->set_filter(GL_LINEAR);
 }
 
 Nightvision::~Nightvision()
@@ -42,89 +48,54 @@ Nightvision::~Nightvision()
 }
 
 void
-Nightvision::draw(wstdisplay::SceneContext& sc)
+Nightvision::draw(SceneContext& sc)
 {
-  // reset the modelview, so we can draw in screen coordinates
-  sc.light().push_modelview();
-  sc.light().set_modelview(glm::mat4(1.0f));
+  // drawn in screen coordinates, with a large z value to stay above
+  // everything else
+  geom::fsize const size(g_app.window().get_drawable_size());
 
-  // try to stay above everything else with large z value
-  if (1)
   {
+    wstdisplay::Canvas& light = sc.light();
+    wstdisplay::Canvas::Scope scope(light);
+    light.set_space(wstdisplay::Space::Screen);
+
     nightvision.set_alpha(1.0f);
-    nightvision.set_blend_func(GL_ONE, GL_ZERO);
-    nightvision.draw(sc.light(), glm::vec2(0, 0), 10000);
+    nightvision.set_blend(wstdisplay::Blend::Opaque);
+    nightvision.draw(light, glm::vec2(0, 0), 10000);
+
+    // noise multiplied with the light
+    float const u = rnd.frand() / 0.5f;
+    float const v = rnd.frand() / 0.5f;
+    float const w = 4.0f / 6.0f;
+    float const h = 3.0f / 6.0f;
+    wstdisplay::Vertex const quad[] = {
+      {0.0f, 0.0f, u, v},
+      {size.width(), 0.0f, u + w, v},
+      {size.width(), size.height(), u + w, v + h},
+      {0.0f, size.height(), u, v + h},
+    };
+    light.set_z(10000);
+    light.set_blend(wstdisplay::Blend::Multiply);
+    light.draw_quads(noise, quad);
   }
 
-  if (1)
-  {
-    auto array = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0, 0), 10000,
-                                                       sc.light().get_modelview());
-    array->set_mode(GL_TRIANGLE_FAN);
-    array->set_texture(noise);
-    array->set_blend_func(GL_DST_COLOR, GL_ZERO);
-
-    float u = rnd.frand() / 0.5f;
-    float v = rnd.frand() / 0.5f;
-    float w = 4.0f / 6.0f;
-    float h = 3.0f / 6.0f;
-
-    array->texcoord(u, v);
-    array->vertex(0, 0);
-
-    array->texcoord(u + w, v);
-    array->vertex(g_app.window().get_gc().size().width(), 0);
-
-    array->texcoord(u + w, v + h);
-    array->vertex(g_app.window().get_gc().size().width(), g_app.window().get_gc().size().height());
-
-    array->texcoord(u, v + h);
-    array->vertex(0, g_app.window().get_gc().size().height());
-
-    if ((false)) // second noise level
-    {
-      u = rnd.frand();
-      v = rnd.frand();
-      float size = 4.0f;
-
-      array->texcoord(u, v);
-      array->vertex(0, 0, 1);
-
-      array->texcoord(u + size, v);
-      array->vertex(g_app.window().get_gc().size().width(), 0, 1);
-
-      array->texcoord(u + size, v + size);
-      array->vertex(g_app.window().get_gc().size().width(),
-                    g_app.window().get_gc().size().height(), 1);
-
-      array->texcoord(u, v + size);
-      array->vertex(0, g_app.window().get_gc().size().height(), 1);
-    }
-
-    sc.light().draw(std::move(array));
-  }
-  sc.light().pop_modelview();
-
-  if (1)
   {
     // FIXME: might be better to copy the highlight over to the
-    // color layer, however that would require some changes to the
-    // wstdisplay::DrawingContext structure
-    sc.highlight().clear();
+    // color layer
+    wstdisplay::Canvas& highlight = sc.highlight();
+    highlight.clear();
 
-    sc.highlight().push_modelview();
-    sc.highlight().set_modelview(glm::mat4(1.0f));
+    wstdisplay::Canvas::Scope scope(highlight);
+    highlight.set_space(wstdisplay::Space::Screen);
 
     nightvision.set_alpha(0.5f);
-    nightvision.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    nightvision.set_scale(std::max(float(g_app.window().get_gc().size().width())  / nightvision.get_width(),
-                                   float(g_app.window().get_gc().size().height()) / nightvision.get_height()));
-
-    nightvision.draw(sc.highlight(),
-                     glm::vec2(static_cast<float>(g_app.window().get_gc().size().width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
-                               static_cast<float>(g_app.window().get_gc().size().height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
+    nightvision.set_blend(wstdisplay::Blend::Add);
+    nightvision.set_scale(std::max(size.width() / nightvision.get_width(),
+                                   size.height() / nightvision.get_height()));
+    nightvision.draw(highlight,
+                     glm::vec2(size.width() / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
+                               size.height() / 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
                      10000);
-    sc.highlight().pop_modelview();
   }
 }
 

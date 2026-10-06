@@ -18,6 +18,8 @@
 
 #include "tile/tile_map.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <sstream>
 #include <stdexcept>
 #include <stdio.h>
@@ -26,7 +28,7 @@
 #include "tile/tile.hpp"
 #include "tile/tile_factory.hpp"
 #include "screen/view.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/canvas.hpp>
 
 namespace windstille {
 
@@ -85,7 +87,7 @@ TileMap::update (float delta)
 }
 
 void
-TileMap::draw(wstdisplay::SceneContext& sc)
+TileMap::draw(SceneContext& sc)
 {
   geom::irect clip_rect = geom::irect(View::current()->get_clip_rect());
 
@@ -94,54 +96,18 @@ TileMap::draw(wstdisplay::SceneContext& sc)
             std::min(field.get_width(),  clip_rect.right()/TILE_SIZE + 1),
             std::min(field.get_height(), clip_rect.bottom()/TILE_SIZE + 1));
 
-  std::vector<std::unique_ptr<wstdisplay::VertexArrayDrawable> > requests;
-  for (int y = rect.top();   y < rect.bottom(); ++y)
-    for (int x = rect.left(); x < rect.right(); ++x)
-    {
-      Tile* tile = field(x, y);
+  wstdisplay::Canvas& canvas = sc.color();
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(z_pos);
 
-      if (!(tile == nullptr || tile->packer < 0))
-      {
-        int packer = tile->packer;
-
-        if(packer >= int(requests.size()))
-          requests.resize(packer+1);
-
-        std::unique_ptr<wstdisplay::VertexArrayDrawable>& request = requests[packer];
-        if (!request)
-        {
-          request = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0, 0), z_pos,
-                                                          sc.color().get_modelview());
-          request->set_mode(GL_TRIANGLES);
-          request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-          request->set_texture(tile->texture);
-        }
-
-        // v1
-        request->texcoord(tile->uv.left(), tile->uv.top());
-        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
-        // v4
-        request->texcoord(tile->uv.left(), tile->uv.bottom());
-        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
-        // v2
-        request->texcoord(tile->uv.right(), tile->uv.top());
-        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
-
-        // v4
-        request->texcoord(tile->uv.left(), tile->uv.bottom());
-        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
-        // v3
-        request->texcoord(tile->uv.right(), tile->uv.bottom());
-        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
-        // v2
-        request->texcoord(tile->uv.right(), tile->uv.top());
-        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
+  for (int y = rect.top(); y < rect.bottom(); ++y) {
+    for (int x = rect.left(); x < rect.right(); ++x) {
+      Tile const* tile = field(x, y);
+      if (tile != nullptr && tile->surface) {
+        canvas.draw(tile->surface, geom::frect(geom::fpoint(static_cast<float>(x * TILE_SIZE),
+                                                            static_cast<float>(y * TILE_SIZE)),
+                                               geom::fsize(TILE_SIZE, TILE_SIZE)));
       }
-    }
-
-  for(auto it = requests.begin(); it != requests.end(); ++it) {
-    if (*it) {
-      sc.color().draw(std::move(*it));
     }
   }
 }

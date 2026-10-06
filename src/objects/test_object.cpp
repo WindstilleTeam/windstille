@@ -17,10 +17,14 @@
 */
 
 #include <iostream>
+
+#include "display/scene_context.hpp"
 #include <stdexcept>
 
 #include "app/app.hpp"
 #include "objects/test_object.hpp"
+
+#include "display/transform.hpp"
 #include "util/pathname.hpp"
 #include "sprite3d/manager.hpp"
 
@@ -48,17 +52,17 @@ TestObject::~TestObject()
 }
 
 void
-TestObject::draw(wstdisplay::SceneContext& sc)
+TestObject::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 100);
   for(std::vector<AttachedSprite>::iterator i = attached_sprites.begin();
       i != attached_sprites.end(); ++i) {
-    sc.push_modelview();
+    sc.save();
     sc.translate(pos.x, pos.y);
-    sc.mult_modelview(sprite.get_attachment_point_matrix(i->attachpoint));
+    sc.mult_transform(flatten(sprite.get_attachment_point_matrix(i->attachpoint)));
 
     i->sprite.draw(sc.color(), glm::vec2(0, 0), 100);
-    sc.pop_modelview();
+    sc.restore();
   }
 }
 

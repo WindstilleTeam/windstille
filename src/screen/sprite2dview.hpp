@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SPRITE2DVIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_SPRITE2DVIEW_HPP
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstgui/screen.hpp>
 
 #include "sprite2d/sprite.hpp"
@@ -34,7 +34,7 @@ namespace windstille {
 class Sprite2DView : public wstgui::Screen
 {
 private:
-  wstdisplay::SceneContext sc;
+  SceneContext sc;
   std::vector<Pathname> directory;
   std::vector<Pathname> shuffle_directory;
 
@@ -71,7 +71,7 @@ public:
 
   void adddir(Pathname const& dir);
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
   void update_slideshow(float delta, wstinput::Controller const& controller);

@@ -18,6 +18,10 @@
 
 #include "objects/vrdummy.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "display/scene_context.hpp"
+
 #include "app/app.hpp"
 #include "math/random.hpp"
 #include "util/pathname.hpp"
@@ -38,7 +42,7 @@ VRDummy::VRDummy(ReaderMapping const& props) :
   rotation = 0;
 
   highlight = g_app.sprite().create(Pathname("images/hedgehog_highlight.sprite"));
-  highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+  highlight.set_blend(wstdisplay::Blend::Add);
 
   jump_time = 0;
 }
@@ -49,13 +53,10 @@ VRDummy::~VRDummy()
 }
 
 void
-VRDummy::draw(wstdisplay::SceneContext& sc)
+VRDummy::draw(SceneContext& sc)
 {
-  sc.highlight().push_modelview();
-  sc.highlight().translate(pos.x, pos.y);
-  sc.highlight().rotate(rotation, 0.0f, 1.0f, 0.0f);
-  sprite.draw(sc.highlight(), glm::vec2(0, 0), 1200.0f);
-  sc.highlight().pop_modelview();
+  sprite.draw(sc.highlight(), pos, 1200.0f,
+              glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f)));
 
   highlight.draw(sc.highlight(), pos, 1500.0f);
 }

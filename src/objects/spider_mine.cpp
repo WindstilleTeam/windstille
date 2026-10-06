@@ -17,6 +17,8 @@
 */
 
 #include "app/app.hpp"
+
+#include "display/scene_context.hpp"
 #include "objects/spider_mine.hpp"
 #include "objects/player.hpp"
 #include "util/pathname.hpp"
@@ -75,7 +77,7 @@ SpiderMine::update(float delta)
 }
 
 void
-SpiderMine::draw (wstdisplay::SceneContext& sc)
+SpiderMine::draw (SceneContext& sc)
 {
   if (state == EXPLODE) {
     explode.draw(sc.color(), pos);

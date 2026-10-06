@@ -18,17 +18,20 @@
 
 #include "font/fonts.hpp"
 
-#include <wstdisplay/font/border_font_effect.hpp>
-#include <wstdisplay/font/ttf_font_manager.hpp>
+#include <wstdisplay/font/font.hpp>
 
 #include "util/pathname.hpp"
 
 namespace windstille {
 
-Fonts::Fonts(wstdisplay::TTFFontManager& mgr) :
-  ttffont(mgr.create_font(Pathname("fonts/VeraMono.ttf"), 14, wstdisplay::BorderFontEffect(1, true))),
-  vera12(mgr.create_font(Pathname("fonts/Vera.ttf"), 12, wstdisplay::BorderFontEffect(2, true))),
-  vera20(mgr.create_font(Pathname("fonts/Vera.ttf"), 20, wstdisplay::BorderFontEffect(2, true)))
+Fonts::Fonts(wstdisplay::Device& device) :
+  m_manager(device),
+  ttffont(&m_manager.get(m_manager.load(Pathname("fonts/VeraMono.ttf").get_sys_path(), 14,
+                                         wstdisplay::FontEffect{.border = 1}))),
+  vera12(&m_manager.get(m_manager.load(Pathname("fonts/Vera.ttf").get_sys_path(), 12,
+                                        wstdisplay::FontEffect{.border = 2}))),
+  vera20(&m_manager.get(m_manager.load(Pathname("fonts/Vera.ttf").get_sys_path(), 20,
+                                        wstdisplay::FontEffect{.border = 2})))
 {
 }
 

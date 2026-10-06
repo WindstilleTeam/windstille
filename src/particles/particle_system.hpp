@@ -31,6 +31,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class FileReader;
 class Randomizer;
@@ -111,7 +113,8 @@ public:
   void set_drawer(Drawer*);
 
   /** Draws the particle system to the screen */
-  void draw(wstdisplay::GraphicsContext& gc) const;
+  /** Draw onto the layer of the particle system */
+  void draw(SceneContext& sc) const;
 
   /** Update the particle system \a delta seconds */
   void update(float delta);

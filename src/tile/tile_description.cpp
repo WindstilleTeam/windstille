@@ -22,7 +22,7 @@
 #include <geom/geom.hpp>
 
 #include "app/globals.hpp"
-#include <wstdisplay/software_surface.hpp>
+#include <surf/software_surface.hpp>
 #include "tile/tile_factory.hpp"
 
 namespace windstille {

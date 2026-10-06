@@ -33,6 +33,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class CollisionEngine;
 class Entity;
 class FileReader;
@@ -49,7 +51,6 @@ class Sector : public Currenton<Sector>
 private:
   std::unique_ptr<CollisionEngine> collision_engine;
   std::unique_ptr<NavigationGraph> navigation_graph;
-  std::unique_ptr<wstdisplay::SceneGraph>      scene_graph;
 
   Pathname filename;
   std::string name;
@@ -88,7 +89,7 @@ public:
   Pathname get_filename() const;
   Pathname get_directory() const;
 
-  void draw(wstdisplay::SceneContext& gc);
+  void draw(SceneContext& gc);
   void update(float delta);
 
   /**
@@ -110,7 +111,6 @@ public:
   void add(GameObjectHandle object);
 
   CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
-  wstdisplay::SceneGraph& get_scene_graph() const { return *scene_graph; }
   NavigationGraph& get_navigation_graph() const { return *navigation_graph; }
 
   GameObject* get_object(std::string const& name) const;

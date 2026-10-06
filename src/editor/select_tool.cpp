@@ -18,7 +18,7 @@
 
 #include <gtkmm/menu.h>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
@@ -255,7 +255,7 @@ SelectTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& /*wst*/)
 }
 
 void
-SelectTool::draw(wstdisplay::SceneContext& sc)
+SelectTool::draw(SceneContext& sc)
 {
   if (mode == SELECT_MODE)
   {

@@ -16,7 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <wstdisplay/gl_compat.hpp>
+
+#include "display/scene_context.hpp"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <gtkmm.h>
@@ -182,7 +183,7 @@ WindstilleWidget::on_realize()
 
   wstdisplay::OpenGLState::init();
   m_gc = std::make_unique<wstdisplay::GraphicsContext>();
-  sc = std::make_unique<wstdisplay::SceneContext>();
+  sc = std::make_unique<SceneContext>();
 
   background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
   background_pattern->set_wrap(GL_REPEAT);
@@ -217,7 +218,7 @@ WindstilleWidget::on_resize(int width, int height)
 
     compositor = std::make_unique<wstdisplay::Compositor>(geom::isize(width, height),
                                               geom::isize(width, height));
-    sc->set_render_mask(sc->get_render_mask() & ~wstdisplay::SceneContext::LIGHTMAP);
+    sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
 
     throw_if_error();
   }

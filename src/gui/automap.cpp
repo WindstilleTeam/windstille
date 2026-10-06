@@ -22,9 +22,13 @@
 #include <wstinput/controller.hpp>
 
 #include "app/controller_def.hpp"
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/software_surface.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <surf/software_surface.hpp>
+#include <wstdisplay/draw_params.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/texture_params.hpp>
+
+#include "app/app.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 
@@ -34,13 +38,14 @@ namespace wstgui {
 
 Automap::Automap(Component* parent_) :
   Component(parent_),
+  m_texture(),
   surface(),
   pos(0.0f, 0.0f),
   zoom(6.0f)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
 
-  wstdisplay::SoftwareSurface image = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, tilemap->get_size());
+  surf::SoftwareSurface image = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, tilemap->get_size());
 
   uint8_t* buffer = static_cast<uint8_t*>(image.get_data());
 
@@ -63,9 +68,9 @@ Automap::Automap(Component* parent_) :
       }
     }
 
-  surface = wstdisplay::Surface::create(tilemap->get_size());
-  surface->get_texture()->set_filter(GL_NEAREST);
-  surface->get_texture()->put(image, 0, 0);
+  m_texture = g_app.window().get_device().create_texture(
+    image, wstdisplay::TextureParams{.filter = wstdisplay::TextureFilter::Nearest});
+  surface = wstdisplay::Surface(m_texture, image.get_size());
 }
 
 Automap::~Automap()
@@ -73,15 +78,15 @@ Automap::~Automap()
 }
 
 void
-Automap::draw(wstdisplay::GraphicsContext& gc)
+Automap::draw(wstdisplay::Canvas& canvas)
 {
-  gc.push_cliprect(geom::irect(geometry()));
-  surface->draw(gc,
-                wstdisplay::SurfaceDrawingParameters()
-                .set_pos(glm::vec2(m_geometry.left(), m_geometry.top()) + pos)
-                .set_color(surf::Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
-                .set_scale(zoom));
-  gc.pop_cliprect();
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.clip(geometry());
+  canvas.draw(surface,
+              wstdisplay::DrawParams()
+              .set_pos(glm::vec2(m_geometry.left(), m_geometry.top()) + pos)
+              .set_color(surf::Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
+              .set_scale(zoom));
 }
 
 void

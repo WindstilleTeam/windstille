@@ -19,11 +19,10 @@
 #ifndef HEADER_WINDSTILLE_TILE_TILE_HPP
 #define HEADER_WINDSTILLE_TILE_TILE_HPP
 
-#include <wstdisplay/gl_compat.hpp>
 
 #include <geom/geom.hpp>
 
-#include <wstdisplay/texture.hpp>
+#include <wstdisplay/surface.hpp>
 
 namespace windstille {
 
@@ -47,15 +46,8 @@ public:
   /** The id of the Tile by which the tilemap refers to it */
   int id;
 
-  // FIXME: Using a surface here might be a worthy consideration, just
-  // need to find a way to properly bucket-sort the request
-
-  /**
-   * Id of the packer
-   */
-  int     packer;
-  geom::frect   uv;
-  wstdisplay::TexturePtr texture;
+  /** The image of the tile, empty for fully transparent tiles */
+  wstdisplay::Surface surface;
 
   /** bitmap that holds the collision attributes for this tile */
   unsigned int colmap;

@@ -23,6 +23,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class ParticleSystem;
 
 
@@ -36,7 +38,7 @@ public:
   ParticleSystemObjectModel(glm::vec2 const& pos);
   ~ParticleSystemObjectModel() override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
 
   geom::frect get_bounding_box() const override;

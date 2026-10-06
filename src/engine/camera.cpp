@@ -21,7 +21,6 @@
 #include "objects/player.hpp"
 #include "objects/doll.hpp"
 #include "engine/script_manager.hpp"
-#include <wstdisplay/graphics_context.hpp>
 
 namespace windstille {
 

@@ -14,7 +14,7 @@
 #include <cmath>
 
 #include <surf/color.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstinput/input_manager.hpp>
 
@@ -127,10 +127,10 @@ VirtualGamepad::layout(int screen_w, int screen_h)
 }
 
 void
-VirtualGamepad::ensure_layout(wstdisplay::GraphicsContext& gc)
+VirtualGamepad::ensure_layout(wstdisplay::Canvas& canvas)
 {
-  int const w = gc.size().width();
-  int const h = gc.size().height();
+  int const w = g_app.window().get_size().width();
+  int const h = g_app.window().get_size().height();
   if (w != m_layout_w || h != m_layout_h || m_regions.empty()) {
     layout(w, h);
   }
@@ -289,7 +289,7 @@ VirtualGamepad::on_up(int64_t finger_id)
 void
 VirtualGamepad::inject_into_controller()
 {
-  auto& ctrl = g_app.input().get_controller_mut();
+  auto& ctrl = g_app.input().get_controller();
 
   auto set_btn = [&](Control c, int event) {
     bool const down = m_pressed[static_cast<size_t>(c)];
@@ -405,7 +405,7 @@ VirtualGamepad::handle_event(const SDL_Event& event)
 }
 
 void
-VirtualGamepad::draw_region(wstdisplay::GraphicsContext& gc,
+VirtualGamepad::draw_region(wstdisplay::Canvas& canvas,
                             Region const& r, bool pressed) const
 {
   surf::Color fill = pressed
@@ -415,34 +415,34 @@ VirtualGamepad::draw_region(wstdisplay::GraphicsContext& gc,
     ? surf::Color(1.0f, 1.0f, 1.0f, 0.9f)
     : surf::Color(1.0f, 1.0f, 1.0f, 0.45f);
 
-  gc.fill_rounded_rect(r.rect, 6.0f, fill);
-  gc.draw_rounded_rect(r.rect, 6.0f, border);
+  canvas.fill_rounded_rect(r.rect, 6.0f, fill);
+  canvas.draw_rounded_rect(r.rect, 6.0f, border);
 }
 
 void
-VirtualGamepad::draw(wstdisplay::GraphicsContext& gc)
+VirtualGamepad::draw(wstdisplay::Canvas& canvas)
 {
   if (!m_enabled) {
     return;
   }
 
-  ensure_layout(gc);
+  ensure_layout(canvas);
 
   for (Region const& r : m_regions) {
     bool pressed = m_pressed[static_cast<size_t>(r.control)];
-    draw_region(gc, r, pressed);
+    draw_region(canvas, r, pressed);
 
     // Stick nub
     if (r.control == Control::LeftStick) {
       float nx = m_left_stick_cx + m_left_stick_x * m_stick_radius * 0.7f;
       float ny = m_left_stick_cy + m_left_stick_y * m_stick_radius * 0.7f;
-      gc.fill_circle(geom::fpoint(nx, ny), m_stick_radius * 0.28f,
+      canvas.fill_circle(geom::fpoint(nx, ny), m_stick_radius * 0.28f,
                      pressed ? surf::Color(0.2f, 0.7f, 1.0f, 0.85f)
                              : surf::Color(1.0f, 1.0f, 1.0f, 0.4f));
     } else if (r.control == Control::RightStick) {
       float nx = m_right_stick_cx + m_right_stick_x * m_stick_radius * 0.7f;
       float ny = m_right_stick_cy + m_right_stick_y * m_stick_radius * 0.7f;
-      gc.fill_circle(geom::fpoint(nx, ny), m_stick_radius * 0.28f,
+      canvas.fill_circle(geom::fpoint(nx, ny), m_stick_radius * 0.28f,
                      pressed ? surf::Color(0.2f, 0.7f, 1.0f, 0.85f)
                              : surf::Color(1.0f, 1.0f, 1.0f, 0.4f));
     }

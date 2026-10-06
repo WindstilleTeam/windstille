@@ -137,7 +137,7 @@ public:
   std::vector<EdgeHandle> find_edges(glm::vec2 const& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas, float width = 1.0f);
 
   void load(ReaderMapping const& reader);
   void save(std::ostream& out);

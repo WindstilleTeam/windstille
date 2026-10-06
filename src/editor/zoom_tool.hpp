@@ -26,6 +26,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class ZoomTool : public Tool
 {
@@ -47,7 +49,7 @@ public:
 
   void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
 
 private:
   ZoomTool(ZoomTool const&);

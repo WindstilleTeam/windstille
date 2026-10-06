@@ -30,20 +30,19 @@
 namespace windstille {
 
 class ParticleSystem;
-class ParticleSystemDrawable;
+class SceneContext;
 
 class ParticleSystems : public GameObject
 {
 private:
   typedef std::vector<std::shared_ptr<ParticleSystem> > Systems;
-  typedef std::vector<std::shared_ptr<ParticleSystemDrawable> > Drawables;
 
   Systems   m_systems;
-  Drawables m_drawables;
 
 public:
   ParticleSystems(ReaderMapping const& reader, wstdisplay::SurfaceManager& surface_manager);
 
+  void draw (SceneContext& sc) override;
   void update (float delta) override;
 
 private:

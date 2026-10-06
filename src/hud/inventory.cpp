@@ -65,7 +65,7 @@ public:
   {}
 
   void update(float delta, wstinput::Controller const& controller);
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas);
 
   void incr_current_item() {
     if (current_item == int(items.size()) - 1)
@@ -103,7 +103,7 @@ Inventory::~Inventory()
 }
 
 void
-InventoryImpl::draw(wstdisplay::GraphicsContext& gc)
+InventoryImpl::draw(wstdisplay::Canvas& canvas)
 {
   glm::vec2 pos = glm::vec2(400, 300);
 
@@ -117,22 +117,22 @@ InventoryImpl::draw(wstdisplay::GraphicsContext& gc)
 
     if (i == 0 && moving == 0)
     {
-      slothighlight.draw(gc, draw_pos);
-      g_app.fonts().vera20->draw_center(gc, glm::vec2(draw_pos.x, draw_pos.y - 64), item.name);
+      slothighlight.draw(canvas, draw_pos);
+      canvas.draw_text(*g_app.fonts().vera20, glm::vec2(draw_pos.x, draw_pos.y - 64), item.name, surf::Color(1.0f, 1.0f, 1.0f), wstdisplay::TextAlign::Center);
     }
     else
     {
-      slot.draw(gc, draw_pos);
+      slot.draw(canvas, draw_pos);
     }
 
-    item.sprite.draw(gc, draw_pos - glm::vec2(32,32));
+    item.sprite.draw(canvas, draw_pos - glm::vec2(32,32));
   }
 }
 
 void
-Inventory::draw(wstdisplay::GraphicsContext& gc)
+Inventory::draw(wstdisplay::Canvas& canvas)
 {
-  impl->draw(gc);
+  impl->draw(canvas);
 }
 
 void

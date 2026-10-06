@@ -30,6 +30,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class ObjectModel;
 class SectorModel;
@@ -85,9 +87,9 @@ public:
 
   virtual bool is_snappable() const { return true; }
 
-  virtual void draw_select(wstdisplay::SceneContext& sc, bool highlight);
+  virtual void draw_select(SceneContext& sc, bool highlight);
 
-  virtual void draw(wstdisplay::SceneContext& sc);
+  virtual void draw(SceneContext& sc);
   virtual void update(float /*delta*/) {}
   virtual geom::frect get_bounding_box() const =0;
   virtual ObjectModelHandle clone() const =0;

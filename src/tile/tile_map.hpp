@@ -24,7 +24,7 @@
 #include "app/globals.hpp"
 #include "util/field.hpp"
 #include "engine/game_object.hpp"
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 
 namespace windstille {
 
@@ -43,7 +43,7 @@ public:
   ~TileMap() override;
 
   void update (float delta) override;
-  void draw (wstdisplay::SceneContext& gc) override;
+  void draw (SceneContext& gc) override;
 
   /** @return the type of ground at the given world coordinates */
   bool is_ground(float x, float y);

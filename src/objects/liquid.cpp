@@ -18,13 +18,17 @@
 
 #include "objects/liquid.hpp"
 
+#include <cmath>
 #include <numbers>
+#include <utility>
 
 #include "app/app.hpp"
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/texture_manager.hpp>
-#include "engine/sector.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/texture_params.hpp>
+
+#include "display/scene_context.hpp"
+#include "util/pathname.hpp"
 
 #define SAMPLES 5
 
@@ -38,8 +42,7 @@ Liquid::Liquid(ReaderMapping const& props) :
   heightfield_store2(),
   heightfield1(),
   heightfield2(),
-  m_water_top(),
-  m_water_body()
+  m_vertices()
 {
   int width = 10;
   t = 0;
@@ -63,18 +66,11 @@ Liquid::Liquid(ReaderMapping const& props) :
   for(int i = 50; i < 70 && i < int(heightfield1->size()); ++i)
     (*heightfield1)[i] += 0.0025f;
 
-  texture = g_app.texture().get(Pathname("images/textures/water.png"));
-  texture->set_wrap(GL_REPEAT);
-
-  m_water_top.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
-                                            glm::mat4(1.0f))); //sc.light().get_modelview()));
-
-  m_water_body.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
-                                             glm::mat4(1.0f))); // sc.light().get_modelview());
-
-  Sector::current()->get_scene_graph().add_drawable(m_water_top);
-  Sector::current()->get_scene_graph().add_drawable(m_water_body);
-  update_scene_graph();
+  texture = g_app.texture().get(Pathname("images/textures/water.png"),
+                                wstdisplay::TextureParams{
+                                  .wrap_x = wstdisplay::TextureWrap::Repeat,
+                                  .wrap_y = wstdisplay::TextureWrap::Repeat
+                                }).get_texture();
 }
 
 Liquid::~Liquid()
@@ -106,67 +102,62 @@ Liquid::update(float delta)
       std::swap(heightfield2, heightfield1);
     }
   }
-
-  update_scene_graph();
 }
 
 void
-Liquid::update_scene_graph()
+Liquid::draw(SceneContext& sc)
 {
-  // Update the wstdisplay::SceneGraph
-  float texscale = 1.0f/128.0f;
-  { // water top
-    wstdisplay::VertexArrayDrawable* array = m_water_top.get();
-    array->clear();
-    array->set_texture(texture);
-    array->set_mode(GL_TRIANGLE_STRIP);
-    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  float const texscale = 1.0f/128.0f;
+  std::vector<float> const& heights = *heightfield1;
 
-    for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
+  // the surface and the body as strips of quads between neighboring
+  // samples, the vertices of a column are top then bottom
+  auto add_strip = [this, &heights](auto&& column) {
+    for(size_t i = 1; i < heights.size(); ++i)
     {
-      float c = 0.5f;
-      if (i > 0)
-      {
-        float angle = atan2f(32.0f* ((*heightfield1)[i] - (*heightfield1)[i-1]), 3.2f);
-        c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/float(std::numbers::pi_v<float>)) + 0.5f));
-      }
-
-      // v2
-      array->color(surf::Color(c, c, 1.0f, 1.0f));
-      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
-                      (-32.0f * (*heightfield1)[i]) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
-      array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i]);
-      // v1
-      array->color(surf::Color(0.5f, 0.5f, 1.0f, 0.7f));
-      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
-                      (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
-      array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
+      auto const [top1, bottom1] = column(i - 1);
+      auto const [top2, bottom2] = column(i);
+      m_vertices.push_back(top1);
+      m_vertices.push_back(top2);
+      m_vertices.push_back(bottom2);
+      m_vertices.push_back(bottom1);
     }
-  }
+  };
 
-  { // water body
-    wstdisplay::VertexArrayDrawable* array = m_water_body.get();
-    array->clear();
-    array->set_texture(texture);
-    array->set_mode(GL_TRIANGLE_STRIP);
-    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  auto vertex = [&](size_t i, float y, surf::Color const& color) {
+    float const x = static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES);
+    float const wobble = std::sin(t + static_cast<float>(i)/10.0f) * 0.2f;
+    return wstdisplay::Vertex{x, y, x * texscale + wobble, y * texscale + wobble,
+                              wstdisplay::pack_color(color), {}};
+  };
 
-    for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
+  m_vertices.clear();
+
+  // water top
+  add_strip([&](size_t i) {
+    float c = 0.5f;
+    if (i > 0)
     {
-      // v2
-      array->color(surf::Color(0.5f, 0.5f, 1.0f, 0.7f));
-      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f) * 0.2f,
-                      (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
-      array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
-      // v1
-      array->color(surf::Color(0.0f, 0.0f, 0.5f, 0.7f));
-      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
-                      (64.0f) * texscale + sinf(t+static_cast<float>(i)/10.0f)*0.2f);
-      array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), 64.0f);
+      float angle = std::atan2(32.0f * (heights[i] - heights[i-1]), 3.2f);
+      c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/std::numbers::pi_v<float>) + 0.5f));
     }
-  }
+    float const y = -32.0f * heights[i];
+    return std::pair(vertex(i, y, surf::Color(c, c, 1.0f, 1.0f)),
+                     vertex(i, y + 8.0f, surf::Color(0.5f, 0.5f, 1.0f, 0.7f)));
+  });
+
+  // water body
+  add_strip([&](size_t i) {
+    return std::pair(vertex(i, -32.0f * heights[i] + 8.0f, surf::Color(0.5f, 0.5f, 1.0f, 0.7f)),
+                     vertex(i, 64.0f, surf::Color(0.0f, 0.0f, 0.5f, 0.7f)));
+  });
+
+  wstdisplay::Canvas& canvas = sc.color();
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(10000.0f);
+  canvas.translate(pos.x, pos.y);
+  canvas.draw_quads(texture, m_vertices);
 }
-
 
 } // namespace windstille
 

@@ -18,6 +18,8 @@
 
 #include "screen/game_session.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <geom/geom.hpp>
 #include <wstgui/screen_manager.hpp>
 
@@ -25,8 +27,8 @@
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "app/sound_manager.hpp"
-#include <wstdisplay/compositor.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/font/font.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
@@ -46,8 +48,7 @@ namespace windstille {
 class GameSessionImpl
 {
 public:
-  wstdisplay::Compositor compositor;
-  wstdisplay::SceneContext sc;
+  SceneContext sc;
 
   float fadeout_value;
   float fade_time;
@@ -84,9 +85,7 @@ public:
   wstgui::Screen* current_gui;
 
   GameSessionImpl()
-    : compositor(g_app.window().get_size(),
-                 g_app.window().get_gc().size()),
-      sc(),
+    : sc(),
       fadeout_value(),
       fade_time(),
       sector(),
@@ -118,7 +117,7 @@ public:
   {
   }
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas);
 
   void update_cutscene(float delta);
   void update_input(float delta);
@@ -149,40 +148,38 @@ GameSession::~GameSession()
 }
 
 void
-GameSessionImpl::draw(wstdisplay::GraphicsContext& gc)
+GameSessionImpl::draw(wstdisplay::Canvas& canvas)
 {
+  // the world goes into the scene layers, rendered in GameSession::render()
   view.draw(sc, *sector);
 
-  // Render the scene to the screen
-  compositor.render(gc, sc, &sector->get_scene_graph(), view.get_gc_state());
+  geom::fsize const size(g_app.window().get_size());
 
   if (cutscene_mode || cutscene_value > 0.0f)
   {
-    int border_size = static_cast<int>(75 * cutscene_value);
-    gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, 0), geom::isize(gc.size().width(), border_size))),
-                 surf::Color(0.0f, 0.0f, 0.0f, cutscene_value));
-    gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, gc.size().height() - border_size), geom::isize(gc.size().width(), border_size))),
-                 surf::Color(0.0f, 0.0f, 0.0f, cutscene_value));
+    float const border_size = 75.0f * cutscene_value;
+    canvas.fill_rect(geom::frect(geom::fpoint(0.0f, 0.0f), geom::fsize(size.width(), border_size)),
+                     surf::Color(0.0f, 0.0f, 0.0f, cutscene_value));
+    canvas.fill_rect(geom::frect(geom::fpoint(0.0f, size.height() - border_size), geom::fsize(size.width(), border_size)),
+                     surf::Color(0.0f, 0.0f, 0.0f, cutscene_value));
   }
 
   if (current_gui)
-    current_gui->draw(gc);
+    current_gui->draw(canvas);
 
   if (fade_state == FADEOUT || fade_state == FADEIN)
   {
-    gc.fill_rect(geom::frect(geom::irect(0, 0,
-                                         gc.size().width(), gc.size().height())),
-                 surf::Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
+    canvas.fill_rect(geom::frect(geom::fpoint(0.0f, 0.0f), size),
+                     surf::Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
   }
 
-  speech_manager.draw(gc);
+  speech_manager.draw(canvas);
 
   if (pause)
   {
     if ((SDL_GetTicks() / 1000) % 2)
-      g_app.fonts().vera20->draw(gc, glm::vec2(static_cast<float>(gc.size().width())  / 2.0f,
-                                               static_cast<float>(gc.size().height()) / 2.0f),
-                                 "Pause");
+      canvas.draw_text(*g_app.fonts().vera20, geom::fpoint(size.width() / 2.0f, size.height() / 2.0f),
+                       "Pause", surf::Color(1.0f, 1.0f, 1.0f), wstdisplay::TextAlign::Center);
   }
 }
 
@@ -373,28 +370,23 @@ GameSessionImpl::handle_event(SDL_Event const& event)
         switch (event.key.keysym.sym)
         {
           case SDLK_1:
-            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::COLORMAP);
-            ConsoleLog << "Toggled COLORMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::COLORMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::COLORMAP);
+            ConsoleLog << "Toggled COLORMAP: " << ((sc.get_render_mask() & SceneContext::COLORMAP) > 0) << std::endl;
             break;
 
           case SDLK_2:
-            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::LIGHTMAP);
-            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::LIGHTMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAP);
+            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAP) > 0) << std::endl;
             break;
 
           case SDLK_3:
-            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::HIGHLIGHTMAP);
-            ConsoleLog << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::HIGHLIGHTMAP);
+            ConsoleLog << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
             break;
 
           case SDLK_4:
-            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::CONTROLMAP);
-            ConsoleLog << "Toggled CONTROLMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::CONTROLMAP) > 0) << std::endl;
-            break;
-
-          case SDLK_5:
-            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::LIGHTMAPSCREEN);
-            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::CONTROLMAP);
+            ConsoleLog << "Toggled CONTROLMAP: " << ((sc.get_render_mask() & SceneContext::CONTROLMAP) > 0) << std::endl;
             break;
 
           case SDLK_c:
@@ -440,9 +432,15 @@ GameSession::get_pda()
 }
 
 void
-GameSession::draw(wstdisplay::GraphicsContext& gc)
+GameSession::draw(wstdisplay::Canvas& canvas)
 {
-  impl->draw(gc);
+  impl->draw(canvas);
+}
+
+void
+GameSession::render(wstdisplay::Renderer& renderer)
+{
+  impl->sc.render(renderer, impl->view.get_view());
 }
 
 void
@@ -524,7 +522,7 @@ GameSession::fadein(float time)
   impl->next_action = GameSessionImpl::NO_ACTION;
 }
 
-wstdisplay::SceneContext*
+SceneContext*
 GameSession::get_scene_context()
 {
   return &(impl->sc);

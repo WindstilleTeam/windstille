@@ -18,6 +18,8 @@
 
 #include "objects/doll.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <iostream>
 
 #include <glm/glm.hpp>
@@ -34,25 +36,20 @@
 #include "navigation/edge_position.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
-#include "sprite3d/sprite3d_drawable.hpp"
+#include <wstdisplay/canvas.hpp>
 #include "sprite3d/manager.hpp"
 
 namespace windstille {
 
 Doll::Doll() :
-  m_drawable(),
+  m_sprite(),
   m_velocity(),
   m_pos(200, 600),
   m_last_pos(m_pos),
   m_edge_position(),
   m_state(kNoState)
 {
-  Sprite3D sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
-  m_drawable.reset(new Sprite3DDrawable(sprite, m_pos, 100.0f, glm::mat4(1.0f)));
-  m_drawable->set_scale(2.0f);
-
-  Sector::current()->get_scene_graph().add_drawable(m_drawable);
+  m_sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
 
   set_state_falling();
 }
@@ -62,8 +59,16 @@ Doll::~Doll()
 }
 
 void
-Doll::draw (wstdisplay::SceneContext& sc)
+Doll::draw (SceneContext& sc)
 {
+  {
+    wstdisplay::Canvas& canvas = sc.color();
+    wstdisplay::Canvas::Scope scope(canvas);
+    canvas.translate(m_pos.x, m_pos.y);
+    canvas.scale(2.0f, 2.0f);
+    m_sprite.draw(canvas, glm::vec2(0.0f, 0.0f), 100.0f);
+  }
+
   sc.highlight().fill_rect(geom::frect(m_pos - glm::vec2(-10.0f, -10.0f),
                                        m_pos + glm::vec2(-10.0f, -10.0f)),
                            surf::Color(1.0f, 1.0f, 1.0f));
@@ -95,8 +100,7 @@ Doll::update(wstinput::Controller const& controller, float delta)
     case kNoState:  break;
   }
 
-  m_drawable->get_sprite().update(delta);
-  m_drawable->set_pos(m_pos);
+  m_sprite.update(delta);
   m_last_pos = m_pos;
 }
 
@@ -106,8 +110,8 @@ Doll::set_state_jump_up()
   if (m_state != kJumpUp)
   {
     m_state = kJumpUp;
-    m_drawable->get_sprite().set_action("JumpUp");
-    m_drawable->get_sprite().set_next_action("Stand");
+    m_sprite.set_action("JumpUp");
+    m_sprite.set_next_action("Stand");
   }
 }
 
@@ -126,7 +130,7 @@ Doll::set_state_standing()
   if (m_state != kStanding)
   {
     m_state = kStanding;
-    m_drawable->get_sprite().set_action("Stand");
+    m_sprite.set_action("Stand");
   }
 }
 
@@ -136,7 +140,7 @@ Doll::set_state_walking()
   if (m_state != kWalking)
   {
     m_state = kWalking;
-    m_drawable->get_sprite().set_action("Walk");
+    m_sprite.set_action("Walk");
   }
 }
 
@@ -146,7 +150,7 @@ Doll::set_state_running()
   if (m_state != kRunning)
   {
     m_state = kRunning;
-    m_drawable->get_sprite().set_action("Run");
+    m_sprite.set_action("Run");
   }
 }
 
@@ -156,8 +160,8 @@ Doll::set_state_ducking()
   if (m_state != kDucking)
   {
     m_state = kDucking;
-    m_drawable->get_sprite().set_action("StandToDuck");
-    m_drawable->get_sprite().set_next_action("Ducking");
+    m_sprite.set_action("StandToDuck");
+    m_sprite.set_next_action("Ducking");
   }
 }
 
@@ -166,14 +170,14 @@ Doll::set_state_rolling()
 {
   if (m_state != kRolling)
   {
-    m_drawable->get_sprite().set_action("Roll");
+    m_sprite.set_action("Roll");
 
     switch(m_state)
     {
-      case kStanding: m_drawable->get_sprite().set_next_action("Stand"); break;
-      case kWalking:  m_drawable->get_sprite().set_next_action("Walk"); break;
-      case kRunning:  m_drawable->get_sprite().set_next_action("Run"); break;
-      default:        m_drawable->get_sprite().set_next_action("Run"); break;
+      case kStanding: m_sprite.set_next_action("Stand"); break;
+      case kWalking:  m_sprite.set_next_action("Walk"); break;
+      case kRunning:  m_sprite.set_next_action("Run"); break;
+      default:        m_sprite.set_next_action("Run"); break;
     }
 
     m_state = kRolling;
@@ -186,7 +190,7 @@ Doll::set_state_listing()
   if (m_state != kListing)
   {
     m_state = kListing;
-    m_drawable->get_sprite().set_action("Listen");
+    m_sprite.set_action("Listen");
   }
 }
 
@@ -196,7 +200,7 @@ Doll::set_state_swinging()
   if (m_state != kSwinging)
   {
     m_state = kSwinging;
-    m_drawable->get_sprite().set_action("Switching");
+    m_sprite.set_action("Switching");
   }
 }
 
@@ -206,7 +210,7 @@ Doll::set_state_climbing()
   if (m_state != kClimbing)
   {
     m_state = kClimbing;
-    m_drawable->get_sprite().set_action("Climb");
+    m_sprite.set_action("Climb");
   }
 }
 
@@ -336,7 +340,7 @@ Doll::update_ducking(wstinput::Controller const& controller, float /*delta*/)
 void
 Doll::update_jump_up(wstinput::Controller const& controller, float /*delta*/)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     set_state_standing();
   }
@@ -347,11 +351,11 @@ Doll::walk(glm::vec2 const& adv_)
 {
   if (adv_.x > 0)
   {
-    m_drawable->get_sprite().set_rot(true);
+    m_sprite.set_rot(true);
   }
   else if (adv_.x < 0)
   {
-    m_drawable->get_sprite().set_rot(false);
+    m_sprite.set_rot(false);
   }
 
   if (m_edge_position)
@@ -414,7 +418,7 @@ Doll::update_rolling(wstinput::Controller const& controller, float delta)
   walk(stick * 2.5f);
 
   // FIXME: Need an Sprite::action_done() instead
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     if (controller.get_axis_state(X_AXIS) > 0 ||
         controller.get_axis_state(X_AXIS) < 0)

@@ -18,9 +18,10 @@
 
 #include "engine/sector.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <sstream>
 
-#include <wstdisplay/scenegraph/scene_graph.hpp>
 
 #include "app/app.hpp"
 #include "app/sound_manager.hpp"
@@ -30,7 +31,6 @@
 #include "navigation/navigation_graph.hpp"
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
-#include "scenegraph/navigation_graph_drawable.hpp"
 #include "tile/tile_map.hpp"
 
 namespace windstille {
@@ -38,7 +38,6 @@ namespace windstille {
 Sector::Sector(Pathname const& arg_filename) :
   collision_engine(new CollisionEngine()),
   navigation_graph(new NavigationGraph()),
-  scene_graph(new wstdisplay::SceneGraph()),
   filename(arg_filename),
   name(),
   music(),
@@ -70,8 +69,6 @@ Sector::Sector(Pathname const& arg_filename) :
     doll.reset(new Doll());
     add(doll);
   }
-
-  scene_graph->add_drawable(std::shared_ptr<wstdisplay::Drawable>(new NavigationGraphDrawable(navigation_graph.get())));
 }
 
 
@@ -98,7 +95,7 @@ Sector::activate()
 
 
 void
-Sector::draw(wstdisplay::SceneContext& sc)
+Sector::draw(SceneContext& sc)
 {
   sc.light().fill_screen(ambient_light);
 
@@ -107,6 +104,11 @@ Sector::draw(wstdisplay::SceneContext& sc)
     if ((*i)->is_active())
       (*i)->draw(sc);
   }
+
+  wstdisplay::Canvas& control = sc.control();
+  wstdisplay::Canvas::Scope scope(control);
+  control.set_z(1000.0f);
+  navigation_graph->draw(control, 4.0f);
 }
 
 

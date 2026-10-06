@@ -34,6 +34,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class NavigationGraphModel;
 class NavGraphNodeObjectModel;
@@ -55,7 +57,7 @@ public:
   SectorModel(std::string const& filename);
   ~SectorModel();
 
-  void draw(wstdisplay::SceneContext& sc, SelectMask const& layers);
+  void draw(SceneContext& sc, SelectMask const& layers);
 
   void update(float delta);
 

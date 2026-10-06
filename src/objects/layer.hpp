@@ -23,6 +23,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Layer : public GameObject
 {
 private:
@@ -42,7 +44,7 @@ public:
   Layer(ReaderMapping const& reader);
   ~Layer() override;
 
-  void draw (wstdisplay::SceneContext& context) override;
+  void draw (SceneContext& context) override;
   void update (float delta) override;
 
 

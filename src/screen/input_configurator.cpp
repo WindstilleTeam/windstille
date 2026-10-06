@@ -22,7 +22,7 @@
 
 #include <wstinput/controller.hpp>
 #include <wstinput/input_manager.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstgui/screen_manager.hpp>
 #include <wstgui/style.hpp>
@@ -41,8 +41,8 @@ InputConfigurator::InputConfigurator()
     area(g_app.style().get_font(),
          geom::frect(120.0f,
                      100.0f,
-                     static_cast<float>(g_app.window().get_gc().size().width())  - 120.0f,
-                     static_cast<float>(g_app.window().get_gc().size().height()) - 100.0f),
+                     static_cast<float>(g_app.window().get_size().width())  - 120.0f,
+                     static_cast<float>(g_app.window().get_size().height()) - 100.0f),
          false)
 {
   out << "Input Configurator\n"
@@ -52,7 +52,7 @@ InputConfigurator::InputConfigurator()
 
   area.set_text(out.str());
 
-  area.set_font(g_app.fonts().ttffont.get());
+  area.set_font(g_app.fonts().ttffont);
 
   add_configure_item(ConfigureItem::CONFIGURE_BUTTON, INVENTORY_BUTTON);
   add_configure_item(ConfigureItem::CONFIGURE_BUTTON, AIM_BUTTON);
@@ -86,15 +86,15 @@ InputConfigurator::add_configure_item(ConfigureItem::Mode mode, int event_id)
 }
 
 void
-InputConfigurator::draw(wstdisplay::GraphicsContext& gc)
+InputConfigurator::draw(wstdisplay::Canvas& canvas)
 {
   geom::frect rect(100.0f, 75.0f,
-             static_cast<float>(gc.size().width())  - 100.0f,
-             static_cast<float>(gc.size().height()) - 75.0f);
+             static_cast<float>(g_app.window().get_size().width())  - 100.0f,
+             static_cast<float>(g_app.window().get_size().height()) - 75.0f);
 
-  gc.fill_rounded_rect(rect, 16.0f, surf::Color(0.3f, 0.3f, 0.5f, 0.5f));
-  gc.draw_rounded_rect(rect, 16.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
-  area.draw(gc);
+  canvas.fill_rounded_rect(rect, 16.0f, surf::Color(0.3f, 0.3f, 0.5f, 0.5f));
+  canvas.draw_rounded_rect(rect, 16.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  area.draw(canvas);
 }
 
 void

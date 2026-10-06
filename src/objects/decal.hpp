@@ -19,8 +19,8 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
 #define HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
 
-#include <memory>
-
+#include <wstdisplay/blend.hpp>
+#include <wstdisplay/draw_params.hpp>
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
 
@@ -28,17 +28,24 @@
 
 namespace windstille {
 
+class SceneContext;
+
+/** A static image placed in the sector, on the color, light or
+    highlight layer */
 class Decal : public GameObject
 {
 private:
-  std::shared_ptr<wstdisplay::SurfaceDrawable> drawable;
+  wstdisplay::Surface m_surface;
+  wstdisplay::DrawParams m_params;
+  /** SceneContext::COLORMAP, LIGHTMAP or HIGHLIGHTMAP */
+  unsigned int m_layer;
   glm::vec2 pos;
 
 public:
   Decal(ReaderMapping const& reader);
   ~Decal() override;
 
-  void draw (wstdisplay::SceneContext& context) override;
+  void draw (SceneContext& context) override;
   void update (float delta) override;
 
   void set_parent(GameObject* parent);

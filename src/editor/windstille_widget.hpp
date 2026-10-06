@@ -23,7 +23,6 @@
 #include <memory>
 #include <vector>
 
-#include <wstdisplay/gl_compat.hpp>
 #include <GL/gl.h>
 #include <vector>
 #include <iostream>
@@ -34,7 +33,7 @@
 #include <glm/glm.hpp>
 
 #include <wstdisplay/graphic_context_state.hpp>
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/texture.hpp>
 #include <wstdisplay/graphics_context.hpp>
 #include "editor/control_point.hpp"
@@ -71,7 +70,7 @@ private:
 
   wstdisplay::GraphicContextState   state;
   std::unique_ptr<wstdisplay::Compositor> compositor;
-  std::unique_ptr<wstdisplay::SceneContext> sc;
+  std::unique_ptr<SceneContext> sc;
   DecalObjectModel::MapType map_type;
   wstdisplay::TexturePtr background_pattern;
   SelectMask select_mask;
@@ -115,7 +114,7 @@ public:
 
   SelectMask& get_select_mask() { return select_mask; }
 
-  wstdisplay::SceneContext* get_sc() const { return sc.get(); }
+  SceneContext* get_sc() const { return sc.get(); }
 
   void load_file(std::string const& filename);
 

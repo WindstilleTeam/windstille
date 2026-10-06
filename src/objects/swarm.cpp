@@ -18,10 +18,12 @@
 
 #include "objects/swarm.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <glm/gtx/fast_trigonometry.hpp>
 
 #include "math/random.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/canvas.hpp>
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
 
@@ -59,41 +61,21 @@ Swarm::Swarm(ReaderMapping const& props) :
 }
 
 void
-Swarm::draw(wstdisplay::SceneContext& sc)
+Swarm::draw(SceneContext& sc)
 {
-  auto array = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0, 0),
-                                                     1000.0f, sc.highlight().get_modelview());
+  wstdisplay::Canvas& canvas = sc.highlight();
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(1000.0f);
+  canvas.set_blend(wstdisplay::Blend::Opaque);
 
-  array->set_mode(GL_TRIANGLES);
-  array->set_blend_func(GL_ONE, GL_ZERO);
-
-  surf::Color color(1.0f, 1.0f, 1.0f);
-  surf::Color bottom_color(0.0f, 0.0f, 0.0f);
+  surf::Color const color(1.0f, 1.0f, 1.0f);
+  surf::Color const bottom_color(0.0f, 0.0f, 0.0f);
 
   for(Agents::const_iterator i = agents.begin(); i != agents.end(); ++i)
   {
-    // v1
-    array->color(color);
-    array->vertex(i->pos.x - 1, i->pos.y - 1);
-    // v4
-    array->color(bottom_color);
-    array->vertex(i->pos.x - 1, i->pos.y + 2);
-    // v2
-    array->color(color);
-    array->vertex(i->pos.x + 2, i->pos.y - 1);
-
-    // v4
-    array->color(bottom_color);
-    array->vertex(i->pos.x - 1, i->pos.y + 2);
-    // v3
-    array->color(bottom_color);
-    array->vertex(i->pos.x + 2, i->pos.y + 2);
-    // v2
-    array->color(color);
-    array->vertex(i->pos.x + 2, i->pos.y - 1);
+    canvas.fill_vertical_gradient(geom::frect(i->pos.x - 1, i->pos.y - 1, i->pos.x + 2, i->pos.y + 2),
+                                  color, bottom_color);
   }
-
-  sc.highlight().draw(std::move(array));
 }
 
 void

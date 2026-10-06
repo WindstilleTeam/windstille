@@ -34,7 +34,6 @@ App::App() :
   m_surface_manager(nullptr),
   m_sprite_manager(nullptr),
   m_sprite3d_manager(nullptr),
-  m_ttffont_manager(nullptr),
   m_fonts(nullptr),
   m_style(nullptr),
   m_screen_manager(nullptr)
@@ -95,13 +94,6 @@ App::fonts() const
 {
   assert(m_fonts != nullptr);
   return *m_fonts;
-}
-
-wstdisplay::TTFFontManager&
-App::ttffont_manager() const
-{
-  assert(m_ttffont_manager != nullptr);
-  return *m_ttffont_manager;
 }
 
 wstgui::Style&

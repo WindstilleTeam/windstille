@@ -22,9 +22,11 @@
 #include <stdexcept>
 
 #include "armature/armature.hpp"
-#include <wstdisplay/assert_gl.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/texture_manager.hpp>
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+
+#include "app/app.hpp"
 
 namespace windstille {
 
@@ -38,8 +40,9 @@ Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
   groups(),
   vertices_(),
   texture(),
-  blend_sfactor(GL_ONE),
-  blend_dfactor(GL_ZERO)
+  m_blend(wstdisplay::Blend::Opaque),
+  m_mesh(),
+  m_mesh_vertices()
 {
   std::filesystem::path texture_filename;
 
@@ -166,7 +169,7 @@ Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
 #endif
 
   texture_filename = basedir / texture_filename;
-  texture = texture_manager.get(texture_filename);
+  texture = texture_manager.get(texture_filename).get_texture();
 
   // Check that all vectors contain enough values for the given number
   // of vertices
@@ -185,28 +188,34 @@ Mesh::~Mesh()
 }
 
 void
-Mesh::draw(wstdisplay::GraphicsContext& gc)
+Mesh::draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform)
 {
-  wstdisplay::VertexArrayDrawable va;
-
-  va.set_mode(GL_TRIANGLES);
-  va.set_blend_func(blend_sfactor, blend_dfactor);
-  va.set_depth_test(true);
-  va.set_texture(texture);
-
-  for(Vertices::size_type i = 0; i < vertices_.size(); ++i)
-  { // evil messing around with vertices, need more order
-    vertices[3*i + 0] = vertices_[i].render_pos.x;
-    vertices[3*i + 1] = vertices_[i].render_pos.y;
-    vertices[3*i + 2] = vertices_[i].render_pos.z;
+  if (!m_mesh)
+  {
+    m_mesh = g_app.window().get_device().create_mesh();
+    m_mesh->set_indices(triangles);
+    m_mesh->set_texture(texture);
+    m_mesh->set_blend(m_blend);
+    m_mesh->set_depth_test(true);
   }
 
-  va.add_normals(normals);
-  va.add_texcoords(texcoords);
-  va.add_vertices(vertices);
-  va.add_indices(triangles);
+  m_mesh_vertices.resize(vertices_.size());
+  for(Vertices::size_type i = 0; i < vertices_.size(); ++i)
+  {
+    wstdisplay::MeshVertex& out = m_mesh_vertices[i];
+    out.x = vertices_[i].render_pos.x;
+    out.y = vertices_[i].render_pos.y;
+    out.z = vertices_[i].render_pos.z;
+    out.u = (2*i + 1 < texcoords.size()) ? texcoords[2*i + 0] : 0.0f;
+    out.v = (2*i + 1 < texcoords.size()) ? texcoords[2*i + 1] : 0.0f;
+    out.nx = (3*i + 2 < normals.size()) ? normals[3*i + 0] : 0.0f;
+    out.ny = (3*i + 2 < normals.size()) ? normals[3*i + 1] : 0.0f;
+    out.nz = (3*i + 2 < normals.size()) ? normals[3*i + 2] : 1.0f;
+    out.color = wstdisplay::packed_white;
+  }
+  m_mesh->set_vertices(m_mesh_vertices);
 
-  va.render(gc);
+  canvas.draw(m_mesh.get(), transform);
 }
 
 void

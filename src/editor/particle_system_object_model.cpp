@@ -17,6 +17,8 @@
 */
 
 #include "particles/particle_system.hpp"
+
+#include "display/scene_context.hpp"
 #include "editor/particle_system_object_model.hpp"
 
 namespace windstille {
@@ -33,7 +35,7 @@ ParticleSystemObjectModel::~ParticleSystemObjectModel()
 }
 
 void
-ParticleSystemObjectModel::draw(wstdisplay::SceneContext& /*sc*/)
+ParticleSystemObjectModel::draw(SceneContext& /*sc*/)
 {
 }
 

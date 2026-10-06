@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/decal_rotate_control_point.hpp"
@@ -69,7 +69,7 @@ DecalRotateControlPoint::on_move_end(GdkEventButton* event, glm::vec2 const& off
 }
 
 void
-DecalRotateControlPoint::draw(wstdisplay::SceneContext& sc)
+DecalRotateControlPoint::draw(SceneContext& sc)
 {
   geom::frect rect = get_bounding_box();
   rect += geom::foffset(offset);

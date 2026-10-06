@@ -19,24 +19,27 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
 #define HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
 
-#include <wstdisplay/texture.hpp>
+#include <wstdisplay/handle.hpp>
 #include "engine/game_object.hpp"
 #include "sprite2d/sprite.hpp"
 
 namespace windstille {
+
+class SceneContext;
 
 // FIXME: shouldn't really be a game object, but makes testing easier
 class Nightvision : public GameObject
 {
 private:
   Sprite  nightvision;
-  wstdisplay::TexturePtr noise;
+  /** Owned by the TextureManager */
+  wstdisplay::TextureId noise;
 
 public:
   Nightvision(ReaderMapping const& props);
   ~Nightvision() override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
 
 private:

@@ -20,12 +20,13 @@
 #define HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 
 #include <wstgui/screen.hpp>
-#include <wstdisplay/compositor.hpp>
 
 #include "sprite3d/sprite3d.hpp"
 #include "util/pathname.hpp"
 
 namespace windstille {
+
+class SceneContext;
 
 /**
  * A simple class to view 3d sprites and their different actions,
@@ -34,8 +35,6 @@ namespace windstille {
 class Sprite3DView : public wstgui::Screen
 {
 private:
-  wstdisplay::Compositor m_compositor;
-  wstdisplay::SceneContext m_sc;
   Sprite3D m_sprite;
   std::vector<std::string> m_actions;
   int m_current_action;
@@ -47,7 +46,7 @@ public:
   Sprite3DView();
   ~Sprite3DView() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
   void set_model(Pathname const& filename);

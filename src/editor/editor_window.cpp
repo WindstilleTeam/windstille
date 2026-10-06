@@ -39,7 +39,7 @@
 
 #include <logmich/log.hpp>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/about_window.hpp"
 #include "editor/editor_window.hpp"
@@ -361,13 +361,13 @@ EditorWindow::EditorWindow() :
   m_grid_layer->set_active(false);
 
   m_action_group->add(m_toggle_color_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_color_layer, static_cast<unsigned int>(wstdisplay::SceneContext::COLORMAP)));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_color_layer, static_cast<unsigned int>(SceneContext::COLORMAP)));
   m_action_group->add(m_toggle_light_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_light_layer, static_cast<unsigned int>(wstdisplay::SceneContext::LIGHTMAP)));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_light_layer, static_cast<unsigned int>(SceneContext::LIGHTMAP)));
   m_action_group->add(m_toggle_highlight_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_highlight_layer, static_cast<unsigned int>(wstdisplay::SceneContext::HIGHLIGHTMAP)));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_highlight_layer, static_cast<unsigned int>(SceneContext::HIGHLIGHTMAP)));
   m_action_group->add(m_toggle_control_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_control_layer, static_cast<unsigned int>(wstdisplay::SceneContext::CONTROLMAP)));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_control_layer, static_cast<unsigned int>(SceneContext::CONTROLMAP)));
   m_action_group->add(m_background_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_background_layer), m_background_layer));
   m_action_group->add(m_visible_layer,
@@ -826,7 +826,7 @@ EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsign
 {
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    wstdisplay::SceneContext& sc = *wst->get_sc();
+    SceneContext& sc = *wst->get_sc();
 
     if (action->get_active())
     {
@@ -978,10 +978,10 @@ EditorWindow::on_switch_page(Gtk::Widget* page, guint page_num)
       m_layer_manager.set_model(&wst->get_document().get_sector_model());
       m_layer_widget->update(wst->get_select_mask());
 
-      m_toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & wstdisplay::SceneContext::COLORMAP);
-      m_toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & wstdisplay::SceneContext::LIGHTMAP);
-      m_toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & wstdisplay::SceneContext::HIGHLIGHTMAP);
-      m_toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & wstdisplay::SceneContext::CONTROLMAP);
+      m_toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
+      m_toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
+      m_toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::HIGHLIGHTMAP);
+      m_toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::CONTROLMAP);
 
       m_background_layer->set_active(wst->get_draw_background_pattern());
       m_visible_layer->set_active(wst->get_draw_only_active_layer());

@@ -18,6 +18,8 @@
 
 #include "editor/navgraph_insert_tool.hpp"
 
+#include "display/scene_context.hpp"
+
 #include "editor/sector_model.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
@@ -250,7 +252,7 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
 }
 
 void
-NavgraphInsertTool::draw(wstdisplay::SceneContext& sc)
+NavgraphInsertTool::draw(SceneContext& sc)
 {
   if (last_node)
   {

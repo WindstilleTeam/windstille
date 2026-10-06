@@ -21,7 +21,7 @@
 #include <iostream>
 #include <sstream>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/surface_drawing_parameters.hpp>
 #include "editor/constants.hpp"
 #include "editor/editor_window.hpp"
@@ -151,7 +151,7 @@ ObjectModel::set_rel_pos(glm::vec2 const& rel_pos_)
 }
 
 void
-ObjectModel::draw_select(wstdisplay::SceneContext& sc, bool highlight)
+ObjectModel::draw_select(SceneContext& sc, bool highlight)
 {
   if (highlight)
     sc.control().draw_rect(get_bounding_box(), surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
@@ -160,7 +160,7 @@ ObjectModel::draw_select(wstdisplay::SceneContext& sc, bool highlight)
 }
 
 void
-ObjectModel::draw(wstdisplay::SceneContext& sc)
+ObjectModel::draw(SceneContext& sc)
 {
   glm::vec2 wo_pos = get_world_pos();
 

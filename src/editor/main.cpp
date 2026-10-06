@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <wstdisplay/gl_compat.hpp>
 #include <GL/gl.h>
 #include <iostream>
 #include <stdexcept>

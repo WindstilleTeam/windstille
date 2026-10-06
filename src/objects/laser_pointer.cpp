@@ -18,8 +18,11 @@
 
 #include "objects/laser_pointer.hpp"
 
+#include "display/scene_context.hpp"
+
 #include "app/app.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/texture_params.hpp>
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
@@ -34,12 +37,15 @@ LaserPointer::LaserPointer() :
   progress(),
   angle()
 {
-  noise = g_app.texture().get(Pathname("images/noise2.png"));
+  noise = g_app.texture().get(Pathname("images/noise2.png"),
+                              wstdisplay::TextureParams{
+                                .filter = wstdisplay::TextureFilter::Linear,
+                                .wrap_x = wstdisplay::TextureWrap::Repeat,
+                                .wrap_y = wstdisplay::TextureWrap::Repeat
+                              }).get_texture();
   laserpointer = g_app.sprite().create(Pathname("images/laserpointer.sprite"));
   laserpointer_light = g_app.sprite().create(Pathname("images/laserpointer_light.sprite"));
-  laserpointer_light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  noise->set_wrap(GL_REPEAT);
-  noise->set_filter(GL_LINEAR);
+  laserpointer_light.set_blend(wstdisplay::Blend::Add);
 
   progress = 0.0f;
   angle = 0.0f;
@@ -66,7 +72,7 @@ static float find_max(float pos, float v)
 }
 
 void
-LaserPointer::draw(wstdisplay::SceneContext& sc)
+LaserPointer::draw(SceneContext& sc)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
   if (tilemap)
@@ -124,23 +130,30 @@ LaserPointer::draw(wstdisplay::SceneContext& sc)
 
     glm::vec2 ray = target - pos;
 
-    auto array = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0,0), 10000,
-                                                       sc.highlight().get_modelview());
-    array->set_mode(GL_LINES);
-    array->set_texture(noise);
-    array->set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    {
+      // a one pixel wide line with scrolling noise along it
+      wstdisplay::Canvas& highlight = sc.highlight();
+      wstdisplay::Canvas::Scope scope(highlight);
+      highlight.set_z(10000);
+      highlight.set_blend(wstdisplay::Blend::Add);
 
-    array->color(surf::Color(1.0f, 0.0f, 0.0f, 1.0f));
-    array->texcoord(0, progress);
-    array->vertex(0, 0);
+      float const length = glm::length(ray);
+      if (length > 0.0f)
+      {
+        glm::vec2 const n = glm::vec2(-ray.y, ray.x) / length * 0.5f;
+        float const u = length / 256.0f;
+        wstdisplay::PackedColor const red = wstdisplay::pack_color(surf::Color(1.0f, 0.0f, 0.0f, 1.0f));
+        wstdisplay::Vertex const quad[] = {
+          {n.x, n.y, 0.0f, progress, red},
+          {ray.x + n.x, ray.y + n.y, u, progress, red},
+          {ray.x - n.x, ray.y - n.y, u, progress, red},
+          {-n.x, -n.y, 0.0f, progress, red},
+        };
+        highlight.draw_quads(noise, quad);
+      }
+    }
 
-    array->color(surf::Color(1.0f, 0.0f, 0.0f, 1.0f));
-    array->texcoord(glm::length(target - pos)/256.0f, progress);
-    array->vertex(ray.x, ray.y);
-
-    sc.highlight().draw(std::move(array));
-
-    laserpointer.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    laserpointer.set_blend(wstdisplay::Blend::Add);
     laserpointer.draw(sc.highlight(), ray);
     laserpointer_light.draw(sc.light(), ray);
   }

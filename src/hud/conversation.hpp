@@ -52,7 +52,7 @@ private:
 public:
   Conversation();
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
   void add(std::string const& text);

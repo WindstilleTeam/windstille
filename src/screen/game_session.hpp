@@ -26,7 +26,7 @@
 
 #include "app/console.hpp"
 #include "app/globals.hpp"
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include "hud/controller_help_window.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/currenton.hpp"
@@ -78,7 +78,8 @@ public:
   void fadeout(float time, surf::Color const& color);
   void fadein(float time);
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
+  void render(wstdisplay::Renderer& renderer) override;
   void update(float delta, wstinput::Controller const& controller) override;
   void handle_event(SDL_Event const& event) override;
 
@@ -86,7 +87,7 @@ public:
 
   void quit();
 
-  wstdisplay::SceneContext* get_scene_context();
+  SceneContext* get_scene_context();
 
 private:
   std::shared_ptr<GameSessionImpl> impl;

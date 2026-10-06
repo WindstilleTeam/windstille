@@ -22,11 +22,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-#include <wstdisplay/assert_gl.hpp>
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/mesh.hpp>
+#include <wstdisplay/opengl_window.hpp>
+
+#include "app/app.hpp"
 #include "sprite3d/manager.hpp"
-#include "sprite3d/sprite3d_drawable.hpp"
 
 namespace windstille {
 
@@ -41,8 +43,9 @@ Sprite3D::Sprite3D() :
   next_frame(),
   next_action(),
   abort_at_frame(),
-  blend_sfactor(GL_ONE),
-  blend_dfactor(GL_ZERO)
+  m_blend(wstdisplay::Blend::Opaque),
+  m_meshes(),
+  m_vertices()
 {
 }
 
@@ -55,8 +58,9 @@ Sprite3D::Sprite3D(std::filesystem::path const& filename, sprite3d::Manager& spr
   next_frame(),
   next_action(),
   abort_at_frame(),
-  blend_sfactor(GL_ONE),
-  blend_dfactor(GL_ZERO)
+  m_blend(wstdisplay::Blend::Opaque),
+  m_meshes(),
+  m_vertices()
 {
   frame1.action         = &data->actions[0];
   frame1.frame          = 0;
@@ -77,8 +81,9 @@ Sprite3D::Sprite3D(Sprite3D const& rhs) :
   next_frame(rhs.next_frame),
   next_action(rhs.next_action),
   abort_at_frame(rhs.abort_at_frame),
-  blend_sfactor(rhs.blend_sfactor),
-  blend_dfactor(rhs.blend_dfactor)
+  m_blend(rhs.m_blend),
+  m_meshes(),
+  m_vertices()
 {
 }
 
@@ -95,8 +100,8 @@ Sprite3D::operator=(Sprite3D const& rhs)
     next_frame       = rhs.next_frame;
     next_action      = rhs.next_action;
     abort_at_frame   = rhs.abort_at_frame;
-    blend_sfactor    = rhs.blend_sfactor;
-    blend_dfactor    = rhs.blend_dfactor;
+    m_blend          = rhs.m_blend;
+    // the meshes hold the pose of this sprite, they aren't shared
   }
   return *this;
 }
@@ -332,101 +337,75 @@ Sprite3D::update(float delta)
   blend_time += time_delta;
 }
 
-void
-Sprite3D::draw(wstdisplay::DrawingContext& dc, glm::vec2 const& pos, float z_pos)
-{
-  dc.draw(std::make_unique<Sprite3DDrawable>(*this, pos, z_pos, dc.get_modelview()));
-}
-
 static inline float interpolate(float v1, float v2, float t)
 {
   return v1 + (v2 - v1) * t;
 }
 
 void
-Sprite3D::draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, glm::mat4 const& modelview)
+Sprite3D::draw(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float z_pos, glm::mat4 const& model)
 {
-  gc.push_matrix();
-  gc.mult_matrix(modelview);
-  gc.translate(pos.x, pos.y, 0);
-  if(frame1.rot) {
-    gc.rotate(180, 0, 1.0, 0);
+  wstdisplay::Device& device = g_app.window().get_device();
+  while (m_meshes.size() < data->meshs.size()) {
+    m_meshes.push_back(device.create_mesh());
+  }
+
+  glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(pos.x, pos.y, 0.0f)) * model;
+  if (frame1.rot) {
+    transform = glm::rotate(transform, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
   }
 
   ActionFrame const& aframe1 = frame1.action->frames[frame1.frame];
   ActionFrame const& aframe2 = frame2.action->frames[frame2.frame];
 
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(z_pos);
+
   for(size_t m = 0; m < data->meshs.size(); ++m)
   {
-    Mesh const& mesh = data->meshs[m];
-    MeshVertices const& vertices1 = aframe1.meshs[m];
-    MeshVertices const& vertices2 = aframe2.meshs[m];
+    sprite3d::Mesh const& mesh = data->meshs[m];
+    std::vector<float> const& vertices1 = aframe1.meshs[m].vertices;
+    std::vector<float> const& vertices2 = aframe2.meshs[m].vertices;
 
-    // blend between frame1 + frame2
-    std::vector<float> verts(mesh.vertex_count * 3);
-    if(frame1.rot == frame2.rot)
+    // blend between frame1 + frame2, if the frames have different rot
+    // values frame2 is rotated by 180 degree (x=-x, y=y, z=-z)
+    float const flip = (frame1.rot == frame2.rot) ? 1.0f : -1.0f;
+
+    m_vertices.resize(mesh.vertex_count);
+    for(uint16_t v = 0; v < mesh.vertex_count; ++v)
     {
-      for(uint16_t v = 0; v < mesh.vertex_count*3; ++v)
-      {
-        float v1 = vertices1.vertices[v];
-        float v2 = vertices2.vertices[v];
-        verts[v] = interpolate(v1, v2, blend_time);
-      }
-    }
-    else
-    {
-      // need to manually rotate 180 degree here because frames have different
-      // rot values (=> x=-x, y=y, z=-z)
-      for(uint16_t v = 0; v < mesh.vertex_count*3; )
-      {
-        // X coord
-        float v1 = vertices1.vertices[v];
-        float v2 = -vertices2.vertices[v];
-        verts[v++] = interpolate(v1, v2, blend_time);
-        // Y coord
-        v1 = vertices1.vertices[v];
-        v2 = vertices2.vertices[v];
-        verts[v++] = interpolate(v1, v2, blend_time);
-        // Z coord
-        v1 = vertices1.vertices[v];
-        v2 = -vertices2.vertices[v];
-        verts[v++] = interpolate(v1, v2, blend_time);
-      }
+      size_t const i = static_cast<size_t>(v) * 3;
+      wstdisplay::MeshVertex& out = m_vertices[v];
+      out.x = interpolate(vertices1[i + 0], flip * vertices2[i + 0], blend_time);
+      out.y = interpolate(vertices1[i + 1], vertices2[i + 1], blend_time);
+      out.z = interpolate(vertices1[i + 2], flip * vertices2[i + 2], blend_time);
+      out.u = mesh.tex_coords[static_cast<size_t>(v) * 2 + 0];
+      out.v = mesh.tex_coords[static_cast<size_t>(v) * 2 + 1];
+      // FIXME: normals seem broken in .wsprite format, they are per
+      // primitive, not per vertex, as they should be.
+      out.nx = 0.0f;
+      out.ny = 0.0f;
+      out.nz = 1.0f;
+      out.color = wstdisplay::pack_color(surf::Color(1.0f, 1.0f, 1.0f));
     }
 
-    wstdisplay::VertexArrayDrawable va;
+    wstdisplay::Mesh& gpu_mesh = *m_meshes[m];
+    gpu_mesh.set_vertices(m_vertices);
+    if (gpu_mesh.get_indices().size() != mesh.vertex_indices.size()) {
+      gpu_mesh.set_indices(mesh.vertex_indices);
+    }
+    gpu_mesh.set_texture(mesh.texture);
+    gpu_mesh.set_blend(m_blend);
+    gpu_mesh.set_depth_test(true);
 
-    va.set_blend_func(blend_sfactor, blend_dfactor);
-    va.set_depth_test(true);
-    va.set_mode(GL_TRIANGLES);
-    va.set_texture(mesh.texture);
-
-    // FIXME: normals seem broken in .wsprite format, they are per
-    // primitive, not per vertex, as they should be.
-    // FIXME: va.add_normals(mesh.normals);
-    va.add_texcoords(mesh.tex_coords);
-    va.add_vertices(std::move(verts));
-    va.add_indices(mesh.vertex_indices);
-
-    va.render(gc);
+    canvas.draw(m_meshes[m].get(), transform);
   }
-
-  assert_gl();
-
-  gc.pop_matrix();
 }
 
 bool
 Sprite3D::is_valid() const
 {
   return data != nullptr;
-}
-
-void
-Sprite3D::set_blend_func(GLenum sfactor, GLenum dfactor)
-{
-  blend_sfactor = sfactor;
-  blend_dfactor = dfactor;
 }
 
 } // namespace windstille

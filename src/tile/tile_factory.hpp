@@ -25,7 +25,9 @@
 #include <geom/geom.hpp>
 #include <surf/fwd.hpp>
 
-#include <wstdisplay/software_surface.hpp>
+#include <surf/software_surface.hpp>
+#include <wstdisplay/fwd.hpp>
+#include <wstdisplay/texture_packer.hpp>
 #include "tile/tile_description.hpp"
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"
@@ -33,16 +35,14 @@
 namespace windstille {
 
 class Tile;
-class TilePacker;
 
 class TileFactory : public Currenton<TileFactory>
 {
 private:
   typedef std::vector<Tile*> Tiles;
   Tiles tiles;
-  typedef std::vector<TilePacker*> TilePackers;
-  TilePackers packers;
-  int color_packer;
+  /** The tile images on shared atlas pages */
+  wstdisplay::TexturePacker m_packer;
 
   friend class TileDescription;
 
@@ -55,7 +55,7 @@ public:
   iterator end()   { return tiles.end(); }
 
   /** Create a TileFactory from a given tile definition file */
-  TileFactory(Pathname const& filename);
+  TileFactory(Pathname const& filename, wstdisplay::Device& device);
   ~TileFactory() override;
 
   /**
@@ -67,7 +67,7 @@ public:
   /**
    * Adds a surface to the TileFactory
    */
-  void pack(int id, int colmap, wstdisplay::SoftwareSurface const& image, geom::irect const& rect);
+  void pack(int id, int colmap, surf::SoftwareSurface const& image, geom::irect const& rect);
 
 private:
   void parse_tiles(ReaderMapping const& reader);

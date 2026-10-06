@@ -19,7 +19,6 @@
 #include "screen/navigation_test.hpp"
 
 #include <iostream>
-#include <wstdisplay/gl_compat.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -29,7 +28,7 @@
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include <surf/color.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "util/pathname.hpp"
@@ -72,42 +71,41 @@ NavigationTest::~NavigationTest()
 }
 
 void
-NavigationTest::draw(wstdisplay::GraphicsContext& gc)
+NavigationTest::draw(wstdisplay::Canvas& canvas)
 {
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  graph->draw(gc);
+  canvas.fill_screen(surf::Color(0.0f, 0.0f, 0.0f, 1.0f));
+  graph->draw(canvas);
 
-  gc.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  surf::Color(1.0f, 1.0f, 1.0f));
-  gc.draw_circle(cursor, 32.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  canvas.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  surf::Color(1.0f, 1.0f, 1.0f));
+  canvas.draw_circle(cursor, 32.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   std::vector<NodeHandle> nodes = graph->find_nodes(cursor, 128.0f);
   for(std::vector<NodeHandle>::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    gc.draw_circle((*i)->get_pos(), 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+    canvas.draw_circle((*i)->get_pos(), 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (node_to_connect)
   {
-    gc.fill_rect(geom::frect(node_to_connect->get_pos() - glm::vec2(2,2), geom::fsize(5,5)),
+    canvas.fill_rect(geom::frect(node_to_connect->get_pos() - glm::vec2(2,2), geom::fsize(5,5)),
                        surf::Color(1.0f, 1.0f, 1.0f));
-    gc.draw_line(node_to_connect->get_pos(), cursor, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+    canvas.draw_line(node_to_connect->get_pos(), cursor, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (selected_node)
-    gc.draw_circle(selected_node->get_pos(), 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
+    canvas.draw_circle(selected_node->get_pos(), 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
 
   if (selected_edge)
-    gc.draw_line(selected_edge->get_line(), surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
+    canvas.draw_line(selected_edge->get_line().p1, selected_edge->get_line().p2, surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
 
-  gc.fill_circle(player, 12.0f, surf::Color(0.0f, 0.0f, 1.0f, 1.0f));
+  canvas.fill_circle(player, 12.0f, surf::Color(0.0f, 0.0f, 1.0f, 1.0f));
 
   if (connection)
   {
-    gc.fill_circle(connection->get_pos(), 16.0f, surf::Color(0.0f, 0.0f, 1.0f, 0.5f));
-    gc.fill_circle(connection->get_pos(), 8.0f, surf::Color(0.0f, 1.0f, 1.0f));
+    canvas.fill_circle(connection->get_pos(), 16.0f, surf::Color(0.0f, 0.0f, 1.0f, 0.5f));
+    canvas.fill_circle(connection->get_pos(), 8.0f, surf::Color(0.0f, 1.0f, 1.0f));
 
-    gc.draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
+    canvas.draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
                        surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
 }

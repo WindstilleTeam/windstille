@@ -122,25 +122,25 @@ Sprite2DView::~Sprite2DView()
 }
 
 void
-Sprite2DView::draw(wstdisplay::GraphicsContext& gc)
+Sprite2DView::draw(wstdisplay::Canvas& canvas)
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  canvas.fill_screen(surf::Color(0.0f, 0.0f, 0.0f));
 
   switch(mode)
   {
     case SLIDESHOW:
       if (aspect > 4.0f / 3.0f)
       {
-        sprite.draw(gc, glm::vec2(-offset, 0));
+        sprite.draw(canvas, glm::vec2(-offset, 0));
       }
       else
       {
-        sprite.draw(gc, glm::vec2(0, -offset));
+        sprite.draw(canvas, glm::vec2(0, -offset));
       }
 
       if (new_sprite)
       {
-        new_sprite.draw(gc, glm::vec2(0,0));
+        new_sprite.draw(canvas, glm::vec2(0,0));
       }
 
       if (show_thumbnail)
@@ -158,7 +158,7 @@ Sprite2DView::draw(wstdisplay::GraphicsContext& gc)
           h *= s;
           small.set_scale(s);
 
-          small.draw(gc, glm::vec2(DISPLAY_W - w,
+          small.draw(canvas, glm::vec2(DISPLAY_W - w,
                                    DISPLAY_H - h));
         }
         else
@@ -169,7 +169,7 @@ Sprite2DView::draw(wstdisplay::GraphicsContext& gc)
           h *= s;
           small.set_scale(s);
 
-          small.draw(gc, glm::vec2(DISPLAY_W - w,
+          small.draw(canvas, glm::vec2(DISPLAY_W - w,
                                    DISPLAY_H - h));
         }
       }
@@ -177,7 +177,7 @@ Sprite2DView::draw(wstdisplay::GraphicsContext& gc)
 
     case MANUAL:
       sprite.set_scale(zoom);
-      sprite.draw(gc, pos);
+      sprite.draw(canvas, pos);
       break;
   }
 }
@@ -294,9 +294,6 @@ Sprite2DView::next_image(int i)
     prepare_sprite(new_sprite);
     ConsoleLog << index << ": " << directory[index] << std::endl;
   }
-
-  g_app.sprite().cleanup();
-  g_app.surface().cleanup();
 }
 
 void

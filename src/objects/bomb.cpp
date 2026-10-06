@@ -17,6 +17,8 @@
 */
 
 #include "app/app.hpp"
+
+#include "display/scene_context.hpp"
 #include "app/globals.hpp"
 #include "objects/bomb.hpp"
 #include "util/pathname.hpp"
@@ -67,7 +69,7 @@ Bomb::update(float delta)
 }
 
 void
-Bomb::draw(wstdisplay::SceneContext& sc)
+Bomb::draw(SceneContext& sc)
 {
   if (state == EXPLODE)
   {

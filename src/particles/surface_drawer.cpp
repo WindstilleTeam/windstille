@@ -18,70 +18,53 @@
 
 #include "particles/surface_drawer.hpp"
 
+#include <cmath>
 #include <iostream>
 
 #include <glm/gtc/constants.hpp>
-
-#include "app/app.hpp"
-#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/surface_manager.hpp>
+
 #include "particles/particle_system.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
 namespace windstille {
 
+namespace {
 
-SurfaceDrawer::SurfaceDrawer(wstdisplay::SurfacePtr surface_) :
+/** The particle files give GL blend factors, only the combinations
+    for regular and additive blending are used */
+wstdisplay::Blend blend_from_factors(std::string const& src, std::string const& dst)
+{
+  if (src == "src_alpha" && dst == "one_minus_src_alpha") {
+    return wstdisplay::Blend::Alpha;
+  } else if (src == "src_alpha" && dst == "one") {
+    return wstdisplay::Blend::Add;
+  } else if (src == "one" && dst == "zero") {
+    return wstdisplay::Blend::Opaque;
+  } else if (src == "dst_color" && dst == "zero") {
+    return wstdisplay::Blend::Multiply;
+  } else {
+    std::cout << "SurfaceDrawer: unsupported blendfunc: '" << src << "', '" << dst << "'" << std::endl;
+    return wstdisplay::Blend::Alpha;
+  }
+}
+
+} // namespace
+
+SurfaceDrawer::SurfaceDrawer(wstdisplay::Surface const& surface_) :
   surface(surface_),
-  blendfunc_src(),
-  blendfunc_dest(),
-  buffer()
+  m_blend(wstdisplay::Blend::Alpha),
+  m_vertices()
 {
 }
-
-static GLenum string2blendfunc(std::string const& str)
-{
-  if (str == "src_alpha")
-  {
-    return GL_SRC_ALPHA;
-  }
-  else if (str == "one_minus_src_alpha")
-  {
-    return GL_ONE_MINUS_SRC_ALPHA;
-  }
-  else if (str == "dst_alpha")
-  {
-    return GL_DST_ALPHA;
-  }
-  else if (str == "one_minus_dst_alpha")
-  {
-    return GL_ONE_MINUS_SRC_ALPHA;
-  }
-  else if (str == "one")
-  {
-    return GL_ONE;
-  }
-  else if (str == "zero")
-  {
-    return GL_ZERO;
-  }
-  // FIXME: Implement the rest blendfunc here
-  else
-  {
-    std::cout << "string2blendfunc: Unknown blendfunc: '" << str << "'" << std::endl;
-    return GL_ONE;
-  }
-}
-
 
 SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props,
                              wstdisplay::SurfaceManager& surface_manager) :
   surface(),
-  blendfunc_src(),
-  blendfunc_dest(),
-  buffer()
+  m_blend(wstdisplay::Blend::Alpha),
+  m_vertices()
 {
   std::string blendfunc_src_str = "src_alpha";
   std::string blendfunc_dst_str = "one_minus_src_alpha";
@@ -92,13 +75,7 @@ SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props,
   props.read("blendfunc-dst", blendfunc_dst_str);
 
   surface = surface_manager.get(Pathname(surface_file));
-
-  blendfunc_src  = string2blendfunc(blendfunc_src_str);
-  blendfunc_dest = string2blendfunc(blendfunc_dst_str);
-
-  // FIXME: Bad idea, as the psys isn't fully loaded as this point
-  buffer.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(), 0.0f,
-                                                   glm::mat4(1.0f)));
+  m_blend = blend_from_factors(blendfunc_src_str, blendfunc_dst_str);
 }
 
 SurfaceDrawer::~SurfaceDrawer()
@@ -106,84 +83,58 @@ SurfaceDrawer::~SurfaceDrawer()
 }
 
 void
-SurfaceDrawer::set_texture(wstdisplay::SurfacePtr surface_)
+SurfaceDrawer::set_texture(wstdisplay::Surface const& surface_)
 {
   surface = surface_;
 }
 
 void
-SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
+SurfaceDrawer::draw(wstdisplay::Canvas& canvas, ParticleSystem const& psys) const
 {
-  blendfunc_src  = blendfunc_src_;
-  blendfunc_dest = blendfunc_dest_;
-}
+  geom::frect const& uv = surface.get_uv();
 
-void
-SurfaceDrawer::draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const
-{
-  buffer->clear();
-  buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
-
-  buffer->set_mode(GL_TRIANGLES);
-  buffer->set_texture(surface->get_texture());
-  buffer->set_blend_func(blendfunc_src, blendfunc_dest);
-
+  m_vertices.clear();
   for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
   {
     if (i->t != -1.0f)
     {
       float p = 1.0f - psys.get_progress(i->t);
       surf::Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
-                  psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
-                  psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
-                  psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
+                        psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
+                        psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
+                        psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
 
-      // scale
       float scale  = psys.get_size_start() +
         psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
 
-      float width  = surface->get_width()  * scale;
-      float height = surface->get_height() * scale;
+      float width  = surface.get_width()  * scale;
+      float height = surface.get_height() * scale;
 
-      // rotate
+      // corner offsets of the rotated quad
       float x_rot = width/2;
       float y_rot = height/2;
 
       if (i->angle != 0)
       {
-        float s = sinf(glm::pi<float>() * i->angle/180.0f);
-        float c = cosf(glm::pi<float>() * i->angle/180.0f);
+        float s = std::sin(glm::pi<float>() * i->angle/180.0f);
+        float c = std::cos(glm::pi<float>() * i->angle/180.0f);
         x_rot = (width/2) * c - (height/2) * s;
         y_rot = (width/2) * s + (height/2) * c;
       }
 
-      buffer->add_texcoords_from_rect(surface->get_uv());
-
-      // v1
-      buffer->color(color);
-      buffer->vertex(i->x - x_rot, i->y - y_rot);
-      // v4
-      buffer->color(color);
-      buffer->vertex(i->x - y_rot, i->y + x_rot);
-      // v2
-      buffer->color(color);
-      buffer->vertex(i->x + y_rot, i->y - x_rot);
-
-      // v4
-      buffer->color(color);
-      buffer->vertex(i->x - y_rot, i->y + x_rot);
-      // v3
-      buffer->color(color);
-      buffer->vertex(i->x + x_rot, i->y + y_rot);
-      // v2
-      buffer->color(color);
-      buffer->vertex(i->x + y_rot, i->y - x_rot);
+      wstdisplay::PackedColor const packed = wstdisplay::pack_color(color);
+      m_vertices.push_back(wstdisplay::Vertex{i->x - x_rot, i->y - y_rot, uv.left(),  uv.top(),    packed, {}});
+      m_vertices.push_back(wstdisplay::Vertex{i->x + y_rot, i->y - x_rot, uv.right(), uv.top(),    packed, {}});
+      m_vertices.push_back(wstdisplay::Vertex{i->x + x_rot, i->y + y_rot, uv.right(), uv.bottom(), packed, {}});
+      m_vertices.push_back(wstdisplay::Vertex{i->x - y_rot, i->y + x_rot, uv.left(),  uv.bottom(), packed, {}});
     }
   }
 
-  buffer->render(gc, ~0u);
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.translate(psys.get_x_pos(), psys.get_y_pos());
+  canvas.set_blend(m_blend);
+  canvas.draw_quads(surface.get_texture(), m_vertices);
 }
-
 
 } // namespace windstille
 

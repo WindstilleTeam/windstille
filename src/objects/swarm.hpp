@@ -23,6 +23,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class SwarmAgent
 {
 public:
@@ -56,7 +58,7 @@ private:
 public:
   Swarm(ReaderMapping const& reader);
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
 
 private:

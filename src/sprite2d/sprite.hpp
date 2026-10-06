@@ -20,84 +20,71 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 
-#include <wstdisplay/gl_compat.hpp>
+#include <filesystem>
+#include <string>
 
+#include <glm/glm.hpp>
+#include <geom/size.hpp>
 #include <surf/color.hpp>
-#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/blend.hpp>
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
+#include <wstsprite/anim_state.hpp>
 
 #include "sprite2d/manager.hpp"
 
 namespace windstille {
 
-struct SpriteAction;
-
+/** A 2D sprite: the animation of a loaded sprite plus how this
+    instance is drawn. Copies are cheap. The SpriteManager must
+    outlive the sprite. */
 class Sprite
 {
-private:
-  /** Pointer to the Sprites data which is shared among all sprites
-      with are loaded from the same file */
-  SpriteDataPtr data;
-  SpriteAction const* current_action;
-
-  float frame;
-  float speed;
-
-  bool   pingpong;
-  bool   reverse;
-  bool   vflip;
-  GLenum blend_sfactor;
-  GLenum blend_dfactor;
-  float  scale;
-  surf::Color  color;
-
 public:
   Sprite();
 
-  /** Load a sprite from file or in-case the .sprite file isn't found
-      search for a .png with the same name and use that as a simple
-      one-file sprite */
-  explicit Sprite(std::filesystem::path const& filename, SpriteManager& sprite_manager);
-  explicit Sprite(SpriteDataPtr data);
-  Sprite(Sprite const&);
-  Sprite& operator=(Sprite const&);
-  ~Sprite();
+  /** Load a sprite from file, in-case the .sprite file isn't found
+      a .png with the same name is used as a one image sprite */
+  Sprite(std::filesystem::path const& filename, SpriteManager& sprite_manager);
 
   void update(float delta);
 
-  void draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos) const;
-  void draw(wstdisplay::DrawingContext& ctx, glm::vec2 const& pos, float z_pos = 0.0f);
+  /** Draw with the anchor of the current action at \a pos, at depth
+      \a z_pos */
+  void draw(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float z_pos = 0.0f) const;
 
-  void  set_action(std::string const& name);
+  /** Switch to the action \a name, throws if there is none. Resets
+      the speed, mirroring, scale, color and blend mode. */
+  void set_action(std::string const& name);
   std::string const& get_action() const;
 
-  void set_vflip(bool vflip);
-  bool get_vflip() const;
+  /** Mirror horizontally */
+  void set_hflip(bool hflip);
+  bool get_hflip() const { return m_hflip; }
 
-  void set_pingpong(bool pingpong);
-  bool get_pingpong() const;
-
-  void  set_speed(float speed);
+  /** Playback speed factor */
+  void set_speed(float speed);
   float get_speed() const;
 
-  void  set_alpha(float alpha);
+  void set_alpha(float alpha);
   float get_alpha() const;
 
+  /** A non-looping action reached its last frame */
   bool is_finished() const;
 
-  void   set_blend_func(GLenum sfactor, GLenum dfactor);
-  GLenum get_blend_sfactor() const;
-  GLenum get_blend_dfactor() const;
+  void set_blend(wstdisplay::Blend blend) { m_blend = blend; }
+  wstdisplay::Blend get_blend() const { return m_blend; }
 
-  void set_color(surf::Color const& color);
-  surf::Color get_color() const;
+  void set_color(surf::Color const& color) { m_color = color; }
+  surf::Color get_color() const { return m_color; }
 
-  void  set_scale(float s);
-  float get_scale() const;
+  /** Scale of the sprite, initially the one of the action */
+  void set_scale(float s) { m_scale = s; }
+  float get_scale() const { return m_scale; }
 
-  wstdisplay::SurfacePtr get_current_surface() const;
+  wstdisplay::Surface get_current_surface() const;
 
+  /** Position of the image relative to the draw position, unscaled */
   glm::vec2 get_offset() const;
 
   float get_width() const;
@@ -106,6 +93,19 @@ public:
 
   /** true if the Sprite is valid and usable, false if not */
   explicit operator bool() const;
+
+private:
+  wstsprite::SpriteData const& data() const;
+  void reset_appearance();
+
+private:
+  SpriteManager const* m_manager;
+  wstsprite::SpriteId m_id;
+  wstsprite::AnimState m_state;
+  bool m_hflip;
+  wstdisplay::Blend m_blend;
+  float m_scale;
+  surf::Color m_color;
 };
 
 } // namespace windstille

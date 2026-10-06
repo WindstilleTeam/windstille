@@ -19,24 +19,28 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
 #define HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
 
-#include <wstdisplay/shader_program.hpp>
+#include <glm/glm.hpp>
+
 #include "engine/game_object.hpp"
 
 namespace windstille {
 
+class SceneContext;
+
+/** A distortion ring spreading from pos. Drawing it needs a copy of
+    the screen behind it, which was never finished, so it draws
+    nothing. */
 class Shockwave : public GameObject
 {
 private:
   glm::vec2        pos;
-  wstdisplay::TexturePtr noise;
-  wstdisplay::ShaderProgramPtr shader_program;
   float radius;
 
 public:
   Shockwave(ReaderMapping const& props);
   ~Shockwave() override;
 
-  void draw (wstdisplay::SceneContext& context) override;
+  void draw (SceneContext& context) override;
   void update (float delta) override;
 
 private:

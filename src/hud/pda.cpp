@@ -18,8 +18,10 @@
 
 #include <sstream>
 
+#include <wstdisplay/opengl_window.hpp>
+
 #include <wstdisplay/font/text_area.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstinput/controller.hpp>
 #include <wstinput/input_event.hpp>
 #include <wstgui/style.hpp>
@@ -66,8 +68,8 @@ PDA::PDA()
                                            geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
                                                                   geom::fsize(315.0f, 380.0f)), -12.0f), false));
 
-  ui_area->set_font(g_app.fonts().vera12.get());
-  text_area->set_font(g_app.fonts().vera12.get());
+  ui_area->set_font(g_app.fonts().vera12);
+  text_area->set_font(g_app.fonts().vera12);
 }
 
 PDA::~PDA()
@@ -75,20 +77,20 @@ PDA::~PDA()
 }
 
 void
-PDA::draw(wstdisplay::GraphicsContext& gc)
+PDA::draw(wstdisplay::Canvas& canvas)
 {
   // Darken the background a bit
-  gc.fill_rect(geom::frect(geom::irect(0, 0, gc.size().width(), gc.size().height())), surf::Color(0.0f, 0.0f, 0.0f, 0.25f));
+  canvas.fill_rect(geom::frect(geom::irect(0, 0, g_app.window().get_size().width(), g_app.window().get_size().height())), surf::Color(0.0f, 0.0f, 0.0f, 0.25f));
 
-  background.draw(gc, pos);
+  background.draw(canvas, pos);
 
   geom::frect rect = geom::grow(text_area->get_rect(), 8.0f);
 
-  gc.fill_rounded_rect(rect, 16.0f, surf::Color(0.1f, 0.1f, 0.2f, 0.8f));
-  //gc.draw_rounded_rect(rect, 16.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  canvas.fill_rounded_rect(rect, 16.0f, surf::Color(0.1f, 0.1f, 0.2f, 0.8f));
+  //canvas.draw_rounded_rect(rect, 16.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  ui_area->draw(gc);
-  text_area->draw(gc);
+  ui_area->draw(canvas);
+  text_area->draw(canvas);
 }
 
 void

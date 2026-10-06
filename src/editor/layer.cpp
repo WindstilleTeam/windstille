@@ -18,6 +18,8 @@
 
 #include "editor/layer.hpp"
 
+#include "display/scene_context.hpp"
+
 #include "editor/layer_manager_columns.hpp"
 #include "editor/sector_model.hpp"
 
@@ -63,7 +65,7 @@ Layer::erase(iterator it)
 }
 
 void
-Layer::draw(wstdisplay::SceneContext& sc, SelectMask const& select_mask)
+Layer::draw(SceneContext& sc, SelectMask const& select_mask)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {

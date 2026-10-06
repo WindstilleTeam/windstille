@@ -24,6 +24,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class SpriteObjectModel : public ObjectModel
 {
@@ -36,7 +38,7 @@ public:
                     std::string const& path_);
   ~SpriteObjectModel() override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;

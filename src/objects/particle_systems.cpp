@@ -24,15 +24,12 @@
 #include "app/app.hpp"
 #include "engine/sector.hpp"
 #include "particles/particle_system.hpp"
-#include "particles/particle_system_drawable.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
 
 namespace windstille {
 
 ParticleSystems::ParticleSystems(ReaderMapping const& reader,
                                  wstdisplay::SurfaceManager& surface_manager) :
-  m_systems(),
-  m_drawables()
+  m_systems()
 {
   std::string filename;
   glm::vec2    pos;
@@ -59,12 +56,14 @@ ParticleSystems::ParticleSystems(ReaderMapping const& reader,
     }
   }
 
+}
+
+void
+ParticleSystems::draw(SceneContext& sc)
+{
   for(Systems::iterator i = m_systems.begin(); i != m_systems.end(); ++i)
   {
-    std::shared_ptr<ParticleSystemDrawable> drawable(new ParticleSystemDrawable(**i));
-
-    m_drawables.push_back(drawable);
-    Sector::current()->get_scene_graph().add_drawable(drawable);
+    (*i)->draw(sc);
   }
 }
 

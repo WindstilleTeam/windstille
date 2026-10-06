@@ -19,14 +19,14 @@
 
 #include "sprite2d/manager.hpp"
 
-#include "sprite2d/data.hpp"
+#include <stdexcept>
+
 #include "sprite2d/sprite.hpp"
 
 namespace windstille {
 
 SpriteManager::SpriteManager(wstdisplay::SurfaceManager& surface_manager) :
-  m_surface_manager(surface_manager),
-  datas()
+  m_sprites(surface_manager)
 {
 }
 
@@ -34,38 +34,26 @@ SpriteManager::~SpriteManager()
 {
 }
 
+wstsprite::SpriteId
+SpriteManager::load(std::filesystem::path const& filename)
+{
+  if (filename.extension() == ".sprite" && !std::filesystem::exists(filename))
+  {
+    std::filesystem::path pngfile = filename;
+    pngfile.replace_extension(".png");
+    if (!std::filesystem::exists(pngfile)) {
+      throw std::runtime_error("couldn't find " + filename.string() + " or " + pngfile.string());
+    }
+    return m_sprites.load(pngfile);
+  }
+
+  return m_sprites.load(filename);
+}
+
 Sprite
 SpriteManager::create(std::filesystem::path const& filename)
 {
   return Sprite(filename, *this);
-}
-
-SpriteDataPtr
-SpriteManager::create_data(std::filesystem::path const& filename)
-{
-  Datas::iterator i = datas.find(filename);
-  if(i != datas.end())
-  {
-    return i->second;
-  }
-  else
-  {
-    SpriteDataPtr data(new SpriteData(filename, m_surface_manager));
-    datas.insert(std::make_pair(filename, data));
-    return data;
-  }
-}
-
-void
-SpriteManager::cleanup()
-{
-  for(Datas::iterator i = datas.begin(); i != datas.end(); ++i)
-  {
-    if (i->second.use_count() == 1)
-    {
-      datas.erase(i);
-    }
-  }
 }
 
 } // namespace windstille

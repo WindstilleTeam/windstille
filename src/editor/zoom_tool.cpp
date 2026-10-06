@@ -18,7 +18,7 @@
 
 #include "editor/zoom_tool.hpp"
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <surf/color.hpp>
 #include "editor/windstille_widget.hpp"
 
@@ -77,7 +77,7 @@ ZoomTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& wst)
 }
 
 void
-ZoomTool::draw(wstdisplay::SceneContext& sc)
+ZoomTool::draw(SceneContext& sc)
 {
   if (mode == RECT_MODE)
   {

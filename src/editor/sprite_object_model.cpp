@@ -20,7 +20,7 @@
 
 #include "app/app.hpp"
 #include "util/pathname.hpp"
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 
 namespace windstille {
 
@@ -37,7 +37,7 @@ SpriteObjectModel::~SpriteObjectModel()
 }
 
 void
-SpriteObjectModel::draw(wstdisplay::SceneContext& sc)
+SpriteObjectModel::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), get_world_pos());
 }

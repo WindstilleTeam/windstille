@@ -16,18 +16,19 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <wstdisplay/gl_compat.hpp>
 #include <filesystem>
 #include <iostream>
 
 #include <wstinput/controller.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstgui/screen_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "armature/pose.hpp"
 #include "screen/armature_test.hpp"
+
+#include <glm/gtc/matrix_transform.hpp>
 #include "util/directory.hpp"
 #include "util/pathname.hpp"
 
@@ -82,24 +83,21 @@ ArmatureTest::~ArmatureTest()
 }
 
 void
-ArmatureTest::draw(wstdisplay::GraphicsContext& gc)
+ArmatureTest::draw(wstdisplay::Canvas& canvas)
 {
-  glClearColor(0.5f, 0.0f, 0.5f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  canvas.fill_screen(surf::Color(0.5f, 0.0f, 0.5f));
 
-  gc.push_matrix();
+  glm::mat4 transform(1.0f);
+  transform = glm::translate(transform, glm::vec3(400.0f, 300.0f, 0.0f));
+  transform = glm::scale(transform, glm::vec3(64.0f, 64.0f, 64.0f));
+  transform = glm::rotate(transform, glm::radians(xrot), glm::vec3(1.0f, 0.0f, 0.0f));
+  transform = glm::rotate(transform, glm::radians(yrot), glm::vec3(0.0f, 1.0f, 0.0f));
+  transform = glm::rotate(transform, glm::radians(zrot), glm::vec3(0.0f, 0.0f, 1.0f));
 
-  gc.translate(400.0f, 300.0f, 0.0f);
-  gc.scale(64.0f, 64.0f, 64.0f);
+  model->draw(canvas, transform);
 
-  gc.rotate(xrot, 1.0f, 0.0f, 0.0f);
-  gc.rotate(yrot, 0.0f, 1.0f, 0.0f);
-  gc.rotate(zrot, 0.0f, 0.0f, 1.0f);
-
-  model->draw(gc);
-  armature->draw(gc);
-
-  gc.pop_matrix();
+  canvas.set_z(1.0f);
+  armature->draw(canvas, transform);
 
   // std::cout << xrot << " " << yrot << std::endl;
 }

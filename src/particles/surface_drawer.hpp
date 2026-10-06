@@ -19,30 +19,37 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 
+#include <vector>
+
+#include <wstdisplay/blend.hpp>
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
+#include <wstdisplay/vertex.hpp>
+
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
 namespace windstille {
 
+/** Draws each particle as a rotated, scaled and colored image */
 class SurfaceDrawer : public Drawer
 {
 private:
-  wstdisplay::SurfacePtr surface;
-  GLenum blendfunc_src;
-  GLenum blendfunc_dest;
-  std::shared_ptr<wstdisplay::VertexArrayDrawable> buffer;
+  wstdisplay::Surface surface;
+  wstdisplay::Blend m_blend;
+
+  /** Scratch buffer, reused between frames */
+  mutable std::vector<wstdisplay::Vertex> m_vertices;
 
 public:
   SurfaceDrawer(ReaderMapping const& props, wstdisplay::SurfaceManager& surface_manager);
-  SurfaceDrawer(wstdisplay::SurfacePtr surface);
+  SurfaceDrawer(wstdisplay::Surface const& surface);
   ~SurfaceDrawer() override;
 
-  void set_texture(wstdisplay::SurfacePtr surface);
-  void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
+  void set_texture(wstdisplay::Surface const& surface);
+  void set_blend(wstdisplay::Blend blend) { m_blend = blend; }
 
-  void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const override;
+  void draw(wstdisplay::Canvas& canvas, ParticleSystem const& psys) const override;
 };
 
 } // namespace windstille

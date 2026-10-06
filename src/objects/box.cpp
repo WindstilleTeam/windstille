@@ -18,6 +18,8 @@
 
 #include "objects/box.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <functional>
 
 #include "app/app.hpp"
@@ -91,7 +93,7 @@ Box::update(float delta)
 }
 
 void
-Box::draw(wstdisplay::SceneContext& sc)
+Box::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 10.0f);
 }

@@ -27,8 +27,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/graphic_context_state.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include "font/fonts.hpp"
 #include "sprite3d/manager.hpp"
@@ -37,8 +36,6 @@
 namespace windstille {
 
 Sprite3DView::Sprite3DView() :
-  m_compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
-  m_sc(),
   m_sprite(),
   m_actions(),
   m_current_action(0),
@@ -62,54 +59,40 @@ Sprite3DView::set_model(Pathname const& filename)
 }
 
 void
-Sprite3DView::draw(wstdisplay::GraphicsContext& gc)
+Sprite3DView::draw(wstdisplay::Canvas& canvas)
 {
-  m_sc.reset_modelview();
-  //sc.translate(-config->screen_width/2, -config->screen_height/2);
-  //sc.scale(2.0f, 2.0f);
+  canvas.fill_screen(surf::Color(0.5f, 0.0f, 0.5f));
 
-  m_sc.color().fill_screen(surf::Color(0.5, 0.0, 0.5));
+  {
+    wstdisplay::Canvas::Scope scope(canvas);
+    canvas.translate(static_cast<float>(g_app.window().get_size().width()) / 2.0f,
+                     static_cast<float>(g_app.window().get_size().height()) / 2.0f);
 
-  m_sc.push_modelview();
-  m_sc.translate(static_cast<float>(gc.size().width()) / 2.0f,
-                 static_cast<float>(gc.size().height()) / 2.0f);
-  m_sc.scale(m_scale, m_scale);
-
-  // Rotate
-  m_sc.mult_modelview(glm::mat4_cast(m_rotation));
-  m_sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
-  m_sprite.draw(m_sc.color(), glm::vec2(0,0), 0);
-  m_sc.pop_modelview();
-
-  //glm::mat4 matrix = m_sc.color().get_modelview();
-  //matrix.translate(-gc.size().width()/2, -gc.size().height()/2, 0);
-  //sprite.draw(m_sc.color(), matrix, 0.0f);
-
-  m_sc.light().fill_screen(surf::Color(1.0, 1.0, 1.0));
-  //sc.color().draw("Hello World", 100, 100);
-  m_compositor.render(gc, m_sc, nullptr, wstdisplay::GraphicContextState(gc.size().width(),
-                                                             gc.size().height()));
+    // FIXME: use object height/2 instead of 64
+    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(m_scale, m_scale, m_scale));
+    model = model * glm::mat4_cast(m_rotation);
+    model = glm::translate(model, glm::vec3(0.0f, 64.0f, 0.0f));
+    m_sprite.draw(canvas, glm::vec2(0, 0), 0, model);
+  }
 
   float x = 10.0f;
-  float y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;
-  int line_height = g_app.fonts().vera12->get_height()+5;
+  float y = g_app.fonts().vera12->get_height() + 5.0f;
+  float const line_height = g_app.fonts().vera12->get_height() + 5.0f;
 
   for(int i = 0; i < int(m_actions.size()); ++i)
   {
     if (i == m_current_action)
-      g_app.fonts().vera12->draw(gc,
-                                 glm::vec2(x, y),
+      canvas.draw_text(*g_app.fonts().vera12, glm::vec2(x, y),
                                  m_actions[i], surf::Color(1.0f, 1.0f, 1.0f));
     else
-      g_app.fonts().vera12->draw(gc,
-                                 glm::vec2(x, y),
+      canvas.draw_text(*g_app.fonts().vera12, glm::vec2(x, y),
                                  m_actions[i], surf::Color(0.7f, 0.7f, 0.7f));
 
-    y += static_cast<float>(line_height);
+    y += line_height;
     if (y > 580.0f)
     {
       x += 200.0f;
-      y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;
+      y = g_app.fonts().vera12->get_height() + 5.0f;
     }
   }
 }

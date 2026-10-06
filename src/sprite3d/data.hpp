@@ -20,12 +20,13 @@
 #define HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
 
 #include <stdint.h>
+#include <filesystem>
+#include <string>
 #include <vector>
 
-#include <wstdisplay/gl_compat.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include <wstdisplay/texture.hpp>
+#include <wstdisplay/handle.hpp>
 
 namespace windstille {
 
@@ -68,7 +69,8 @@ private:
  */
 struct Mesh
 {
-  wstdisplay::TexturePtr   texture;
+  /** Owned by the TextureManager */
+  wstdisplay::TextureId texture;
 
   uint16_t  vertex_count;
   uint16_t  triangle_count;

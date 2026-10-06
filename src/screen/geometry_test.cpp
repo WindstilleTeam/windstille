@@ -18,7 +18,6 @@
 
 #include "screen/geometry_test.hpp"
 
-#include <wstdisplay/gl_compat.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -29,7 +28,7 @@
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include <surf/color.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 
 namespace windstille {
 
@@ -47,31 +46,28 @@ GeometryTest::GeometryTest()
 }
 
 void
-GeometryTest::draw(wstdisplay::GraphicsContext& gc)
+GeometryTest::draw(wstdisplay::Canvas& canvas)
 {
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  canvas.fill_screen(surf::Color(0.0f, 0.0f, 0.0f, 1.0f));
 
-  gc.draw_line(line1, surf::Color(0.0f, 1.0f, 0.0f));
-  gc.draw_line(line2, surf::Color(0.0f, 1.0f, 0.0f));
+  canvas.draw_line(line1.p1, line1.p2, surf::Color(0.0f, 1.0f, 0.0f));
+  canvas.draw_line(line2.p1, line2.p2, surf::Color(0.0f, 1.0f, 0.0f));
 
-  gc.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  surf::Color(1.0f, 0.0f, 1.0f));
-  gc.fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), surf::Color(1.0f, 1.0f, 0.0f));
+  canvas.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  surf::Color(1.0f, 0.0f, 1.0f));
+  canvas.fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), surf::Color(1.0f, 1.0f, 0.0f));
 
-  gc.fill_rect(geom::frect(collision_point.as_vec() - glm::vec2(3,3), geom::fsize(7,7)), surf::Color(1.0f, 1.0f, 1.0f));
+  canvas.fill_rect(geom::frect(collision_point.as_vec() - glm::vec2(3,3), geom::fsize(7,7)), surf::Color(1.0f, 1.0f, 1.0f));
 
   // Try vector projection
   glm::vec2 a(line1.p2.as_vec() - line1.p1.as_vec());
   glm::vec2 b(line2.p2.as_vec() - line2.p1.as_vec());
   glm::vec2 c(glm::proj(a, b));
 
-  gc.draw_line(line1.p1, line1.p1.as_vec() + c, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  canvas.draw_line(line1.p1, line1.p1.as_vec() + c, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  int segments = std::max(0, int(cursor.y / 10));
-
-  gc.fill_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, surf::Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
-  gc.draw_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, surf::Color(1.0f, 1.0f, 1.0f), segments);
-  gc.draw_circle(glm::vec2(200, 200), 128.0f, surf::Color(1.0f, 1.0f, 1.0f), segments);
+  canvas.fill_arc(glm::vec2(200), 100.0f, cursor.x, cursor2.x, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  canvas.draw_arc(glm::vec2(200), 100.0f, cursor.x, cursor2.x, surf::Color(1.0f, 1.0f, 1.0f));
+  canvas.draw_circle(glm::vec2(200), 128.0f, surf::Color(1.0f, 1.0f, 1.0f));
 }
 
 void

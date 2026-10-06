@@ -26,6 +26,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Hedgehog : public Entity
 {
 private:
@@ -40,7 +42,7 @@ public:
   Hedgehog(ReaderMapping const& props);
   ~Hedgehog() override;
 
-  void draw(wstdisplay::SceneContext& gc) override;
+  void draw(SceneContext& gc) override;
   void update(float delta) override;
   void die();
 };

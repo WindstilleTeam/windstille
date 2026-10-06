@@ -24,7 +24,9 @@
 #include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/font/font.hpp>
+#include <wstdisplay/opengl_window.hpp>
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
@@ -123,7 +125,7 @@ public:
   {
   }
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas);
   void update(float delta);
   void eval_command_line();
   void tab_complete();
@@ -155,18 +157,21 @@ public:
 };
 
 void
-ConsoleImpl::draw(wstdisplay::GraphicsContext& gc)
+ConsoleImpl::draw(wstdisplay::Canvas& canvas)
 {
-  int y = static_cast<int>(y_pos);
+  wstdisplay::Font const& font = *g_app.fonts().ttffont;
+  float const line_height = font.get_height() + 2.0f;
+
+  float y = y_pos;
 
   if (active)
-    y -= g_app.fonts().ttffont->get_height() + 2;
+    y -= line_height;
 
-  int num_lines = 600 / (g_app.fonts().ttffont->get_height() + 2);
+  int num_lines = static_cast<int>(600.0f / line_height);
 
   if (console.is_active())
-    gc.fill_rect(geom::frect(geom::irect(0,0, gc.size().width(), 600)),
-                 surf::Color(0, 0, 0, 0.5f));
+    canvas.fill_rect(geom::frect(0.0f, 0.0f, static_cast<float>(g_app.window().get_size().width()), 600.0f),
+                     surf::Color(0, 0, 0, 0.5f));
 
   for(int i = static_cast<int>(buffer.size())-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)
   {
@@ -176,10 +181,10 @@ ConsoleImpl::draw(wstdisplay::GraphicsContext& gc)
       if (buffer[i].display_time > 4.0f && !console.is_active())
         alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-      g_app.fonts().ttffont->draw(gc, glm::vec2(x_pos, static_cast<float>(y)), buffer[i].message,
-                                  surf::Color(0.88f, 0.88f, 1.0f, alpha));
+      canvas.draw_text(font, geom::fpoint(x_pos, y), buffer[i].message,
+                       surf::Color(0.88f, 0.88f, 1.0f, alpha));
     }
-    y -= g_app.fonts().ttffont->get_height() + 2;
+    y -= line_height;
   }
 
   if (active)
@@ -193,7 +198,7 @@ ConsoleImpl::draw(wstdisplay::GraphicsContext& gc)
         str += "_";
     }
 
-    g_app.fonts().ttffont->draw(gc, glm::vec2(x_pos, y_pos), "> " + str, surf::Color(1.0f, 1.0f, 1.0f));
+    canvas.draw_text(font, geom::fpoint(x_pos, y_pos), "> " + str, surf::Color(1.0f, 1.0f, 1.0f));
   }
 }
 
@@ -571,9 +576,9 @@ Console::is_active() const
 }
 
 void
-Console::draw(wstdisplay::GraphicsContext& gc)
+Console::draw(wstdisplay::Canvas& canvas)
 {
-  impl->draw(gc);
+  impl->draw(canvas);
 }
 
 void

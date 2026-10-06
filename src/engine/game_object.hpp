@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include "engine/game_object_handle.hpp"
 #include "util/file_reader.hpp"
 
@@ -97,7 +97,7 @@ public:
   /**
    * The object should draw itself when this function is called
    */
-  virtual void draw (wstdisplay::SceneContext& sc) {}
+  virtual void draw (SceneContext& sc) {}
 
   /**
    * This function is called from time to time to give the object a chance to

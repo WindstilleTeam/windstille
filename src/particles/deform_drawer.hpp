@@ -19,11 +19,6 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 
-#include <wstdisplay/drawing_context.hpp>
-#include <wstdisplay/framebuffer.hpp>
-#include <wstdisplay/shader_program.hpp>
-#include <wstdisplay/surface.hpp>
-#include <wstdisplay/surface_manager.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
@@ -31,26 +26,17 @@ namespace windstille {
 
 class ParticleSystem;
 
-/**
- * DeformDrawer is similar to the SurfaceDrawer, it however doesn't
- * draw the surfaces to the screen but to a seperate framebuffer which
- * is then used as deform map over the screen, so it can be used for
- * heat effects from fire and such.
- */
+/** Meant to draw the particles into a deform map that distorts the
+    screen, for heat effects from fire and such. The effect was never
+    finished and doesn't draw anything. */
 class DeformDrawer : public Drawer
 {
-private:
-  wstdisplay::FramebufferPtr framebuffer;
-  wstdisplay::SurfacePtr     surface;
-  wstdisplay::ShaderProgramPtr shader_program;
-
 public:
-  DeformDrawer(ReaderMapping const& props,
-               wstdisplay::SurfaceManager& surface_manager);
+  explicit DeformDrawer(ReaderMapping const& props);
   ~DeformDrawer() override;
 
-  void draw(wstdisplay::DrawingContext& sc, ParticleSystem& psys);
-  void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& /*psys*/) const override {}
+  void draw(wstdisplay::Canvas& canvas, ParticleSystem const& psys) const override;
+
 private:
   DeformDrawer (DeformDrawer const&);
   DeformDrawer& operator= (DeformDrawer const&);

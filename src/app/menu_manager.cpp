@@ -22,7 +22,7 @@
 #include <functional>
 #include <iostream>
 
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstgui/group_component.hpp>
 #include <wstgui/menu.hpp>
@@ -136,14 +136,14 @@ MenuManager::display_main_menu()
     std::unique_ptr<wstgui::GroupComponent> text_group(new wstgui::GroupComponent("", menu.get_root()));
 
     text_group->set_geometry(
-      geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
-                            static_cast<float>(g_app.window().get_gc().size().height())     - 100.0f),
+      geom::frect(glm::vec2(static_cast<float>(g_app.window().get_size().width())/2.0f - 390.0f,
+                            static_cast<float>(g_app.window().get_size().height())     - 100.0f),
                   geom::fsize(800.0f - 20.0f,
                               100.0f - 10.0f)));
 
     std::unique_ptr<wstgui::TextView> text(new wstgui::TextView(text_group.get()));
     text->set_geometry(text_group->get_child_rect());
-    text->set_font(g_app.fonts().vera12.get());
+    text->set_font(g_app.fonts().vera12);
     text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmail.com&gt;\n"
                    "\n"
                    "This program is free software: you can redistribute it and/or modify "
@@ -286,7 +286,7 @@ MenuManager::display_help()
   group->set_geometry(create_centered_rect(500, 400));
   text->set_geometry(group->get_child_rect());
 
-  text->set_font(g_app.fonts().vera12.get());
+  text->set_font(g_app.fonts().vera12);
   text->set_text("This is a tech-demo of Windstille. Its not meant "
                  "to be playable in any way except a bit of walking around. "
                  "It provides nothing to accomplish, just a few scenarios to "
@@ -354,7 +354,7 @@ MenuManager::display_credits()
   group->set_geometry(create_centered_rect(500, 400));
   text->set_geometry(group->get_child_rect());
 
-  text->set_font(g_app.fonts().vera12.get());
+  text->set_font(g_app.fonts().vera12);
   text->set_text("Programming\n"
                  "===========\n"
                  "\n"
@@ -395,8 +395,8 @@ MenuManager::create_positioned_rect(glm::vec2 const& pos_, geom::fsize const& si
   pos.y += size.height() / 2.0f;
 
   // scale the coordinates
-  pos.x = pos.x * static_cast<float>(g_app.window().get_gc().size().width())  / 800.0f;
-  pos.y = pos.y * static_cast<float>(g_app.window().get_gc().size().height()) / 600.0f;
+  pos.x = pos.x * static_cast<float>(g_app.window().get_size().width())  / 800.0f;
+  pos.y = pos.y * static_cast<float>(g_app.window().get_size().height()) / 600.0f;
 
   // move pos back to top/left
   pos.x -= size.width()  / 2.0f;
@@ -408,8 +408,8 @@ MenuManager::create_positioned_rect(glm::vec2 const& pos_, geom::fsize const& si
 geom::frect
 MenuManager::create_centered_rect(float w, float h)
 {
-  return geom::frect(glm::vec2((static_cast<float>(g_app.window().get_gc().size().width())  - w)/2.0f,
-                               (static_cast<float>(g_app.window().get_gc().size().height()) - h)/2.0f),
+  return geom::frect(glm::vec2((static_cast<float>(g_app.window().get_size().width())  - w)/2.0f,
+                               (static_cast<float>(g_app.window().get_size().height()) - h)/2.0f),
                      geom::fsize(w, h));
 }
 

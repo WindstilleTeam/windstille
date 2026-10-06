@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmail.com>
+**  Copyright (C) 2026 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,29 +16,22 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SCENEGRAPH_PARTICLE_SYSTEM_DRAWABLE_HPP
-#define HEADER_WINDSTILLE_SCENEGRAPH_PARTICLE_SYSTEM_DRAWABLE_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_TRANSFORM_HPP
+#define HEADER_WINDSTILLE_DISPLAY_TRANSFORM_HPP
 
-#include <wstdisplay/scenegraph/drawable.hpp>
+#include <glm/glm.hpp>
 
 namespace windstille {
 
-class ParticleSystem;
-
-class ParticleSystemDrawable : public wstdisplay::Drawable
+/** The 2D part of a 3D transform, for placing 2D graphics at e.g. an
+    attachment point of a Sprite3D: x and y of the transformed axes
+    and of the translation, z is dropped. */
+inline glm::mat3 flatten(glm::mat4 const& m)
 {
-private:
-  ParticleSystem const& m_particle_system;
-
-public:
-  ParticleSystemDrawable(ParticleSystem const& particle_system);
-
-  void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override;
-
-private:
-  ParticleSystemDrawable(ParticleSystemDrawable const&);
-  ParticleSystemDrawable& operator=(ParticleSystemDrawable const&);
-};
+  return glm::mat3(glm::vec3(m[0].x, m[0].y, 0.0f),
+                   glm::vec3(m[1].x, m[1].y, 0.0f),
+                   glm::vec3(m[3].x, m[3].y, 1.0f));
+}
 
 } // namespace windstille
 

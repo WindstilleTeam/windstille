@@ -74,7 +74,7 @@ Data::Data(std::filesystem::path const& filename) :
 
       std::filesystem::path path = filename.parent_path();
       path /= std::filesystem::path(texturename).filename();
-      mesh.texture = g_app.texture().get(path);
+      mesh.texture = g_app.texture().get(path).get_texture();
 
       // read triangles
       mesh.vertex_indices.reserve(mesh.triangle_count * 3);

@@ -24,13 +24,15 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Grenade : public Entity
 {
 public:
   Grenade();
   ~Grenade() override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
   void set_velocity(glm::vec2 const& vel);
 

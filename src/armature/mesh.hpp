@@ -19,14 +19,15 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_MESH_HPP
 #define HEADER_WINDSTILLE_ARMATURE_MESH_HPP
 
-#include <wstdisplay/gl_compat.hpp>
 #include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
 
 #include <wstdisplay/fwd.hpp>
-#include <wstdisplay/texture.hpp>
+#include <wstdisplay/blend.hpp>
+#include <wstdisplay/device.hpp>
+#include <wstdisplay/mesh.hpp>
 #include "util/file_reader.hpp"
 
 namespace windstille {
@@ -87,17 +88,21 @@ private:
   typedef std::vector<Vertex> Vertices;
   Vertices vertices_;
 
-  wstdisplay::TexturePtr texture;
+  /** Owned by the TextureManager */
+  wstdisplay::TextureId texture;
+  wstdisplay::Blend m_blend;
 
-  GLenum blend_sfactor;
-  GLenum blend_dfactor;
+  /** The posed mesh, created on the first draw */
+  wstdisplay::Unique<wstdisplay::Mesh> m_mesh;
+  std::vector<wstdisplay::MeshVertex> m_mesh_vertices;
 
 public:
   Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
        wstdisplay::TextureManager& texture_manager);
   ~Mesh();
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  /** Draw the current pose with \a transform, see wstdisplay::Canvas::draw(MeshId) */
+  void draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform);
   void apply(Armature* armature);
   void reset();
 private:

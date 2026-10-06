@@ -23,12 +23,14 @@
 
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
-#include <wstdisplay/software_surface.hpp>
+#include <surf/software_surface.hpp>
 
 #include "editor/control_point.hpp"
 #include "editor/object_model.hpp"
 
 namespace windstille {
+
+class SceneContext;
 
 class DecalObjectModel : public ObjectModel
 {
@@ -68,8 +70,8 @@ public:
 
   bool is_snappable() const override { return type == COLORMAP; }
 
-  void draw_select(wstdisplay::SceneContext& sc, bool highlight) override;
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw_select(SceneContext& sc, bool highlight) override;
+  void draw(SceneContext& sc) override;
 
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;

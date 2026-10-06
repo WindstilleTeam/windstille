@@ -21,6 +21,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 /**
  * Base class for all weapons. This is not a GameObject because it will be
  * attached and handled by the Player object, not by the sector
@@ -31,7 +33,7 @@ public:
   virtual ~Weapon()
   {}
 
-  virtual void draw(wstdisplay::SceneContext& context) = 0;
+  virtual void draw(SceneContext& context) = 0;
   virtual void update(float delta) = 0;
 
   virtual void fire(bool enable) = 0;

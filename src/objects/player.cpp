@@ -18,6 +18,8 @@
 
 #include "objects/player.hpp"
 
+#include "display/scene_context.hpp"
+
 #include <functional>
 
 #include <geom/point.hpp>
@@ -31,8 +33,9 @@
 #include "objects/grenade.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
-#include "sprite3d/sprite3d_drawable.hpp"
+#include <wstdisplay/canvas.hpp>
+
+#include "display/transform.hpp"
 #include "screen/game_session.hpp"
 #include "sprite3d/manager.hpp"
 #include "tile/tile.hpp"
@@ -45,7 +48,7 @@ static const float WALK_SPEED = 100.0;
 static const float RUN_SPEED = 256.0;
 
 Player::Player () :
-  m_drawable(),
+  m_sprite(),
   jumping(),
   bomb_placed(),
   hit_count(),
@@ -86,8 +89,7 @@ Player::Player () :
   weapon.reset(new Pistol());
   laser_pointer = (static_cast<Pistol*>(weapon.get()))->laser_pointer;
 
-  m_drawable.reset(new Sprite3DDrawable(sprite, glm::vec2(200, 600), 100.0f, glm::mat4(1.0f)));
-  Sector::current()->get_scene_graph().add_drawable(m_drawable);
+  m_sprite = sprite;
 }
 
 Player::~Player()
@@ -95,39 +97,43 @@ Player::~Player()
 }
 
 void
-Player::draw (wstdisplay::SceneContext& sc)
+Player::draw (SceneContext& sc)
 {
   if (1)
   { // draw the 'stand-on' tile
+    wstdisplay::Canvas::Scope scope(sc.highlight());
+    sc.highlight().set_z(10000.0f);
     sc.highlight().fill_rect(geom::frect(geom::irect(geom::ipoint(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
-                                        geom::isize(32, 32))),
-                             surf::Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
+                                                     geom::isize(32, 32))),
+                             surf::Color(1.0f, 0.0f, 0.0f, 0.5f));
   }
 
-  //m_drawable->get_sprite().draw(sc.color(), pos + glm::vec2(0.0f, 1.0f), z_pos);
+  m_sprite.draw(sc.color(), pos, 100.0f);
 
   Entity* obj = find_useable_entity();
   if (obj)
   {
     // FIXME: Highlight layer is the wrong place for this
     std::string use_str = "[" + obj->get_use_verb() + "]";
-    g_app.fonts().ttffont->draw(sc.highlight(), use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
+    wstdisplay::Canvas::Scope scope(sc.highlight());
+    sc.highlight().set_z(1000);
+    sc.highlight().draw_text(*g_app.fonts().ttffont, geom::fpoint(obj->get_pos().x, obj->get_pos().y - 150), use_str);
   }
 
   // Draw weapon at the 'Weapon' attachment point
-  Sprite3D::PointID id = m_drawable->get_sprite().get_attachment_point_id("Weapon");
-  sc.push_modelview();
+  Sprite3D::PointID id = m_sprite.get_attachment_point_id("Weapon");
+  sc.save();
   sc.translate(pos.x, pos.y);
-  sc.mult_modelview(m_drawable->get_sprite().get_attachment_point_matrix(id));
+  sc.mult_transform(flatten(m_sprite.get_attachment_point_matrix(id)));
   weapon->draw(sc);
-  sc.pop_modelview();
+  sc.restore();
 
   if (laser_pointer->is_active())
   {
-    sc.push_modelview();
+    sc.save();
     sc.translate(pos.x, pos.y - 80);
     laser_pointer->draw(sc);
-    sc.pop_modelview();
+    sc.restore();
   }
 }
 
@@ -162,7 +168,6 @@ Player::update(wstinput::Controller const& controller, float delta)
     pos.x += controller.get_axis_state(X_AXIS) * delta * 1000.0f;
     pos.y += controller.get_axis_state(Y_AXIS) * delta * 1000.0f;
 
-    m_drawable->set_pos(pos);
   }
   else
   {
@@ -245,13 +250,12 @@ Player::update(wstinput::Controller const& controller, float delta)
     // fall down
     velocity.y += GRAVITY * delta;
 
-    m_drawable->get_sprite().update(delta);
+    m_sprite.update(delta);
 
     c_object->set_velocity (velocity);
 
     pos = c_object->get_pos();
 
-    m_drawable->set_pos(pos);
   }
 }
 
@@ -399,7 +403,7 @@ Player::update_stand(wstinput::Controller const& controller)
     }
     else
     {
-      m_drawable->get_sprite().set_action("PullGun");
+      m_sprite.set_action("PullGun");
       state = PULL_GUN;
     }
   }
@@ -423,7 +427,7 @@ void
 Player::set_walk(Direction direction)
 {
   try_set_action("Walk");
-  m_drawable->get_sprite().set_rot(direction == EAST);
+  m_sprite.set_rot(direction == EAST);
   state = WALK;
   if (direction == EAST)
     velocity.x = WALK_SPEED;
@@ -473,7 +477,7 @@ void
 Player::set_ducking()
 {
   try_set_action("StandToDuck");
-  m_drawable->get_sprite().set_next_action("Ducking");
+  m_sprite.set_next_action("Ducking");
   state = DUCKING;
   velocity.x = 0;
 }
@@ -482,32 +486,32 @@ void
 Player::update_ducking(wstinput::Controller const& controller)
 {
   // ducking
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
-    if (m_drawable->get_sprite().get_action() == "Ducking")
+    if (m_sprite.get_action() == "Ducking")
       set_ducked();
     else
       set_stand();
     return;
   }
 
-  if (!(controller.get_axis_state(Y_AXIS) > 0.5f) && m_drawable->get_sprite().get_speed() > 0)
+  if (!(controller.get_axis_state(Y_AXIS) > 0.5f) && m_sprite.get_speed() > 0)
   {
-    m_drawable->get_sprite().set_speed(-1.0);
-    m_drawable->get_sprite().set_next_action("Stand");
+    m_sprite.set_speed(-1.0);
+    m_sprite.set_next_action("Stand");
     state = STAND;
   }
-  else if (controller.get_axis_state(Y_AXIS) > 0.5f && m_drawable->get_sprite().get_speed() < 0)
+  else if (controller.get_axis_state(Y_AXIS) > 0.5f && m_sprite.get_speed() < 0)
   {
-    m_drawable->get_sprite().set_speed(1.0);
-    m_drawable->get_sprite().set_next_action("Ducking");
+    m_sprite.set_speed(1.0);
+    m_sprite.set_next_action("Ducking");
   }
 }
 
 void
 Player::set_ducked()
 {
-  assert(m_drawable->get_sprite().get_action() == "Ducking");
+  assert(m_sprite.get_action() == "Ducking");
   state = DUCKED;
 }
 
@@ -517,8 +521,8 @@ Player::update_ducked(wstinput::Controller const& controller)
   if (!(controller.get_axis_state(Y_AXIS) > 0.5f))
   {
     state = DUCKING;
-    m_drawable->get_sprite().set_action("StandToDuck", -1.0);
-    m_drawable->get_sprite().set_next_action("Stand");
+    m_sprite.set_action("StandToDuck", -1.0);
+    m_sprite.set_next_action("Stand");
   }
 }
 
@@ -527,17 +531,17 @@ Player::set_turnaround()
 {
   velocity.x = 0;
   try_set_action("Turn");
-  m_drawable->get_sprite().set_next_action("Walk");
-  m_drawable->get_sprite().set_next_rot(! m_drawable->get_sprite().get_rot());
+  m_sprite.set_next_action("Walk");
+  m_sprite.set_next_rot(! m_sprite.get_rot());
   state = TURNAROUND;
 }
 
 void
 Player::update_turnaround(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
-    if (m_drawable->get_sprite().get_rot())
+    if (m_sprite.get_rot())
     {
       set_walk(EAST);
     }
@@ -545,11 +549,11 @@ Player::update_turnaround(wstinput::Controller const& controller)
       set_walk(WEST);
     }
   }
-  if ((m_drawable->get_sprite().get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
-      (!m_drawable->get_sprite().get_rot() && controller.get_axis_state(X_AXIS) < -0.5f))
+  if ((m_sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
+      (!m_sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f))
   {
-    m_drawable->get_sprite().set_speed(-1.0);
-    m_drawable->get_sprite().set_next_action("Walk");
+    m_sprite.set_speed(-1.0);
+    m_sprite.set_next_action("Walk");
     state = WALK;
   }
 }
@@ -560,12 +564,12 @@ Player::set_stand_to_listen(bool backwards)
   try_set_action("StandtoListen", backwards ? -1.0f : 1.0f);
   if (!backwards)
   {
-    m_drawable->get_sprite().set_next_action("Listen");
+    m_sprite.set_next_action("Listen");
     velocity = glm::vec2(0, 0);
   }
   else
   {
-    m_drawable->get_sprite().set_next_action("Stand");
+    m_sprite.set_next_action("Stand");
   }
   state = STAND_TO_LISTEN;
 }
@@ -573,9 +577,9 @@ Player::set_stand_to_listen(bool backwards)
 void
 Player::update_stand_to_listen(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
-    if (m_drawable->get_sprite().get_action() == "Stand")
+    if (m_sprite.get_action() == "Stand")
       set_stand();
     else
       set_listen();
@@ -637,22 +641,22 @@ Player::leave_run()
 void
 Player::set_jump_begin()
 {
-  if (m_drawable->get_sprite().before_marker("RightFoot"))
+  if (m_sprite.before_marker("RightFoot"))
   {
-    m_drawable->get_sprite().set_next_action("JumpRightFoot");
-    m_drawable->get_sprite().abort_at_marker("RightFoot");
+    m_sprite.set_next_action("JumpRightFoot");
+    m_sprite.abort_at_marker("RightFoot");
     jump_foot = LEFT_FOOT;
   }
-  else if (m_drawable->get_sprite().before_marker("LeftFoot"))
+  else if (m_sprite.before_marker("LeftFoot"))
   {
-    m_drawable->get_sprite().set_next_action("JumpLeftFoot");
-    m_drawable->get_sprite().abort_at_marker("LeftFoot");
+    m_sprite.set_next_action("JumpLeftFoot");
+    m_sprite.abort_at_marker("LeftFoot");
     jump_foot = RIGHT_FOOT;
   }
   else
   {
-    m_drawable->get_sprite().set_next_action("JumpRightFoot");
-    m_drawable->get_sprite().abort_at_marker("RightFoot");
+    m_sprite.set_next_action("JumpRightFoot");
+    m_sprite.abort_at_marker("RightFoot");
     jump_foot = LEFT_FOOT;
   }
   state = JUMP_BEGIN;
@@ -661,15 +665,15 @@ Player::set_jump_begin()
 void
 Player::update_jump_begin(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
-    if (m_drawable->get_sprite().get_action() == "JumpLeftFoot")
+    if (m_sprite.get_action() == "JumpLeftFoot")
     {
-      m_drawable->get_sprite().set_next_action("JumpLeftFootAir");
+      m_sprite.set_next_action("JumpLeftFootAir");
     }
-    else if (m_drawable->get_sprite().get_action() == "JumpRightFoot")
+    else if (m_sprite.get_action() == "JumpRightFoot")
     {
-      m_drawable->get_sprite().set_next_action("JumpRightFootAir");
+      m_sprite.set_next_action("JumpRightFootAir");
     }
     else
     {
@@ -683,14 +687,14 @@ void
 Player::set_jump_air()
 {
   velocity.y = -450;
-  m_drawable->get_sprite().set_next_action("JumpLandSofttoRun");
+  m_sprite.set_next_action("JumpLandSofttoRun");
   state = JUMP_AIR;
 }
 
 void
 Player::update_jump_air(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     set_jump_land();
     return;
@@ -700,14 +704,14 @@ Player::update_jump_air(wstinput::Controller const& controller)
 void
 Player::set_jump_land()
 {
-  m_drawable->get_sprite().set_next_action("Run");
+  m_sprite.set_next_action("Run");
   state = JUMP_LAND;
 }
 
 void
 Player::update_jump_land(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     set_run();
     return;
@@ -717,14 +721,14 @@ Player::update_jump_land(wstinput::Controller const& controller)
 void
 Player::set_jump_up_begin()
 {
-  m_drawable->get_sprite().set_next_action("JumpUp");
+  m_sprite.set_next_action("JumpUp");
   state = JUMP_UP_BEGIN;
 }
 
 void
 Player::update_jump_up_begin(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     set_jump_up_air();
     return;
@@ -735,14 +739,14 @@ void
 Player::set_jump_up_air()
 {
   velocity.y = -400;
-  m_drawable->get_sprite().set_next_action("JumpLandSofttoRun");
+  m_sprite.set_next_action("JumpLandSofttoRun");
   state = JUMP_UP_AIR;
 }
 
 void
 Player::update_jump_up_air(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     set_jump_up_land();
     return;
@@ -752,14 +756,14 @@ Player::update_jump_up_air(wstinput::Controller const& controller)
 void
 Player::set_jump_up_land()
 {
-  m_drawable->get_sprite().set_next_action("Stand");
+  m_sprite.set_next_action("Stand");
   state = JUMP_UP_LAND;
 }
 
 void
 Player::update_jump_up_land(wstinput::Controller const& controller)
 {
-  if (m_drawable->get_sprite().switched_actions())
+  if (m_sprite.switched_actions())
   {
     set_stand();
     return;
@@ -771,7 +775,7 @@ Player::update_pull_gun(wstinput::Controller const& controller)
 {
   if (!controller.get_button_state(AIM_BUTTON))
   {
-    m_drawable->get_sprite().set_next_action("Stand");
+    m_sprite.set_next_action("Stand");
     state = STAND;
   }
 }
@@ -779,14 +783,14 @@ Player::update_pull_gun(wstinput::Controller const& controller)
 Player::Direction
 Player::get_direction() const
 {
-  return m_drawable->get_sprite().get_rot() ? EAST : WEST;
+  return m_sprite.get_rot() ? EAST : WEST;
 }
 
 void
 Player::try_set_action(std::string const& name_, float speed)
 {
-  if (m_drawable->get_sprite().get_action() != name_)
-    m_drawable->get_sprite().set_action(name_, speed);
+  if (m_sprite.get_action() != name_)
+    m_sprite.set_action(name_, speed);
 }
 
 int

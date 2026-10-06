@@ -19,7 +19,13 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 
+#include <vector>
+
+#include <surf/color.hpp>
 #include <wstdisplay/fwd.hpp>
+#include <wstdisplay/vertex.hpp>
+
+#include "util/file_reader.hpp"
 
 #include "particles/drawer.hpp"
 
@@ -32,12 +38,13 @@ class SparkDrawer : public Drawer
 private:
   surf::Color color;
   float width;
-  std::shared_ptr<wstdisplay::VertexArrayDrawable> buffer;
+  /** Scratch buffer, reused between frames */
+  mutable std::vector<wstdisplay::Vertex> m_vertices;
 
 public:
   SparkDrawer(ReaderMapping const& props);
 
-  void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const override;
+  void draw(wstdisplay::Canvas& canvas, ParticleSystem const& psys) const override;
 };
 
 } // namespace windstille

@@ -23,7 +23,7 @@
 #include <sexp/value.hpp>
 #include <sexp/io.hpp>
 
-#include <wstdisplay/font/ttf_font_manager.hpp>
+#include <wstdisplay/font/font_manager.hpp>
 #include <wstdisplay/opengl_window.hpp>
 
 #include "app/app.hpp"
@@ -286,7 +286,8 @@ void set_console_font(std::string const& font, int size)
 {
   try
   {
-    g_app.fonts().ttffont = g_app.ttffont_manager().create_font(Pathname("fonts/" + font), size);
+    wstdisplay::FontManager& fonts = g_app.fonts().get_manager();
+    g_app.fonts().ttffont = &fonts.get(fonts.load(Pathname("fonts/" + font), size));
   }
   catch(std::exception& err)
   {

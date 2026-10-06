@@ -16,86 +16,61 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <wstdisplay/drawing_context.hpp>
-#include "util/file_reader.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
-#include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
 
-namespace windstille {
+#include <cmath>
 
+#include <wstdisplay/canvas.hpp>
+
+#include "particles/particle_system.hpp"
+#include "util/file_reader.hpp"
+
+namespace windstille {
 
 SparkDrawer::SparkDrawer(ReaderMapping const& props)
   : color(1.0f, 1.0f, 1.0f),
     width(1.0f),
-    buffer()
+    m_vertices()
 {
   props.read("color", color);
   props.read("width", width);
-
-  buffer.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(), 0.0f, glm::mat4(1.0f)));
 }
 
 void
-SparkDrawer::draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const
+SparkDrawer::draw(wstdisplay::Canvas& canvas, ParticleSystem const& psys) const
 {
-  buffer->clear();
-  buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
+  // a quad per spark along its velocity, fading out towards the tail
+  wstdisplay::PackedColor const tail = wstdisplay::pack_color(surf::Color(0.0f, 0.0f, 0.0f, 0.0f));
+  float const half_width = (width == 1.0f) ? 0.5f : width;
 
-  if (width == 1.0f)
+  m_vertices.clear();
+  for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
   {
-    buffer->set_mode(GL_LINES);
-    buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
-    {
-      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f);
-
-      buffer->color(surf::Color(0, 0, 0, 0));
-      buffer->vertex(i->x, i->y);
+    float const len = std::sqrt(i->v_x * i->v_x + i->v_y * i->v_y);
+    if (len == 0.0f) {
+      continue;
     }
-  }
-  else
-  {
-    buffer->set_mode(GL_TRIANGLES);
-    buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
-    {
-      const float len = sqrtf(i->v_x * i->v_x  +  i->v_y * i->v_y);
 
-      const float o_x = i->v_y/len * width;
-      const float o_y = i->v_x/len * width;
+    wstdisplay::PackedColor const head = wstdisplay::pack_color(
+      surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+    float const o_x = i->v_y / len * half_width;
+    float const o_y = i->v_x / len * half_width;
+    float const x1 = i->x;
+    float const y1 = i->y;
+    float const x2 = i->x + i->v_x / 10.0f;
+    float const y2 = i->y + i->v_y / 10.0f;
 
-      const float x1 = i->x;
-      const float y1 = i->y;
-      const float x2 = i->x + i->v_x/10.0f;
-      const float y2 = i->y + i->v_y/10.0f;
-
-      // v1
-      buffer->color(surf::Color(0, 0, 0, 0));
-      buffer->vertex(x1 + o_x, y1 - o_y);
-      // v4
-      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(x2 + o_x, y2 - o_y);
-      // v2
-      buffer->color(surf::Color(0, 0, 0, 0));
-      buffer->vertex(x1 - o_x, y1 + o_y);
-
-      // v4
-      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(x2 + o_x, y2 - o_y);
-      // v3
-      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(x2 - o_x, y2 + o_y);
-      // v2
-      buffer->color(surf::Color(0, 0, 0, 0));
-      buffer->vertex(x1 - o_x, y1 + o_y);
-    }
+    m_vertices.push_back(wstdisplay::Vertex{x1 + o_x, y1 - o_y, 0.0f, 0.0f, tail, {}});
+    m_vertices.push_back(wstdisplay::Vertex{x2 + o_x, y2 - o_y, 0.0f, 0.0f, head, {}});
+    m_vertices.push_back(wstdisplay::Vertex{x2 - o_x, y2 + o_y, 0.0f, 0.0f, head, {}});
+    m_vertices.push_back(wstdisplay::Vertex{x1 - o_x, y1 + o_y, 0.0f, 0.0f, tail, {}});
   }
 
-  buffer->render(gc, ~0u);
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.translate(psys.get_x_pos(), psys.get_y_pos());
+  canvas.set_blend(wstdisplay::Blend::Add);
+  canvas.draw_quads({}, m_vertices);
 }
-
 
 } // namespace windstille
 

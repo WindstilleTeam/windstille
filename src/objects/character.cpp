@@ -18,6 +18,8 @@
 
 #include "objects/character.hpp"
 
+#include "display/scene_context.hpp"
+
 #include "app/app.hpp"
 #include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
@@ -59,7 +61,7 @@ Character::update(float delta)
 }
 
 void
-Character::draw (wstdisplay::SceneContext& sc)
+Character::draw (SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, z_pos);
 }

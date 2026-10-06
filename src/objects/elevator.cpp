@@ -17,6 +17,8 @@
 */
 
 #include "app/app.hpp"
+
+#include "display/scene_context.hpp"
 #include "objects/elevator.hpp"
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
@@ -51,7 +53,7 @@ Elevator::~Elevator()
 }
 
 void
-Elevator::draw(wstdisplay::SceneContext& sc)
+Elevator::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 10.0f);
 }

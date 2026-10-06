@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
 #define HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
 
+#include <vector>
+
 #include <wstdisplay/fwd.hpp>
 
 #include "engine/game_object.hpp"
@@ -28,11 +30,14 @@ namespace windstille {
 class BackgroundGradient : public GameObject
 {
 private:
-  std::shared_ptr<wstdisplay::GradientDrawable> drawable;
+  /** Bands of 13 floats: start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I */
+  std::vector<float> m_colors;
 
 public:
   BackgroundGradient(ReaderMapping const& props);
   ~BackgroundGradient() override;
+
+  void draw(SceneContext& sc) override;
 
 private:
   BackgroundGradient (BackgroundGradient const&);

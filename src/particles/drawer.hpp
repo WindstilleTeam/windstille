@@ -31,7 +31,9 @@ class Drawer
 {
 public:
   virtual ~Drawer() {}
-  virtual void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const =0;
+  /** Draw the particles of \a psys, they are relative to the
+      position of the particle system */
+  virtual void draw(wstdisplay::Canvas& canvas, ParticleSystem const& psys) const =0;
 };
 
 

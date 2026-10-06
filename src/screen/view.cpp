@@ -17,24 +17,34 @@
 */
 
 #include <SDL.h>
-
 #include <wstinput/input_manager.hpp>
+#include <wstdisplay/opengl_window.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/opengl_window.hpp>
+#include "display/scene_context.hpp"
 #include "engine/sector.hpp"
 #include "objects/player.hpp"
 #include "screen/view.hpp"
 
 namespace windstille {
 
+namespace {
+
+/** Drawable pixels per window coordinate */
+float pixel_ratio()
+{
+  float const window_width = static_cast<float>(g_app.window().get_size().width());
+  float const drawable_width = static_cast<float>(g_app.window().get_drawable_size().width());
+  return window_width > 0.0f ? drawable_width / window_width : 1.0f;
+}
+
+} // namespace
+
 View::View()
-  : state(g_app.window().get_gc().size().width(),
-          g_app.window().get_gc().size().height()),
+  : m_view(g_app.window().get_drawable_size()),
     camera(),
     m_debug_zoom(1.0),
     m_debug_transform(0, 0)
@@ -42,22 +52,27 @@ View::View()
 }
 
 void
-View::draw(wstdisplay::SceneContext& sc, Sector& sector)
+View::update_view()
 {
   // camera zoom (scripts/paths) × user view-zoom (options, percent) × debug zoom
   float const user_zoom = static_cast<float>(config.get_int("view-zoom")) / 100.0f;
   float const z = camera.get_zoom() * user_zoom * m_debug_zoom;
-  state.set_zoom(z > 0.01f ? z : 0.01f);
-  state.set_pos(camera.get_pos() + m_debug_transform);
 
-  state.push(sc);
+  m_view.set_size(g_app.window().get_drawable_size());
+  m_view.set_zoom((z > 0.01f ? z : 0.01f) * pixel_ratio());
+  glm::vec2 const pos = camera.get_pos() + m_debug_transform;
+  m_view.set_pos(geom::fpoint(pos.x, pos.y));
+}
+
+void
+View::draw(SceneContext& sc, Sector& sector)
+{
+  update_view();
 
   sector.draw(sc);
 
   if (collision_debug)
     sector.get_collision_engine()->draw(sc.highlight());
-
-  state.pop(sc);
 }
 
 void
@@ -89,15 +104,16 @@ View::update (float delta)
 }
 
 geom::frect
-View::get_clip_rect()
+View::get_clip_rect() const
 {
-  return state.get_clip_rect();
+  return m_view.get_clip_rect();
 }
 
 glm::vec2
-View::screen_to_world(glm::vec2 const& point)
+View::screen_to_world(glm::vec2 const& point) const
 {
-  return state.screen_to_world(point).as_vec();
+  float const ratio = pixel_ratio();
+  return m_view.screen_to_world(geom::fpoint(point.x * ratio, point.y * ratio)).as_vec();
 }
 
 } // namespace windstille

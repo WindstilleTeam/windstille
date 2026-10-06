@@ -20,16 +20,19 @@
 #define HEADER_WINDSTILLE_OBJECTS_LASER_POINTER_HPP
 
 #include "sprite2d/sprite.hpp"
-#include <wstdisplay/texture.hpp>
+#include <wstdisplay/handle.hpp>
 #include "engine/game_object.hpp"
 
 namespace windstille {
+
+class SceneContext;
 
 /** Simple class that generates a laser for pointing at objects */
 class LaserPointer : public GameObject
 {
 private:
-  wstdisplay::TexturePtr noise;
+  /** Owned by the TextureManager */
+  wstdisplay::TextureId noise;
   Sprite  laserpointer;
   Sprite  laserpointer_light;
   float   progress;
@@ -39,7 +42,7 @@ public:
   LaserPointer();
   ~LaserPointer() override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
 
   float get_angle() const;

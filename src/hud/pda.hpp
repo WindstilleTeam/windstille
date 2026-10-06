@@ -69,7 +69,7 @@ public:
   PDA();
   ~PDA() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
   void add_dialog(std::string const& character, std::string const& text);
 

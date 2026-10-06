@@ -47,7 +47,7 @@ public:
   InputConfigurator();
   ~InputConfigurator() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
   void handle_event(SDL_Event const& event) override;
   void add_configure_item(ConfigureItem::Mode mode, int event_id);

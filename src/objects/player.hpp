@@ -31,12 +31,13 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Contact;
 class LaserPointer;
 class CollisionObject;
 class CollisionData;
 class Weapon;
-class Sprite3DDrawable;
 
 using Controller = wstinput::Controller;
 
@@ -44,7 +45,7 @@ class Player : public Entity,
                public Currenton<Player>
 {
 private:
-  std::shared_ptr<Sprite3DDrawable> m_drawable;
+  Sprite3D m_sprite;
 
   bool jumping;
   bool bomb_placed;
@@ -101,7 +102,7 @@ public:
 
   int get_movement_state() { return state; }
 
-  void draw(wstdisplay::SceneContext& gc) override;
+  void draw(SceneContext& gc) override;
   void update(float delta) override;
   void update(wstinput::Controller const& controller, float delta);
 

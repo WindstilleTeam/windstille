@@ -32,14 +32,14 @@ class ControllerHelpWindow : public wstgui::Screen,
                              public Currenton<ControllerHelpWindow>
 {
 private:
-  void draw_button(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, bool pressed);
-  void draw_stick(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, bool pressed, float x, float y);
-  void draw_trigger(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, float value);
+  void draw_button(wstdisplay::Canvas& canvas, glm::vec2 const& pos, bool pressed);
+  void draw_stick(wstdisplay::Canvas& canvas, glm::vec2 const& pos, bool pressed, float x, float y);
+  void draw_trigger(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float value);
 
 public:
   ControllerHelpWindow();
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 };
 

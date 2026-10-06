@@ -39,7 +39,7 @@ public:
   CollisionEngine();
   ~CollisionEngine();
 
-  void draw(wstdisplay::DrawingContext& dc);
+  void draw(wstdisplay::Canvas& canvas);
   void update(float delta);
   void update(CollisionObject& obj, float delta);
   void collision(const CollisionData &result);

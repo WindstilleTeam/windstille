@@ -21,7 +21,7 @@
 #include <iostream>
 
 #include <wstdisplay/drawing_parameters.hpp>
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
 #include <wstdisplay/surface_manager.hpp>
@@ -123,7 +123,7 @@ DecalObjectModel::set_scale(glm::vec2 const& scale_)
 }
 
 void
-DecalObjectModel::draw_select(wstdisplay::SceneContext& sc, bool highlight)
+DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
 {
   geom::fquad quad(get_bounding_box());
 
@@ -136,7 +136,7 @@ DecalObjectModel::draw_select(wstdisplay::SceneContext& sc, bool highlight)
 }
 
 void
-DecalObjectModel::draw(wstdisplay::SceneContext& sc)
+DecalObjectModel::draw(SceneContext& sc)
 {
   if ((false))
   {
@@ -293,16 +293,16 @@ DecalObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
     switch(type)
     {
       case COLORMAP:
-        m_drawable->set_render_mask(wstdisplay::SceneContext::COLORMAP);
+        m_drawable->set_render_mask(SceneContext::COLORMAP);
         break;
 
       case LIGHTMAP:
-        m_drawable->set_render_mask(wstdisplay::SceneContext::LIGHTMAP);
+        m_drawable->set_render_mask(SceneContext::LIGHTMAP);
         m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
         break;
 
       case HIGHLIGHTMAP:
-        m_drawable->set_render_mask(wstdisplay::SceneContext::HIGHLIGHTMAP);
+        m_drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
         m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
         break;
     }

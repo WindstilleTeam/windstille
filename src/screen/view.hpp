@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_VIEW_HPP
 
 #include <glm/glm.hpp>
-#include <wstdisplay/graphic_context_state.hpp>
+#include <wstdisplay/view.hpp>
 
 #include "engine/camera.hpp"
 #include "util/currenton.hpp"
@@ -31,31 +31,39 @@ class Controller;
 
 namespace windstille {
 
+class SceneContext;
+class Sector;
+
 /** This class is the gui component which renders the world to the
     screen */
 class View : public Currenton<View>
 {
 private:
-  wstdisplay::GraphicContextState state;
+  wstdisplay::View m_view;
   Camera camera;
-
   float    m_debug_zoom;
   glm::vec2 m_debug_transform;
 
 public:
   View();
 
-  wstdisplay::GraphicContextState get_gc_state() { return state; }
+  /** Maps the world to the pixels of the window's drawable, which
+      can be larger than the window on high-DPI screens */
+  wstdisplay::View const& get_view() const { return m_view; }
 
   /** @return the rectangle which represents the currently visible
       area, everything outside of it doesn't have to be drawn */
-  geom::frect get_clip_rect();
-  glm::vec2 screen_to_world(glm::vec2 const& point);
+  geom::frect get_clip_rect() const;
 
-  void draw(wstdisplay::SceneContext& sc, Sector& sector);
+  /** \a point is in window coordinates, e.g. a mouse position */
+  glm::vec2 screen_to_world(glm::vec2 const& point) const;
+
+  void draw(SceneContext& sc, Sector& sector);
   void update(float delta);
-};
 
+private:
+  void update_view();
+};
 
 } // namespace windstille
 

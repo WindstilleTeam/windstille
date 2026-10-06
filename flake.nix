@@ -290,7 +290,8 @@
           src = ./.;
           cmakeFlags = [
             "-DBUILD_EDITOR=OFF"
-            "-DBUILD_EXTRA=ON"
+            # extra/ isn't ported to external/wst yet
+            "-DBUILD_EXTRA=OFF"
           ] ++ lib.optionals pkgs.stdenv.hostPlatform.isWindows [
             "-DBUILD_EDITOR=OFF"
           ] ++ commonCmakeFlags;

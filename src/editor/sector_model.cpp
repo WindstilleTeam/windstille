@@ -23,7 +23,7 @@
 #include <algorithm>
 #include <gdkmm/pixbuf.h>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/surface.hpp>
 #include "editor/editor_window.hpp"
 #include "editor/layer_manager_columns.hpp"
@@ -236,7 +236,7 @@ SectorModel::get_layer(ObjectModelHandle const& object) const
 
 
 void
-SectorModel::draw(wstdisplay::SceneContext& sc, SelectMask const& layermask)
+SectorModel::draw(SceneContext& sc, SelectMask const& layermask)
 {
   // Draw Layers
   Layers const& layers = get_layers();

@@ -20,17 +20,18 @@
 
 #include <iostream>
 
-#include "engine/sector.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
-#include <wstdisplay/scenegraph/gradient_drawable.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/opengl_window.hpp>
+
+#include "app/app.hpp"
+#include "display/scene_context.hpp"
 
 namespace windstille {
 
 BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
-  drawable()
+  m_colors()
 {
-  std::vector<float> colors;
+  std::vector<float>& colors = m_colors;
 
   //props.read("z-pos",  z_pos);
   props.read("colors", colors);
@@ -52,12 +53,39 @@ BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
     colors.clear();
   }
 
-  drawable.reset(new wstdisplay::GradientDrawable(colors));
-  Sector::current()->get_scene_graph().add_drawable(drawable);
 }
 
 BackgroundGradient::~BackgroundGradient()
 {
+}
+
+void
+BackgroundGradient::draw(SceneContext& sc)
+{
+  wstdisplay::Canvas& canvas = sc.color();
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(-1000.0f);
+  canvas.set_space(wstdisplay::Space::Screen);
+
+  // covers the screen, the bands are fractions of its height
+  geom::fsize const size(g_app.window().get_drawable_size());
+  for(size_t i = 0; i + 13 <= m_colors.size(); i += 13)
+  {
+    float const start    = m_colors[i + 0];
+    float const midpoint = m_colors[i + 1];
+    float const end      = m_colors[i + 2];
+    surf::Color const color1(m_colors[i + 3], m_colors[i + 4], m_colors[i + 5], m_colors[i + 6]);
+    surf::Color const color2(m_colors[i + 7], m_colors[i + 8], m_colors[i + 9], m_colors[i + 10]);
+    surf::Color const midcolor((color1.r + color2.r)/2,
+                               (color1.g + color2.g)/2,
+                               (color1.b + color2.b)/2,
+                               (color1.a + color2.a)/2);
+
+    canvas.fill_vertical_gradient(geom::frect(0.0f, start * size.height(), size.width(), midpoint * size.height()),
+                                  color1, midcolor);
+    canvas.fill_vertical_gradient(geom::frect(0.0f, midpoint * size.height(), size.width(), end * size.height()),
+                                  midcolor, color2);
+  }
 }
 
 } // namespace windstille

@@ -47,7 +47,7 @@ public:
   ArmatureTest();
   ~ArmatureTest() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
 private:

@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_AUTOMAP_HPP
 #define HEADER_WINDSTILLE_GUI_AUTOMAP_HPP
 
+#include <wstdisplay/device.hpp>
 #include <wstdisplay/surface.hpp>
 #include <wstgui/component.hpp>
 
@@ -27,7 +28,8 @@ namespace wstgui {
 class Automap : public Component
 {
 private:
-  wstdisplay::SurfacePtr surface;
+  wstdisplay::Unique<wstdisplay::Texture> m_texture;
+  wstdisplay::Surface surface;
   glm::vec2  pos;
   float   zoom;
 
@@ -35,7 +37,7 @@ public:
   Automap(Component* parent);
   ~Automap() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
 private:

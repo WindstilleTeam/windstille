@@ -17,6 +17,8 @@
 */
 
 #include <glm/glm.hpp>
+
+#include <wstdisplay/opengl_window.hpp>
 #include <glm/ext.hpp>
 
 #include <wstinput/controller.hpp>
@@ -25,7 +27,7 @@
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 #include "engine/script_manager.hpp"
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include "hud/conversation.hpp"
 #include "hud/pda.hpp"
 #include "screen/game_session.hpp"
@@ -68,12 +70,12 @@ Conversation::add(std::string const& topic, std::string const& text)
 }
 
 void
-Conversation::draw(wstdisplay::GraphicsContext& gc)
+Conversation::draw(wstdisplay::Canvas& canvas)
 {
   if (!active)
     return;
 
-  gc.fill_circle(pos, 42.0f, surf::Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
+  canvas.fill_circle(pos, 42.0f, surf::Color(0.5f, 0.5f, 0.5f, 0.75f));
 
   float segment = 360.0f / static_cast<float>(choices.size());
 
@@ -97,36 +99,35 @@ Conversation::draw(wstdisplay::GraphicsContext& gc)
     {
       rect = geom::grow(rect, grow);
 
-      gc.fill_arc(pos, 42.0f, start, end, surf::Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
-      gc.fill_rounded_rect(rect, 5.0f, surf::Color(0.5f, 0.5f, 0.5f, 0.75f));
+      canvas.fill_arc(pos, 42.0f, start, end, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+      canvas.fill_rounded_rect(rect, 5.0f, surf::Color(0.5f, 0.5f, 0.5f, 0.75f));
 
-      g_app.fonts().vera20->draw_center(gc,
-                                        glm::vec2(textpos.x + distance * offset.x,
+      canvas.draw_text(*g_app.fonts().vera20, glm::vec2(textpos.x + distance * offset.x,
                                                   textpos.y + distance * offset.y),
-                                        choices[i].topic, surf::Color(1.0f, 1.0f, 0.0f));
+                                        choices[i].topic, surf::Color(1.0f, 1.0f, 0.0f), wstdisplay::TextAlign::Center);
 
-      g_app.fonts().vera20->draw_center(gc, glm::vec2(400.0f, static_cast<float>(gc.size().height()) - 32.0f),
-                                            choices[i].text, surf::Color(1.0f, 1.0f, 1.0f));
-      gc.draw_rounded_rect(rect, 5.0f, surf::Color(1.0f, 1.0f, 0.0f));
+      canvas.draw_text(*g_app.fonts().vera20, glm::vec2(400.0f, static_cast<float>(g_app.window().get_size().height()) - 32.0f),
+                                            choices[i].text, surf::Color(1.0f, 1.0f, 1.0f), wstdisplay::TextAlign::Center);
+      canvas.draw_rounded_rect(rect, 5.0f, surf::Color(1.0f, 1.0f, 0.0f));
     }
     else
     {
-      gc.fill_rounded_rect(rect, 5.0f, surf::Color(0.25f, 0.25f, 0.25f, 0.75f));
-      g_app.fonts().vera20->draw_center(gc, glm::vec2(textpos.x + distance * offset.x,
+      canvas.fill_rounded_rect(rect, 5.0f, surf::Color(0.25f, 0.25f, 0.25f, 0.75f));
+      canvas.draw_text(*g_app.fonts().vera20, glm::vec2(textpos.x + distance * offset.x,
                                                       textpos.y + distance * offset.y),
-                                        choices[i].topic, surf::Color(0.8f, 0.8f, 0.8f));
-      gc.draw_rounded_rect(rect, 5.0f, surf::Color(1.0f, 1.0f, 1.0f));
+                                        choices[i].topic, surf::Color(0.8f, 0.8f, 0.8f), wstdisplay::TextAlign::Center);
+      canvas.draw_rounded_rect(rect, 5.0f, surf::Color(1.0f, 1.0f, 1.0f));
     }
 
-    //gc.draw_arc(pos + 5.0f * offset, 32.0f,
+    //canvas.draw_arc(pos + 5.0f * offset, 32.0f,
     //                  start, end,
-    //                  surf::Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
+    //                  surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
 
   }
-  gc.draw_circle(pos, 42.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
+  canvas.draw_circle(pos, 42.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  gc.fill_circle(pos + direction * 34.0f, 8.0f, surf::Color(1.0f, 1.0f, 1.0f));
-  //gc.draw_line(pos, pos + direction*32.0f, surf::Color(0.0f, 0.0f, 0.0f));
+  canvas.fill_circle(pos + direction * 34.0f, 8.0f, surf::Color(1.0f, 1.0f, 1.0f));
+  //canvas.draw_line(pos, pos + direction*32.0f, surf::Color(0.0f, 0.0f, 0.0f));
 }
 
 void

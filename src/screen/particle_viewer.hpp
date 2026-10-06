@@ -22,9 +22,10 @@
 #include <memory>
 #include <memory>
 
-#include <wstdisplay/compositor.hpp>
-#include <wstdisplay/scene_context.hpp>
-#include <wstdisplay/scenegraph/scene_graph.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/view.hpp>
+
+#include "display/scene_context.hpp"
 #include <wstgui/screen.hpp>
 #include <wstgui/gui_manager.hpp>
 
@@ -44,23 +45,21 @@ class ParticleSystemGUI;
 class ParticleViewer : public wstgui::Screen
 {
 private:
-  wstdisplay::Compositor compositor;
-  wstdisplay::SceneContext sc;
-  wstdisplay::SceneGraph   sg;
+  SceneContext sc;
+  wstdisplay::View m_view;
   typedef std::vector<std::shared_ptr<ParticleSystem> > Systems;
   Systems systems;
-  Sprite background;
+  /** Repeated over the screen behind the particles */
+  wstdisplay::Surface m_background;
 
   glm::vec2 pos;
-
-  std::shared_ptr<wstdisplay::FillScreenPatternDrawable> m_background_drawable;
-  std::shared_ptr<wstdisplay::FillScreenDrawable>        m_color_fill_drawable;
 
 public:
   ParticleViewer();
   ~ParticleViewer() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
+  void render(wstdisplay::Renderer& renderer) override;
   void update(float delta, wstinput::Controller const& controller) override;
   void load(Pathname const& filename);
 

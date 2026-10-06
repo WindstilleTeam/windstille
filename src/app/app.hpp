@@ -50,7 +50,6 @@ public:
   SpriteManager& sprite() const;
   sprite3d::Manager& sprite3d() const;
   Fonts& fonts() const;
-  wstdisplay::TTFFontManager& ttffont_manager() const;
   wstgui::Style& style() const;
   wstgui::ScreenManager& screen() const;
 
@@ -62,7 +61,6 @@ private:
   wstdisplay::SurfaceManager* m_surface_manager;
   SpriteManager* m_sprite_manager;
   sprite3d::Manager* m_sprite3d_manager;
-  wstdisplay::TTFFontManager* m_ttffont_manager;
   Fonts* m_fonts;
   wstgui::Style* m_style;
   wstgui::ScreenManager* m_screen_manager;

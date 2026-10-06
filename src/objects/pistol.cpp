@@ -17,6 +17,8 @@
 */
 
 #include "app/app.hpp"
+
+#include "display/scene_context.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
 #include "util/pathname.hpp"
@@ -36,7 +38,7 @@ Pistol::~Pistol()
 }
 
 void
-Pistol::draw(wstdisplay::SceneContext& sc)
+Pistol::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), glm::vec2(0, 0), 1000);
   // Disabled for now and done in the player class

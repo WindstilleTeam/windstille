@@ -18,13 +18,15 @@
 
 #include "hud/controller_help_window.hpp"
 
+#include <wstdisplay/opengl_window.hpp>
+
 #include <geom/geom.hpp>
 #include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include <surf/color.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 
 namespace windstille {
 
@@ -33,100 +35,100 @@ ControllerHelpWindow::ControllerHelpWindow()
 }
 
 void
-ControllerHelpWindow::draw_button(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, bool pressed)
+ControllerHelpWindow::draw_button(wstdisplay::Canvas& canvas, glm::vec2 const& pos, bool pressed)
 {
   if (pressed)
   {
-    gc.fill_circle(pos, 12.0f, surf::Color(0.8f, 0.0f, 0.0f));
-    //gc.draw_circle(pos, 12.0f, surf::Color(1.0f, 0.0f, 0.0f));
+    canvas.fill_circle(pos, 12.0f, surf::Color(0.8f, 0.0f, 0.0f));
+    //canvas.draw_circle(pos, 12.0f, surf::Color(1.0f, 0.0f, 0.0f));
   }
   else
   {
-    gc.fill_circle(pos, 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
-    //gc.draw_circle(pos, 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+    canvas.fill_circle(pos, 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
+    //canvas.draw_circle(pos, 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 }
 
 void
-ControllerHelpWindow::draw_stick(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, bool pressed, float x, float y)
+ControllerHelpWindow::draw_stick(wstdisplay::Canvas& canvas, glm::vec2 const& pos, bool pressed, float x, float y)
 {
   geom::isize size(75, 75);
   geom::frect rect(pos - glm::vec2(static_cast<float>(size.width()), static_cast<float>(size.height())) / 2.0f, geom::fsize(size));
 
-  gc.fill_rounded_rect(rect, 10.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
-  //gc.draw_rounded_rect(rect, 10.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  canvas.fill_rounded_rect(rect, 10.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
+  //canvas.draw_rounded_rect(rect, 10.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   glm::vec2 stick_pos(rect.left() + rect.width()/2  + x * (rect.width()-16.0f)/2,
                      rect.top()  + rect.height()/2 + y * (rect.width()-16.0f)/2);
 
   if (pressed)
-    gc.fill_circle(stick_pos, 10.0f, surf::Color(0.8f, 0, 0));
+    canvas.fill_circle(stick_pos, 10.0f, surf::Color(0.8f, 0.0f, 0.0f));
   else
-    gc.fill_circle(stick_pos, 10.0f, surf::Color(1.0f, 0, 0, 0.25f));
+    canvas.fill_circle(stick_pos, 10.0f, surf::Color(1.0f, 0.0f, 0.0f, 0.25f));
 
-  gc.draw_circle(stick_pos, 10.0f, surf::Color(1.0f, 0, 0));
+  canvas.draw_circle(stick_pos, 10.0f, surf::Color(1.0f, 0.0f, 0.0f));
 }
 
 void
-ControllerHelpWindow::draw_trigger(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, float value)
+ControllerHelpWindow::draw_trigger(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float value)
 {
   geom::fsize size(60, 20);
   geom::frect rect(pos - glm::vec2(size.width() / 2, size.height() / 2), size);
 
-  gc.fill_rect(rect,  surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
+  canvas.fill_rect(rect,  surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
 
   if (value > 0.0f)
-    gc.fill_rect(geom::frect(glm::vec2(rect.left(), rect.top()),
+    canvas.fill_rect(geom::frect(glm::vec2(rect.left(), rect.top()),
                              geom::fsize(rect.width() * value,
                                    rect.height())),
                        surf::Color(1.0f, 0.0f, 0.0f));
 
-  //gc.draw_rect(rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+  //canvas.draw_rect(rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 }
 
 void
-ControllerHelpWindow::draw(wstdisplay::GraphicsContext& gc)
+ControllerHelpWindow::draw(wstdisplay::Canvas& canvas)
 {
   wstinput::Controller const& controller = g_app.input().get_controller();
 
-  glm::vec2 pos(static_cast<float>(gc.size().width())  - 350.0f - 16.0f,
-               static_cast<float>(gc.size().height()) - 200.0f - 16.0f);
+  glm::vec2 pos(static_cast<float>(g_app.window().get_size().width())  - 350.0f - 16.0f,
+               static_cast<float>(g_app.window().get_size().height()) - 200.0f - 16.0f);
 
-  gc.fill_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, surf::Color(0.0f, 0.0f, 0.25f, 0.9f));
-  gc.draw_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, surf::Color(1.0f, 1.0f, 1.0f,  0.5f));
+  canvas.fill_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, surf::Color(0.0f, 0.0f, 0.25f, 0.9f));
+  canvas.draw_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, surf::Color(1.0f, 1.0f, 1.0f,  0.5f));
 
-  draw_stick(gc,
+  draw_stick(canvas,
              pos + glm::vec2(50, 75),
              controller.get_button_state(LEFT_STICK_BUTTON),
              controller.get_axis_state(X_AXIS),
              controller.get_axis_state(Y_AXIS));
 
-  draw_stick(gc,
+  draw_stick(canvas,
              pos + glm::vec2(250, 150),
              controller.get_button_state(RIGHT_STICK_BUTTON),
              controller.get_axis_state(X2_AXIS),
              controller.get_axis_state(Y2_AXIS));
 
-  draw_trigger(gc, pos + glm::vec2(45,  20), controller.get_trigger_state(LEFT_TRIGGER_AXIS));
-  draw_trigger(gc, pos + glm::vec2(305, 20), controller.get_trigger_state(RIGHT_TRIGGER_AXIS));
+  draw_trigger(canvas, pos + glm::vec2(45,  20), controller.get_trigger_state(LEFT_TRIGGER_AXIS));
+  draw_trigger(canvas, pos + glm::vec2(305, 20), controller.get_trigger_state(RIGHT_TRIGGER_AXIS));
 
-  draw_button(gc, pos + glm::vec2(125, 75), controller.get_button_state(SELECT_BUTTON));
-  draw_button(gc, pos + glm::vec2(225, 75), controller.get_button_state(START_BUTTON));
+  draw_button(canvas, pos + glm::vec2(125, 75), controller.get_button_state(SELECT_BUTTON));
+  draw_button(canvas, pos + glm::vec2(225, 75), controller.get_button_state(START_BUTTON));
 
-  draw_button(gc, pos + glm::vec2(100, 22), controller.get_button_state(LEFT_SHOULDER_BUTTON));
-  draw_button(gc, pos + glm::vec2(250, 22), controller.get_button_state(RIGHT_SHOULDER_BUTTON));
+  draw_button(canvas, pos + glm::vec2(100, 22), controller.get_button_state(LEFT_SHOULDER_BUTTON));
+  draw_button(canvas, pos + glm::vec2(250, 22), controller.get_button_state(RIGHT_SHOULDER_BUTTON));
 
   glm::vec2 face_pos(300, 75);
-  draw_button(gc, pos + face_pos + glm::vec2(  0,  25), controller.get_button_state(PRIMARY_BUTTON));
-  draw_button(gc, pos + face_pos + glm::vec2 (25,   0), controller.get_button_state(SECONDARY_BUTTON));
-  draw_button(gc, pos + face_pos + glm::vec2(-25,   0), controller.get_button_state(TERTIARY_BUTTON));
-  draw_button(gc, pos + face_pos + glm::vec2(  0, -25), controller.get_button_state(QUATERNARY_BUTTON));
+  draw_button(canvas, pos + face_pos + glm::vec2(  0,  25), controller.get_button_state(PRIMARY_BUTTON));
+  draw_button(canvas, pos + face_pos + glm::vec2 (25,   0), controller.get_button_state(SECONDARY_BUTTON));
+  draw_button(canvas, pos + face_pos + glm::vec2(-25,   0), controller.get_button_state(TERTIARY_BUTTON));
+  draw_button(canvas, pos + face_pos + glm::vec2(  0, -25), controller.get_button_state(QUATERNARY_BUTTON));
 
   glm::vec2 dpad_pos(100, 150);
-  draw_button(gc, pos + dpad_pos + glm::vec2(  0,  25), controller.get_button_state(MENU_DOWN_BUTTON));
-  draw_button(gc, pos + dpad_pos + glm::vec2 (25,   0), controller.get_button_state(MENU_RIGHT_BUTTON));
-  draw_button(gc, pos + dpad_pos + glm::vec2(-25,   0), controller.get_button_state(MENU_LEFT_BUTTON));
-  draw_button(gc, pos + dpad_pos + glm::vec2(  0, -25), controller.get_button_state(MENU_UP_BUTTON));
+  draw_button(canvas, pos + dpad_pos + glm::vec2(  0,  25), controller.get_button_state(MENU_DOWN_BUTTON));
+  draw_button(canvas, pos + dpad_pos + glm::vec2 (25,   0), controller.get_button_state(MENU_RIGHT_BUTTON));
+  draw_button(canvas, pos + dpad_pos + glm::vec2(-25,   0), controller.get_button_state(MENU_LEFT_BUTTON));
+  draw_button(canvas, pos + dpad_pos + glm::vec2(  0, -25), controller.get_button_state(MENU_UP_BUTTON));
 }
 
 void

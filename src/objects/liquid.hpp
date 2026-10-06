@@ -21,6 +21,8 @@
 
 #include <vector>
 #include <wstdisplay/fwd.hpp>
+#include <wstdisplay/handle.hpp>
+#include <wstdisplay/vertex.hpp>
 
 #include "engine/entity.hpp"
 
@@ -29,7 +31,8 @@ namespace windstille {
 class Liquid : public Entity
 {
 private:
-  wstdisplay::TexturePtr texture;
+  /** Owned by the TextureManager */
+  wstdisplay::TextureId texture;
   float t;
 
   std::vector<float> heightfield_store1;
@@ -38,17 +41,15 @@ private:
   std::vector<float>* heightfield1;
   std::vector<float>* heightfield2;
 
-  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_water_top;
-  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_water_body;
+  /** Scratch buffer, reused between frames */
+  std::vector<wstdisplay::Vertex> m_vertices;
 
 public:
   Liquid(ReaderMapping const& props);
   ~Liquid() override;
 
   void update(float delta) override;
-
-private:
-  void update_scene_graph();
+  void draw(SceneContext& sc) override;
 
 private:
   Liquid (Liquid const&);

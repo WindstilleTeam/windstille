@@ -18,37 +18,14 @@
 
 #include "objects/shockwave.hpp"
 
-#include <iostream>
-
-#include "app/app.hpp"
-#include <wstdisplay/shader_object.hpp>
-#include <wstdisplay/texture_manager.hpp>
-#include <wstdisplay/scenegraph/shockwave_drawable.hpp>
-#include "util/pathname.hpp"
-
 namespace windstille {
 
 Shockwave::Shockwave(ReaderMapping const& props) :
   pos(),
-  noise(g_app.texture().get(Pathname("images/noise3.png"))),
-  shader_program(wstdisplay::ShaderProgram::create()),
   radius()
 {
   props.read("pos", pos);
-
   radius = 100.0f;
-
-  noise->set_wrap(GL_REPEAT);
-  noise->set_filter(GL_LINEAR);
-
-  try {
-    shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
-    shader_program->link();
-  } catch (std::exception const& e) {
-    // Rectangle-texture / fixed-pipeline effects are not available on GLES yet.
-    std::cerr << "Shockwave: shader unavailable (" << e.what() << "), effect disabled\n";
-    shader_program.reset();
-  }
 }
 
 Shockwave::~Shockwave()
@@ -56,17 +33,8 @@ Shockwave::~Shockwave()
 }
 
 void
-Shockwave::draw (wstdisplay::SceneContext& sc)
+Shockwave::draw (SceneContext& /*sc*/)
 {
-  if (!shader_program) {
-    return;
-  }
-  sc.highlight().draw(std::make_unique<wstdisplay::ShockwaveDrawable>(
-                        pos,
-                        noise,
-                        shader_program,
-                        radius,
-                        sc.color().get_modelview()));
 }
 
 void

@@ -23,7 +23,7 @@
 #include <glm/gtc/constants.hpp>
 #include <logmich/log.hpp>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 
 #include "particles/deform_drawer.hpp"
 #include "particles/randomizer.hpp"
@@ -49,7 +49,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
     cone_start(0),
     cone_stop(glm::two_pi<float>()),
     bunching(1.0f),
-    layer(wstdisplay::SceneContext::COLORMAP),
+    layer(SceneContext::COLORMAP),
     size_start(1.0f),
     size_stop(1.0f),
     speed_start(100.0),
@@ -105,11 +105,11 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
     if (props.read("layer", layer_str))
     {
       if (layer_str == "highlight")
-        layer = wstdisplay::SceneContext::HIGHLIGHTMAP;
+        layer = SceneContext::HIGHLIGHTMAP;
       else if (layer_str == "light")
-        layer = wstdisplay::SceneContext::LIGHTMAP;
+        layer = SceneContext::LIGHTMAP;
       else if (layer_str == "color")
-        layer = wstdisplay::SceneContext::COLORMAP;
+        layer = SceneContext::COLORMAP;
       else
         std::cout << "ParticleSystem: Unknown layer type: '" << layer_str << "'" << std::endl;
     }
@@ -123,7 +123,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
       } else if (drawer_obj.get_name() == "spark-drawer") {
         set_drawer(new SparkDrawer(drawer_obj.get_mapping()));
       } else if (drawer_obj.get_name() == "deform-drawer") {
-        set_drawer(new DeformDrawer(drawer_obj.get_mapping(), surface_manager));
+        set_drawer(new DeformDrawer(drawer_obj.get_mapping()));
       } else {
         std::cout << "Unknown drawer: " << drawer_obj.get_name() << std::endl;
       }
@@ -188,7 +188,7 @@ ParticleSystem::ParticleSystem()
     cone_start(0),
     cone_stop(glm::two_pi<float>()),
     bunching(1.0f),
-    layer(wstdisplay::SceneContext::COLORMAP),
+    layer(SceneContext::COLORMAP),
     size_start(1.0f),
     size_stop(1.0f),
     speed_start(100.0),
@@ -210,11 +210,16 @@ ParticleSystem::set_drawer(Drawer* drawer_)
 }
 
 void
-ParticleSystem::draw(wstdisplay::GraphicsContext& gc) const
+ParticleSystem::draw(SceneContext& sc) const
 {
   if (drawer)
   {
-    drawer->draw(gc, *this);
+    switch (layer)
+    {
+      case SceneContext::LIGHTMAP: drawer->draw(sc.light(), *this); break;
+      case SceneContext::HIGHLIGHTMAP: drawer->draw(sc.highlight(), *this); break;
+      default: drawer->draw(sc.color(), *this); break;
+    }
   }
   else
   {

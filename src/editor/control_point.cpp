@@ -20,7 +20,7 @@
 
 #include <glm/gtx/io.hpp>
 
-#include <wstdisplay/scene_context.hpp>
+#include "display/scene_context.hpp"
 #include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/control_point.hpp"
@@ -72,7 +72,7 @@ ControlPoint::get_bounding_box() const
 }
 
 void
-ControlPoint::draw(wstdisplay::SceneContext& sc)
+ControlPoint::draw(SceneContext& sc)
 {
   geom::frect rect = get_bounding_box();
 

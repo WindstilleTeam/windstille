@@ -43,7 +43,7 @@ public:
         wstdisplay::TextureManager& texture_manager);
   ~Model();
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform);
   void apply(Armature* armature);
   void reset();
 private:

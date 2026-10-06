@@ -27,6 +27,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class Box : public Entity
 {
 private:
@@ -42,7 +44,7 @@ public:
 
   void update(float delta) override;
 
-  void draw(wstdisplay::SceneContext& gc) override;
+  void draw(SceneContext& gc) override;
 
 private:
   Box(Box const&);

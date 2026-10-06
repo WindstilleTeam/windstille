@@ -24,7 +24,7 @@
 #include <geom/geom.hpp>
 #include <wstinput/controller.hpp>
 
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/font/text_area.hpp>
 #include <wstgui/style.hpp>
@@ -78,7 +78,7 @@ DialogManager::add_caption(int alignment_, std::string const& text_)
 }
 
 void
-DialogManager::draw(wstdisplay::GraphicsContext& gc)
+DialogManager::draw(wstdisplay::Canvas& canvas)
 {
   int dialog_height = std::max(portrait_height + portrait_border_y*2,
                                int(text_area->get_rect().height()
@@ -88,17 +88,17 @@ DialogManager::draw(wstdisplay::GraphicsContext& gc)
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
-    pos.x = static_cast<float>(gc.size().width() - dialog_width - outer_border_x);
+    pos.x = static_cast<float>(g_app.window().get_size().width() - dialog_width - outer_border_x);
   } else {
-    pos.x = static_cast<float>((gc.size().width() - dialog_width) / 2);
+    pos.x = static_cast<float>((g_app.window().get_size().width() - dialog_width) / 2);
   }
 
   if(alignment & TOP) {
     pos.y = static_cast<float>(outer_border_y);
   } else if(alignment & BOTTOM) {
-    pos.y = static_cast<float>(gc.size().height() - dialog_height - outer_border_y);
+    pos.y = static_cast<float>(g_app.window().get_size().height() - dialog_height - outer_border_y);
   } else {
-    pos.y = static_cast<float>((gc.size().height() - dialog_height) / 2);
+    pos.y = static_cast<float>((g_app.window().get_size().height() - dialog_height) / 2);
   }
 
   if (!caption) {
@@ -107,22 +107,22 @@ DialogManager::draw(wstdisplay::GraphicsContext& gc)
                pos.x + dialog_width,
                pos.y + 200.0f);
 
-    gc.fill_rounded_rect(rect, 16.0f,
+    canvas.fill_rounded_rect(rect, 16.0f,
                                surf::Color(0, 0, 0.3f, 0.5f));
-    gc.draw_rounded_rect(rect, 16.0f,
+    canvas.draw_rounded_rect(rect, 16.0f,
                                surf::Color(0.6f, 1.0f, 1.0f, 0.8f));
 
-    portrait.draw(gc, glm::vec2(pos.x + portrait_border_x,
+    portrait.draw(canvas, glm::vec2(pos.x + portrait_border_x,
                                 pos.y + portrait_border_y));
   }
 
-  text_area->draw(gc);
+  text_area->draw(canvas);
 
   if (text_area->is_progress_complete())
   {
     glm::vec2 const& pos_ = text_area->get_cursor_pos();
     geom::frect cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
-    gc.fill_rect(cursor, surf::Color(1.0, 1.0, 1.0,
+    canvas.fill_rect(cursor, surf::Color(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::pi<float>() * 3.0f))));
   }
 }
@@ -166,9 +166,9 @@ DialogManager::create_text()
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
-    pos.x = g_app.window().get_gc().size().width() - dialog_width - outer_border_x;
+    pos.x = g_app.window().get_size().width() - dialog_width - outer_border_x;
   } else {
-    pos.x = (g_app.window().get_gc().size().width() - dialog_width) / 2;
+    pos.x = (g_app.window().get_size().width() - dialog_width) / 2;
   }
 
   int text_width
@@ -193,9 +193,9 @@ DialogManager::create_text()
   if(alignment & TOP) {
     pos.y = outer_border_y;
   } else if(alignment & BOTTOM) {
-    pos.y = g_app.window().get_gc().size().height() - dialog_height - outer_border_y;
+    pos.y = g_app.window().get_size().height() - dialog_height - outer_border_y;
   } else {
-    pos.y = (g_app.window().get_gc().size().height() - dialog_height) / 2;
+    pos.y = (g_app.window().get_size().height() - dialog_height) / 2;
   }
 
   text_rect = geom::irect(text_rect.left(),
@@ -213,7 +213,7 @@ DialogManager::create_text()
   text_area.reset(new wstdisplay::TextArea(g_app.style().get_font(),
                                            geom::frect(geom::irect(geom::ipoint(text_rect.left(), text_rect.top() + g_app.fonts().vera20->get_height()),
                                                                    geom::isize(text_width, 200))), true));
-  text_area->set_font(g_app.fonts().vera20.get());
+  text_area->set_font(g_app.fonts().vera20);
   text_area->set_text(text);
 }
 

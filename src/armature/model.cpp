@@ -61,11 +61,11 @@ Model::~Model()
 }
 
 void
-Model::draw(wstdisplay::GraphicsContext& gc)
+Model::draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform)
 {
   for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
   {
-    (*i)->draw(gc);
+    (*i)->draw(canvas, transform);
   }
 }
 

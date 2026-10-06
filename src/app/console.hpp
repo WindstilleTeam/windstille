@@ -38,7 +38,7 @@ public:
 
   std::ostream& get_ostream() const;
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas);
   void update(float delta);
 
   void activate();

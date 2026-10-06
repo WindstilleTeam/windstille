@@ -24,6 +24,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class SpiderMine : public Entity
 {
 private:
@@ -43,7 +45,7 @@ public:
   ~SpiderMine() override;
 
   void update(float delta) override;
-  void draw (wstdisplay::SceneContext& sc) override;
+  void draw (SceneContext& sc) override;
   void die();
 };
 

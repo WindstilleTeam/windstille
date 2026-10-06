@@ -18,18 +18,19 @@
 
 #include "objects/decal.hpp"
 
-#include "app/app.hpp"
-#include "engine/sector.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
-#include <wstdisplay/scenegraph/surface_drawable.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/scene_context.hpp>
+
+#include "app/app.hpp"
+#include "display/scene_context.hpp"
+#include "engine/sector.hpp"
 
 namespace windstille {
 
 Decal::Decal(ReaderMapping const& reader) :
-  drawable(),
+  m_surface(),
+  m_params(),
+  m_layer(SceneContext::COLORMAP),
   pos()
 {
   std::string path;
@@ -49,50 +50,23 @@ Decal::Decal(ReaderMapping const& reader) :
   reader.read("vflip", vflip);
   reader.read("hflip", hflip);
 
-  wstdisplay::SurfacePtr surface = g_app.surface().get(Pathname(path));
+  m_surface = g_app.surface().get(Pathname(path));
 
-  wstdisplay::SurfaceDrawingParameters params;
-
+  // FIXME: Evil hardcoded constans, see edtior/decal_object_model.hpp
   switch(map_type)
   {
-    // FIXME: Evil hardcoded constans, see edtior/decal_object_model.hpp
-    case 0: break;
-    case 1: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
-    case 2: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
+    case 0: m_layer = SceneContext::COLORMAP; break;
+    case 1: m_layer = SceneContext::LIGHTMAP; break;
+    case 2: m_layer = SceneContext::HIGHLIGHTMAP; break;
   }
 
-  glm::vec2 center_offset(-surface->get_width() /2,
-                          -surface->get_height()/2);
-
-  center_offset.x *= scale.x;
-  center_offset.y *= scale.y;
-
-  drawable.reset(new wstdisplay::SurfaceDrawable(surface,
-                                                 params
-                                                 .set_pos(pos + center_offset)
-                                                 .set_angle(angle)
-                                                 .set_hflip(hflip)
-                                                 .set_vflip(vflip)
-                                                 .set_scale(scale),
-                                                 0,
-                                                 glm::mat4(1.0f)));
-
-  switch(map_type)
-  {
-    // FIXME: Evil hardcoded constans
-    case 0: // color
-      drawable->set_render_mask(wstdisplay::SceneContext::COLORMAP);
-      break;
-
-    case 1: // lightmap
-      drawable->set_render_mask(wstdisplay::SceneContext::LIGHTMAP);
-      break;
-
-    case 2: // highlight
-      drawable->set_render_mask(wstdisplay::SceneContext::HIGHLIGHTMAP);
-      break;
-  }
-  Sector::current()->get_scene_graph().add_drawable(drawable);
+  m_params
+    .set_pos(pos)
+    .set_anchor(geom::origin::CENTER)
+    .set_angle(angle)
+    .set_hflip(hflip)
+    .set_vflip(vflip)
+    .set_scale(scale);
 }
 
 Decal::~Decal()
@@ -100,8 +74,15 @@ Decal::~Decal()
 }
 
 void
-Decal::draw(wstdisplay::SceneContext& /*context*/)
+Decal::draw(SceneContext& sc)
 {
+  wstdisplay::Canvas& canvas = (m_layer == SceneContext::LIGHTMAP) ? sc.light() :
+    (m_layer == SceneContext::HIGHLIGHTMAP) ? sc.highlight() : sc.color();
+
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_z(0.0f);
+  canvas.set_blend(m_layer == SceneContext::COLORMAP ? wstdisplay::Blend::Alpha : wstdisplay::Blend::Add);
+  canvas.draw(m_surface, m_params);
 }
 
 void
@@ -116,14 +97,7 @@ Decal::set_parent(GameObject* parent)
   if (decal)
   { // FIXME: Not going to work with double parenting
     pos += decal->pos;
-
-    glm::vec2 center_offset(-drawable->get_surface()->get_width() /2,
-                           -drawable->get_surface()->get_height()/2);
-
-    center_offset.x *= drawable->get_params().scale.x;
-    center_offset.y *= drawable->get_params().scale.y;
-
-    drawable->get_params().set_pos(pos + center_offset);
+    m_params.set_pos(pos);
   }
 }
 

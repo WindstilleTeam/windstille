@@ -25,6 +25,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class VRDummy : public Entity
 {
 private:
@@ -38,7 +40,7 @@ public:
   VRDummy(ReaderMapping const& props);
   ~VRDummy() override;
 
-  void draw(wstdisplay::SceneContext& gc) override;
+  void draw(SceneContext& gc) override;
   void update(float delta) override;
 };
 

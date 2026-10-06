@@ -52,8 +52,11 @@ public:
 
   glm::mat4* get_render_matrix(std::string const& name);
 
-  void draw(wstdisplay::GraphicsContext& gc);
-  void draw_bone(wstdisplay::VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 matrix);
+  /** Draw the bones as lines, \a transform maps the 3D bone
+      positions to canvas coordinates, depth is dropped */
+  void draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform);
+  void draw_bone(wstdisplay::Canvas& canvas, glm::mat4 const& transform,
+                 Bone* bone, glm::vec3 p, glm::mat4 matrix);
 private:
   Armature (Armature const&);
   Armature& operator= (Armature const&);

@@ -24,6 +24,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class CollisionObject;
 
 class Elevator : public Entity
@@ -37,7 +39,7 @@ public:
   Elevator(ReaderMapping const& props);
   ~Elevator() override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
   void update(float delta) override;
 
 private:

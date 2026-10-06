@@ -110,7 +110,7 @@ public:
   void update(float delta);
 
   // debugging helpers
-  void draw(wstdisplay::DrawingContext& dc);
+  void draw(wstdisplay::Canvas& canvas);
 
   // this functions support unstucking, which needs to be done, when more than 2 object stack over one another
   // should this object be unstuck ??

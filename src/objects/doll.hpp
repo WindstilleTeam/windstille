@@ -23,6 +23,7 @@
 
 #include <glm/glm.hpp>
 #include "engine/game_object.hpp"
+#include "sprite3d/sprite3d.hpp"
 #include "util/currenton.hpp"
 
 namespace wstinput {
@@ -31,7 +32,8 @@ class Controller;
 
 namespace windstille {
 
-class Sprite3DDrawable;
+class SceneContext;
+
 class EdgePosition;
 
 using Controller = wstinput::Controller;
@@ -55,7 +57,7 @@ private:
     kJumpUp
   };
 
-  std::shared_ptr<Sprite3DDrawable> m_drawable;
+  Sprite3D m_sprite;
   glm::vec2 m_velocity;
   glm::vec2 m_pos;
   glm::vec2 m_last_pos;
@@ -66,7 +68,7 @@ public:
   Doll();
   ~Doll() override;
 
-  void draw (wstdisplay::SceneContext& ) override;
+  void draw (SceneContext& ) override;
   void update (float delta) override;
   void update(wstinput::Controller const& controller, float delta);
 

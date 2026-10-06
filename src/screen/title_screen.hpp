@@ -36,7 +36,7 @@ public:
 
   void on_startup() override;
 
-  void draw(wstdisplay::GraphicsContext& gc) override;
+  void draw(wstdisplay::Canvas& canvas) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
   void handle_event(SDL_Event const& ) override;

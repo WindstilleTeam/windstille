@@ -25,7 +25,7 @@
 
 #include <geom/geom.hpp>
 
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <surf/color.hpp>
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
@@ -247,19 +247,24 @@ NavigationGraph::find_closest_edge(glm::vec2 const& pos, float radius)
 }
 
 void
-NavigationGraph::draw(wstdisplay::GraphicsContext& gc)
+NavigationGraph::draw(wstdisplay::Canvas& canvas, float width)
 {
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    gc.draw_line_with_normal(geom::fline((*i)->get_node1()->get_pos(),
-                                        (*i)->get_node2()->get_pos()),
-                                   surf::Color(1.0f, 0.0f, 0.0f));
+    glm::vec2 const p1 = (*i)->get_node1()->get_pos();
+    glm::vec2 const p2 = (*i)->get_node2()->get_pos();
+    canvas.draw_line(geom::fpoint(p1), geom::fpoint(p2), surf::Color(1.0f, 0.0f, 0.0f), width);
+
+    // the normal from the middle of the edge
+    glm::vec2 const normal = -32.0f * glm::normalize(glm::vec2(p1.y - p2.y, p2.x - p1.x));
+    glm::vec2 const center = 0.5f * (p1 + p2);
+    canvas.draw_line(geom::fpoint(center), geom::fpoint(center + normal), surf::Color(0.0f, 1.0f, 1.0f), width);
   }
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    gc.fill_rect(geom::frect((*i)->get_pos() - glm::vec2(4,4), geom::fsize(9, 9)),
-                       surf::Color(1.0f, 1.0f, 0.0f));
+    canvas.fill_rect(geom::frect((*i)->get_pos() - glm::vec2(4,4), geom::fsize(9, 9)),
+                     surf::Color(1.0f, 1.0f, 0.0f));
   }
 }
 

@@ -19,22 +19,31 @@
 #ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
 #define HEADER_WINDSTILLE_FONT_FONTS_HPP
 
-#include <memory>
-
-#include <wstdisplay/font/ttf_font.hpp>
+#include <wstdisplay/font/font.hpp>
+#include <wstdisplay/font/font_manager.hpp>
 
 namespace windstille {
 
+/** The fonts used by the game, loaded once at startup */
 class Fonts
 {
 public:
-  std::unique_ptr<wstdisplay::TTFFont> ttffont;
-  std::unique_ptr<wstdisplay::TTFFont> vera12;
-  std::unique_ptr<wstdisplay::TTFFont> vera20;
+  explicit Fonts(wstdisplay::Device& device);
+  ~Fonts();
+
+  wstdisplay::FontManager& get_manager() { return m_manager; }
+
+private:
+  wstdisplay::FontManager m_manager;
 
 public:
-  Fonts(wstdisplay::TTFFontManager& mgr);
-  ~Fonts();
+  wstdisplay::Font const* ttffont;
+  wstdisplay::Font const* vera12;
+  wstdisplay::Font const* vera20;
+
+public:
+  Fonts(Fonts const&) = delete;
+  Fonts& operator=(Fonts const&) = delete;
 };
 
 } // namespace windstille

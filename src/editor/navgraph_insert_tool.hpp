@@ -29,6 +29,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
 
@@ -58,7 +60,7 @@ public:
 
   void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) override;
 
-  void draw(wstdisplay::SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
 
 private:
   NavgraphInsertTool(NavgraphInsertTool const&);

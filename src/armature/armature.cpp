@@ -21,15 +21,13 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <wstdisplay/gl_compat.hpp>
 
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <surf/color.hpp>
 #include "armature/pose.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 namespace windstille {
 
@@ -124,25 +122,14 @@ Armature::get_bone(std::string const& name_)
 }
 
 void
-Armature::draw(wstdisplay::GraphicsContext& gc)
+Armature::draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform)
 {
-  // For some reason OpenGL sometimes doesn't draw the lines properly,
-  // going to NavigationTester and then back fixes the issue
-  glLineWidth(6.0f);
-
-  wstdisplay::VertexArrayDrawable va;
-
-  va.set_mode(GL_LINES);
-
-  draw_bone(va, root_bone, glm::vec3(0,0, 0), glm::mat4(1.0f));
-
-  va.render(gc);
-
-  glLineWidth(1.0f);
+  draw_bone(canvas, transform, root_bone, glm::vec3(0,0, 0), glm::mat4(1.0f));
 }
 
 void
-Armature::draw_bone(wstdisplay::VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 m)
+Armature::draw_bone(wstdisplay::Canvas& canvas, glm::mat4 const& transform,
+                    Bone* bone, glm::vec3 p, glm::mat4 m)
 {
   if (bone == nullptr) { return; }
 
@@ -153,27 +140,25 @@ Armature::draw_bone(wstdisplay::VertexArrayDrawable& va, Bone* bone, glm::vec3 p
   // Y seems to work?! -> Blenders matrix are weird
   glm::vec3 p__ = glm::vec3(glm::vec4(p_, 1.0f) + m_ * glm::vec4(0.0f, bone->length, 0.0f, 1.0f));
 
-  // p to p+offset
-  va.color({0.0f, 0.5f, 0.0f, 0.5f});
-  va.vertex(  p.x, p.y, p.z);
+  auto project = [&transform](glm::vec3 const& v) {
+    glm::vec4 const t = transform * glm::vec4(v, 1.0f);
+    return geom::fpoint(t.x, t.y);
+  };
 
-  va.color({0.0f, 1.0f, 0.0f, 0.5f});
-  va.vertex( p_.x, p_.y, p_.z);
+  // p to p+offset
+  canvas.draw_line(project(p), project(p_), surf::Color(0.0f, 1.0f, 0.0f, 0.5f), 6.0f);
 
   // p+offset to new endpoint
-  va.color({0.0f, 0.0f, 1.0f});
-  va.vertex(  p_.x,   p_.y,   p_.z);
-
-  va.color({1.0f, 0.0f, 0.0f});
-  va.vertex(  p__.x,  p__.y, p__.z);
+  canvas.draw_line(project(p_), project(p__), surf::Color(1.0f, 0.0f, 0.0f), 6.0f);
 
   bone->render_head = p_;
   bone->render_tail = p__;
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i) {
-    draw_bone(va, *i, p__, m_);
+    draw_bone(canvas, transform, *i, p__, m_);
   }
 }
+
 
 void
 Armature::apply(Pose const& pose)

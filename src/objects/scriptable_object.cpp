@@ -17,6 +17,8 @@
 */
 
 #include "app/app.hpp"
+
+#include "display/scene_context.hpp"
 #include "app/console.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
@@ -62,13 +64,13 @@ ScriptableObject::ScriptableObject(ReaderMapping const& props) :
   if (highlightname != "")
   {
     highlight = g_app.sprite().create(Pathname(highlightname));
-    highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    highlight.set_blend(wstdisplay::Blend::Add);
   }
 
   if (lightname != "")
   {
     light = g_app.sprite().create(Pathname(lightname));
-    light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    light.set_blend(wstdisplay::Blend::Add);
   }
 
   flash_delta = game_time;
@@ -81,7 +83,7 @@ ScriptableObject::~ScriptableObject()
 }
 
 void
-ScriptableObject::draw(wstdisplay::SceneContext& sc)
+ScriptableObject::draw(SceneContext& sc)
 {
   glm::vec2 tmp_pos = pos;
 

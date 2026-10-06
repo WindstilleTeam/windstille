@@ -25,6 +25,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class WindstilleWidget;
 
@@ -41,7 +43,7 @@ public:
 
   virtual void mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& /*wst*/) {}
 
-  virtual void draw(wstdisplay::SceneContext& /*sc*/) {}
+  virtual void draw(SceneContext& /*sc*/) {}
 
 private:
   Tool(Tool const&);

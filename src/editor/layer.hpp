@@ -25,6 +25,8 @@
 
 namespace windstille {
 
+class SceneContext;
+
 
 class Layer;
 typedef std::shared_ptr<Layer> LayerHandle;
@@ -72,7 +74,7 @@ public:
   void remove(ObjectModelHandle const& object);
   iterator erase(iterator it);
 
-  void draw(wstdisplay::SceneContext& sc, SelectMask const& layers);
+  void draw(SceneContext& sc, SelectMask const& layers);
   void update(float delta);
   void sync(Gtk::TreeModel::Row const& row);
 

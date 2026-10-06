@@ -21,34 +21,36 @@
 #define HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 
 #include <filesystem>
-#include <map>
-#include <memory>
 
 #include <wstdisplay/fwd.hpp>
+#include <wstsprite/sprite_manager.hpp>
 
 namespace windstille {
 
 class Sprite;
-class SpriteData;
 
-typedef std::shared_ptr<SpriteData> SpriteDataPtr;
-
+/** Loads 2D sprites, .sprite files as well as plain images. A missing
+    .sprite file falls back to a .png of the same name. */
 class SpriteManager
 {
 public:
-  SpriteManager(wstdisplay::SurfaceManager& surface_manager);
+  explicit SpriteManager(wstdisplay::SurfaceManager& surface_manager);
   ~SpriteManager();
 
   Sprite create(std::filesystem::path const& filename);
-  SpriteDataPtr create_data(std::filesystem::path const& filename);
 
-  /** Removes all cached Sprites that are no longer in use */
-  void cleanup();
+  /** Throws if \a filename can't be loaded */
+  wstsprite::SpriteId load(std::filesystem::path const& filename);
+
+  wstsprite::SpriteData const& get(wstsprite::SpriteId id) const { return m_sprites.get(id); }
+  wstsprite::SpriteData const* find(wstsprite::SpriteId id) const { return m_sprites.find(id); }
 
 private:
-  wstdisplay::SurfaceManager& m_surface_manager;
-  typedef std::map<std::filesystem::path, SpriteDataPtr> Datas;
-  Datas datas;
+  wstsprite::SpriteManager m_sprites;
+
+public:
+  SpriteManager(SpriteManager const&) = delete;
+  SpriteManager& operator=(SpriteManager const&) = delete;
 };
 
 } // namespace windstille
