@@ -16,6 +16,7 @@
 
 #include "reader_document.hpp"
 
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
