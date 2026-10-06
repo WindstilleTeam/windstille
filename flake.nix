@@ -49,10 +49,16 @@
       let
         inherit (pkgs) lib stdenv;
 
-        # Header-only stb_image for PNG/JPEG (replaces libjpeg/libpng everywhere).
+        # Header-only stb_image and stb_image_write for loading and saving
+        # PNG/JPEG (replaces libjpeg/libpng everywhere).
+        stbRev = "2c980bb59875b0d32144a71867fbdebb2f77cd20";
         stbImageH = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
+          url = "https://raw.githubusercontent.com/nothings/stb/${stbRev}/stb_image.h";
           sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
+        };
+        stbImageWriteH = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/nothings/stb/${stbRev}/stb_image_write.h";
+          sha256 = "sha256-y9XwrXqc9EaK/7NjVKHSM4A08sEkc88ajjIFPLaRSgU=";
         };
         stbImageIncludeDir = pkgs.stdenvNoCC.mkDerivation {
           name = "stb-image-include";
@@ -60,6 +66,7 @@
           installPhase = ''
             mkdir -p $out
             cp ${stbImageH} $out/stb_image.h
+            cp ${stbImageWriteH} $out/stb_image_write.h
           '';
         };
         surfStbCmakeFlags = [

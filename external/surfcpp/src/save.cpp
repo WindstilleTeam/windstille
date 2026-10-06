@@ -23,6 +23,9 @@
 #if defined(HAVE_PNG)
 #  include "plugins/png.hpp"
 #endif
+#if defined(SURF_HAVE_STB_IMAGE_WRITE)
+#  include "plugins/stb_image_saver.hpp"
+#endif
 #include "save.hpp"
 
 namespace surf {
@@ -33,12 +36,16 @@ void save(SoftwareSurface const& surface, std::filesystem::path const& path, std
     if (path.extension() == ".jpg" || path.extension() == ".JPG") {
 #if defined(HAVE_JPEG)
       surf::jpeg::save(surface, path, 70);
+#elif defined(SURF_HAVE_STB_IMAGE_WRITE)
+      surf::stb_image_saver::save_jpeg(surface, path, 70);
 #else
       throw std::runtime_error("JPEG support not built");
 #endif
     } else if (path.extension() == ".png" || path.extension() == ".PNG") {
 #if defined(HAVE_PNG)
       surf::png::save(surface, path);
+#elif defined(SURF_HAVE_STB_IMAGE_WRITE)
+      surf::stb_image_saver::save_png(surface, path);
 #else
       throw std::runtime_error("PNG support not built");
 #endif
@@ -48,12 +55,16 @@ void save(SoftwareSurface const& surface, std::filesystem::path const& path, std
   } else if (format == "png") {
 #if defined(HAVE_PNG)
     surf::png::save(surface, path);
+#elif defined(SURF_HAVE_STB_IMAGE_WRITE)
+    surf::stb_image_saver::save_png(surface, path);
 #else
     throw std::runtime_error("PNG support not built");
 #endif
   } else if (format == "jpeg") {
 #if defined(HAVE_JPEG)
     surf::jpeg::save(surface, path, 70);
+#elif defined(SURF_HAVE_STB_IMAGE_WRITE)
+    surf::stb_image_saver::save_jpeg(surface, path, 70);
 #else
     throw std::runtime_error("JPEG support not built");
 #endif

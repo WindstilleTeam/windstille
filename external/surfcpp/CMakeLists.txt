@@ -207,6 +207,12 @@ if(SURF_USE_STB_IMAGE)
   # Prefer -DSTB_IMAGE_INCLUDE_DIR=… (nix flake / r36s / android).
   if(DEFINED STB_IMAGE_INCLUDE_DIR AND EXISTS "${STB_IMAGE_INCLUDE_DIR}/stb_image.h")
     target_include_directories(surf PRIVATE "${STB_IMAGE_INCLUDE_DIR}")
+    # saving PNG/JPEG without libpng/libjpeg
+    if(EXISTS "${STB_IMAGE_INCLUDE_DIR}/stb_image_write.h")
+      target_sources(surf PRIVATE src/plugins/stb_image_saver.cpp)
+      target_compile_definitions(surf PRIVATE SURF_HAVE_STB_IMAGE_WRITE=1)
+      message(STATUS "surf: stb_image_write PNG/JPEG saver enabled")
+    endif()
   elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/plugins/stb_image.h")
     # optional vendored copy next to the loader
   elseif(EXISTS "${CMAKE_SOURCE_DIR}/mk/android/app/jni/stb_image.h")
