@@ -17,7 +17,19 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 cmake_minimum_required(VERSION 3.10...4.1)
-project(tinycmmc VERSION 0.1.0)
+
+# Source of truth: top-level VERSION file (e.g. "0.2.0-dev"), or
+# -DPROJECT_VERSION_FULL=... from the packaging (Nix flake appends
+# .<revCount>+g<rev>).
+if(NOT DEFINED PROJECT_VERSION_FULL)
+  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL LIMIT_COUNT 1)
+endif()
+
+# CMake project() VERSION expects major[.minor[.patch[.tweak]]]; strip
+# any -dev / +git suffix for the numeric project version.
+string(REGEX MATCH "^[0-9]+(\\.[0-9]+)*" _project_version_cmake "${PROJECT_VERSION_FULL}")
+
+project(tinycmmc VERSION ${_project_version_cmake})
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
