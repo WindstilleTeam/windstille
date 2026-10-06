@@ -14,11 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.15...4.1)
+cmake_minimum_required(VERSION 3.21...4.1)
 
 # Source of truth: top-level VERSION file (e.g. "0.1.0-dev"), or
 # -DPROJECT_VERSION_FULL=... from packaging (Nix may append .<revCount>+g<rev>).
-if(NOT DEFINED PROJECT_VERSION_FULL)
+# A parent project's PROJECT_VERSION_FULL isn't ours when we are a subdirectory
+if(NOT DEFINED PROJECT_VERSION_FULL OR NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL LIMIT_COUNT 1)
 endif()
 
@@ -41,6 +42,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra tools (priotool)" OFF)
+option(PRIO_INSTALL "Generate install and export rules, off by default when prio is a subdirectory" ${PROJECT_IS_TOP_LEVEL})
 option(PRIO_USE_JSONCPP "Enable support for jsoncpp" ON)
 option(PRIO_USE_SEXPCPP "Enable support for sexp-cpp" ON)
 option(WARNINGS "Enable extra compiler warnings" OFF)
@@ -130,36 +132,13 @@ if(PRIO_USE_JSONCPP)
   pkg_search_module(JSONCPP REQUIRED jsoncpp IMPORTED_TARGET)
 endif()
 
-# Prefer system / find_package packages; fall back to external/ submodules
-# when present (kept for local development convenience).
-function(build_dependencies)
-  set(BUILD_TESTS OFF)  # do not recurse into dependency tests
-
-  if(PRIO_USE_SEXPCPP)
-    find_package(sexp QUIET)
-    if(NOT TARGET sexp::sexp)
-      if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/sexp-cpp/CMakeLists.txt")
-        add_subdirectory(external/sexp-cpp EXCLUDE_FROM_ALL)
-      else()
-        message(FATAL_ERROR
-          "sexp not found via find_package and external/sexp-cpp is missing.\n"
-          "Install sexp-cpp or run: git submodule update --init --recursive")
-      endif()
-    endif()
-  endif()
-
-  find_package(logmich QUIET)
-  if(NOT TARGET logmich::logmich)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/logmich/CMakeLists.txt")
-      add_subdirectory(external/logmich EXCLUDE_FROM_ALL)
-    else()
-      message(FATAL_ERROR
-        "logmich not found via find_package and external/logmich is missing.\n"
-        "Install logmich or run: git submodule update --init --recursive")
-    endif()
-  endif()
-endfunction()
-build_dependencies()
+# The targets already exist when prio is a subdirectory next to them
+if(PRIO_USE_SEXPCPP AND NOT TARGET sexp::sexp)
+  find_package(sexp REQUIRED)
+endif()
+if(NOT TARGET logmich::logmich)
+  find_package(logmich REQUIRED)
+endif()
 
 set(PRIO_HEADERS
   include/prio/error_handler.hpp
@@ -287,8 +266,10 @@ if(BUILD_EXTRA)
     target_compile_options(${EXTRA_EXE} PRIVATE ${WARNINGS_CXX_FLAGS})
     target_link_libraries(${EXTRA_EXE} PRIVATE prio::prio)
 
-    install(TARGETS ${EXTRA_EXE}
-      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    if(PRIO_INSTALL)
+      install(TARGETS ${EXTRA_EXE}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    endif()
   endforeach()
 
   if(BUILD_TESTS)
@@ -305,35 +286,37 @@ if(BUILD_EXTRA)
   endif()
 endif()
 
-# --- install / export (inlined from former tinycmmc_export_and_install_library) ---
-install(TARGETS prio
-  EXPORT prio
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/prio)
+if(PRIO_INSTALL)
+  # --- install / export (inlined from former tinycmmc_export_and_install_library) ---
+  install(TARGETS prio
+    EXPORT prio
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/prio)
 
-configure_package_config_file(
-  prio-config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/prio-config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
+  configure_package_config_file(
+    prio-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/prio-config.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
 
-write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/prio-config-version.cmake
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
+  write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/prio-config-version.cmake
+    VERSION "${PROJECT_VERSION}"
+    COMPATIBILITY SameMinorVersion)
 
-export(EXPORT prio
-  NAMESPACE prio::
-  FILE ${CMAKE_CURRENT_BINARY_DIR}/prio-targets.cmake)
+  export(EXPORT prio
+    NAMESPACE prio::
+    FILE ${CMAKE_CURRENT_BINARY_DIR}/prio-targets.cmake)
 
-install(EXPORT prio
-  FILE prio-targets.cmake
-  NAMESPACE prio::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
+  install(EXPORT prio
+    FILE prio-targets.cmake
+    NAMESPACE prio::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
 
-install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/prio-config-version.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/prio-config.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
+  install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/prio-config-version.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/prio-config.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
+endif()
 
 # EOF #

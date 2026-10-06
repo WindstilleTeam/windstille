@@ -59,11 +59,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1787135253,
-        "narHash": "sha256-RD2kNWCG+Bjo6h+JVjWVNntZs2GtRoeY2xHjts/FNkA=",
+        "lastModified": 1791048980,
+        "narHash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ffb3c9b700e759be2ef13237c9d8f953b32a1e46",
+        "rev": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
         "type": "github"
       },
       "original": {
@@ -91,11 +91,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787244669,
-        "narHash": "sha256-BFM01H34HeJsShBaTLcLXuJZaqsvIMXPtytYuFkv8ng=",
+        "lastModified": 1791108317,
+        "narHash": "sha256-spx5e1z1reBdUnbWy9wfYfS49SgxQCqS4MXjDuuCx78=",
         "ref": "refs/heads/master",
-        "rev": "556b73606cadd1667ab63bf18585d8f90483afc9",
-        "revCount": 346,
+        "rev": "67043e76b3c29919cf25424da75f0c0f486aeb75",
+        "revCount": 348,
         "type": "git",
         "url": "https://github.com/lispparser/sexp-cpp.git"
       },
