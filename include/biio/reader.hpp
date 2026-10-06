@@ -17,13 +17,17 @@
 #ifndef HEADER_BIIO_READER_HPP
 #define HEADER_BIIO_READER_HPP
 
-#include <array>
 #include <algorithm>
+#include <array>
+#include <bit>
 #include <filesystem>
 #include <istream>
 #include <memory>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
 
-#include "bit_cast.hpp"
+#include <biio/bit_cast.hpp>
 
 namespace biio {
 

@@ -14,11 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "reader.hpp"
+#include <biio/reader.hpp>
 
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #include <string.h>
+#include <string>
+#include <utility>
 
 namespace biio {
 
