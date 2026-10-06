@@ -139,23 +139,12 @@ fi
 if [ -n "$ZLIB_PREFIX" ] && [ -d "$ZLIB_PREFIX" ]; then
   cmake_args+=(-DZLIB_ROOT="$ZLIB_PREFIX")
 fi
-# PNG/JPEG via header-only stb_image (no libjpeg/libpng in the wasm link).
-cmake_args+=(
-  -DSURF_USE_STB_IMAGE=ON
-  -DSURF_USE_SYSTEM_JPEG=OFF
-  -DSURF_USE_SYSTEM_PNG=OFF
-)
-STB_DIR="${STB_IMAGE_INCLUDE_DIR:-}"
-if [ -n "$STB_DIR" ] && [ -f "$STB_DIR/stb_image.h" ]; then
-  cmake_args+=(-DSTB_IMAGE_INCLUDE_DIR="$STB_DIR")
-  echo "==> STB_IMAGE_INCLUDE_DIR=$STB_DIR"
-elif [ -f "$SRC_DIR/mk/android/app/jni/stb_image.h" ]; then
-  cmake_args+=(-DSTB_IMAGE_INCLUDE_DIR="$SRC_DIR/mk/android/app/jni")
-  echo "==> stb_image.h from mk/android/app/jni"
-else
-  echo "error: stb_image.h required for wasm (set STB_IMAGE_INCLUDE_DIR)" >&2
+# PNG/JPEG via header-only stb (no libjpeg/libpng in the wasm link).
+if [ ! -f "${STB_INCLUDE_DIR:-}/stb_image.h" ]; then
+  echo "error: STB_INCLUDE_DIR must contain stb_image.h and stb_image_write.h" >&2
   exit 1
 fi
+cmake_args+=(-DWITH_STB=ON -DSTB_INCLUDE_DIR="$STB_INCLUDE_DIR")
 FREETYPE_PREFIX="${FREETYPE_WASM_LIBS:-}"
 if [ -n "$FREETYPE_PREFIX" ] && [ -d "$FREETYPE_PREFIX" ]; then
   cmake_args+=(

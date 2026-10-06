@@ -84,10 +84,8 @@ let
       "-DWINDSTILLE_GLM_INCLUDE_DIR=${pkgs.glm.src}"
       "-DSQUIRREL_LIBRARIES=${squirrelWin64}/lib/libsquirrel.a;${squirrelWin64}/lib/libsqstdlib.a"
       "-DSQUIRREL_INCLUDE_DIRS=${squirrelWin64}/include"
-      "-DSURF_USE_STB_IMAGE=ON"
-      "-DSURF_USE_SYSTEM_JPEG=OFF"
-      "-DSURF_USE_SYSTEM_PNG=OFF"
-      "-DSTB_IMAGE_INCLUDE_DIR=${stbImageIncludeDir}"
+      "-DWITH_STB=ON"
+      "-DSTB_INCLUDE_DIR=${stbImageIncludeDir}"
       # Same slim codec set as the other ports: WAV and modplug modules
       "-DWSTSOUND_WITH_VORBIS=OFF"
       "-DWSTSOUND_WITH_OPUS=OFF"

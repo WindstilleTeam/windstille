@@ -70,10 +70,8 @@
           '';
         };
         surfStbCmakeFlags = [
-          "-DSURF_USE_STB_IMAGE=ON"
-          "-DSURF_USE_SYSTEM_JPEG=OFF"
-          "-DSURF_USE_SYSTEM_PNG=OFF"
-          "-DSTB_IMAGE_INCLUDE_DIR=${stbImageIncludeDir}"
+          "-DWITH_STB=ON"
+          "-DSTB_INCLUDE_DIR=${stbImageIncludeDir}"
         ];
 
         # Shared cmake helper for external/* subtrees built as standalone

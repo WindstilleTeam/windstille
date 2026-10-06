@@ -502,8 +502,8 @@ EOF
         "-DWINDSTILLE_USE_GLES=ON"
         # No libpng/libjpeg in the published ArkOS sysroot — use stb_image
         # (same as Android) so PNG/JPEG assets actually load.
-        "-DSURF_USE_STB_IMAGE=ON"
-        "-DSTB_IMAGE_INCLUDE_DIR=${stbImageIncludeDir}"
+        "-DWITH_STB=ON"
+        "-DSTB_INCLUDE_DIR=${stbImageIncludeDir}"
         # ArkOS sysroot has no glm cmake config.
         "-DWINDSTILLE_GLM_INCLUDE_DIR=${glm}/include"
         "-DMINISWIG=${miniswigHost}/bin/miniswig"

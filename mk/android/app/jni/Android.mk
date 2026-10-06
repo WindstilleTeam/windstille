@@ -52,9 +52,8 @@ LOCAL_SRC_FILES := $(filter-out %/editor/% editor/%,$(LOCAL_SRC_FILES))
 LOCAL_SRC_FILES := $(filter-out %/json_reader_impl.cpp %/json_writer_impl.cpp %/jsonpretty_writer_impl.cpp,$(LOCAL_SRC_FILES))
 # Prefer deps/prio over the priocpp alias (same sources twice → duplicate symbols / double work).
 LOCAL_SRC_FILES := $(filter-out %/deps/priocpp/%,$(LOCAL_SRC_FILES))
-# No system libjpeg/libpng on Android NDK tree yet; drop surfcpp image plugins
-# that need them (DDS/PNM remain). TODO: stage libjpeg-turbo + libpng statics
-# like audio libs and re-enable JPEG/PNG SoftwareSurface loaders.
+# surfcpp loads and saves PNG/JPEG with stb (HAVE_STB), drop the libjpeg and
+# libpng plugins and the exec based ones that need libpng.
 # Note: GNU make filter-out allows only one % per pattern.
 LOCAL_SRC_FILES := $(filter-out \
   %/plugins/jpeg.cpp \
@@ -71,6 +70,8 @@ LOCAL_SRC_FILES := $(filter-out \
   %/plugins/rsvg.cpp \
   %/plugins/vidthumb.cpp \
   %/plugins/imagemagick.cpp \
+  %/plugins/ufraw.cpp \
+  %/surfcpp/util/exec.cpp \
   %/plugins/kra.cpp,\
   $(LOCAL_SRC_FILES))
 
@@ -141,13 +142,13 @@ ifeq ($(ENABLE_ANDROID_SOUND),1)
 LOCAL_WHOLE_STATIC_LIBRARIES := openal
 LOCAL_STATIC_LIBRARIES := modplug
 LOCAL_LDLIBS += -lOpenSLES
-LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DSURF_USE_STB_IMAGE=1 -DSURF_HAVE_STB_IMAGE_WRITE=1
-LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DSURF_USE_STB_IMAGE=1 -DSURF_HAVE_STB_IMAGE_WRITE=1 -std=c++23 -fexceptions -D_LIBCPP_ENABLE_EXPERIMENTAL=1
+LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DHAVE_STB
+LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DHAVE_STB -std=c++23 -fexceptions -D_LIBCPP_ENABLE_EXPERIMENTAL=1
 LOCAL_CFLAGS += -DWSTSOUND_WITH_MODPLUG=1
 LOCAL_CPPFLAGS += -DWSTSOUND_WITH_MODPLUG=1
 else
-LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DSURF_USE_STB_IMAGE=1 -DSURF_HAVE_STB_IMAGE_WRITE=1
-LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DSURF_USE_STB_IMAGE=1 -DSURF_HAVE_STB_IMAGE_WRITE=1 -std=c++23 -fexceptions -D_LIBCPP_ENABLE_EXPERIMENTAL=1
+LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DHAVE_STB
+LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -DHAVE_STB -std=c++23 -fexceptions -D_LIBCPP_ENABLE_EXPERIMENTAL=1
 endif
 
 # FreeType prebuilt (must come after any LOCAL_STATIC_LIBRARIES := overwrite above)

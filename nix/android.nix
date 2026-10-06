@@ -311,7 +311,7 @@ let
           GAME_DATA_DIR = "${gameDataDir}";
         }
       ) // {
-        STB_IMAGE_INCLUDE_DIR = "${stbImageIncludeDir}";
+        STB_INCLUDE_DIR = "${stbImageIncludeDir}";
       };
 
       buildPhase = ''

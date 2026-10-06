@@ -6,7 +6,7 @@
 #   GAME_SRC_DIR               - path to C++ sources (repo src/)
 #   GAME_DATA_DIR              - required data/ tree packaged as assets
 #   APPLICATION_MK, TOP_ANDROID_MK, SDL_PREBUILT_MK, SDL_ANDROID_LIBS
-#   KEYSTORE, STB_IMAGE_INCLUDE_DIR (stb_image.h, stb_image_write.h)
+#   KEYSTORE, STB_INCLUDE_DIR (stb_image.h, stb_image_write.h)
 #   WINDSTILLE_VERSION           - full version string (e.g. 0.8.0-dev+gabc1234)
 set -euo pipefail
 
@@ -312,11 +312,11 @@ export ENABLE_ANDROID_SOUND
 cp "$APP_DIR/jni/img_stb_min.c" src/jni/src/img_stb_min.c
 cp "$APP_DIR/jni/android_SDL_image.h" src/jni/src/SDL_image.h
 for h in stb_image.h stb_image_write.h; do
-  if [ ! -f "${STB_IMAGE_INCLUDE_DIR:-}/$h" ]; then
-    echo "error: STB_IMAGE_INCLUDE_DIR must contain $h (upstream stb)" >&2
+  if [ ! -f "${STB_INCLUDE_DIR:-}/$h" ]; then
+    echo "error: STB_INCLUDE_DIR must contain $h (upstream stb)" >&2
     exit 1
   fi
-  cp "$STB_IMAGE_INCLUDE_DIR/$h" src/jni/src/$h
+  cp "$STB_INCLUDE_DIR/$h" src/jni/src/$h
 done
 
 cp "$SDL_PREBUILT_MK" src/jni/SDL/Android.mk

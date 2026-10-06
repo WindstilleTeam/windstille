@@ -640,7 +640,7 @@ EOF
       # isolated wstsound-wasm package — so OpenAL comes from the emscripten
       # sysroot (-lopenal) and codec flags follow EMSCRIPTEN defaults in
       # external/wstsound/CMakeLists.txt (modplug + wav only, EFX off).
-      # No libjpeg/libpng — surfcpp uses stb_image via STB_IMAGE_INCLUDE_DIR.
+      # No libjpeg/libpng — surfcpp uses stb via STB_INCLUDE_DIR.
       prefixPath = "${glmPrefix}:${freetypeWasm}:${squirrelWasm}"
         + (if enableSound then ":${modplugWasm}" else "");
       pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${freetypeWasm}/lib/pkgconfig:${squirrelWasm}/lib/pkgconfig"
@@ -669,7 +669,7 @@ EOF
         PKG_CONFIG_PATH = pkgConfigPath;
         ZLIB_WASM_LIBS = zlibWasmLibs;
         MINISWIG = "${miniswigHost}/bin/miniswig";
-        STB_IMAGE_INCLUDE_DIR = "${stbImageIncludeDir}";
+        STB_INCLUDE_DIR = "${stbImageIncludeDir}";
         FREETYPE_WASM_LIBS = freetypeWasm;
         SQUIRREL_WASM_LIBS = squirrelWasm;
       } // pkgs.lib.optionalAttrs (dataDir != null) {
