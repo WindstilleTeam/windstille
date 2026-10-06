@@ -165,6 +165,8 @@ if [ -n "$SQUIRREL_PREFIX" ] && [ -d "$SQUIRREL_PREFIX" ]; then
   export PKG_CONFIG_PATH="$SQUIRREL_PREFIX/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
   echo "==> SQUIRREL_WASM_LIBS=$SQUIRREL_PREFIX"
 fi
+# No libogg/libvorbis for wasm, the music is in module formats (modplug)
+cmake_args+=(-DWSTSOUND_WITH_VORBIS=OFF)
 if [ "$ENABLE_SOUND" = 1 ]; then
   # Prebuilt libmodplug for the in-tree wstsound subdirectory build.
   # Explicit paths avoid emscripten FIND_ROOT stripping host-store prefixes.
