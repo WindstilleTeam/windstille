@@ -359,72 +359,18 @@
         openalWin64 = openal-soft-win32.packages.${pkgs.system}.openal-soft-win64;
         modplugWin64 = libmodplug-win32.packages.${pkgs.system}.libmodplug-win64;
 
-        windstille-win64-game =
+        win64 =
           if isWin || win64Pkgs == null then null
-          else win64Pkgs.stdenv.mkDerivation {
-            pname = "windstille";
-            version = "0.3.0";
+          else import ./nix/win64.nix {
+            inherit pkgs win64Pkgs miniswig stbImageIncludeDir;
             src = ./.;
-            cmakeFlags = [
-              "-DBUILD_EDITOR=OFF"
-              "-DBUILD_EXTRA=OFF"
-              "-DWINDSTILLE_USE_GLES=OFF"
-              "-DPRIO_USE_JSONCPP=OFF"
-            ];
-            nativeBuildInputs = [
-              win64Pkgs.buildPackages.cmake
-              win64Pkgs.buildPackages.pkg-config
-              win64Pkgs.buildPackages.bison
-              win64Pkgs.buildPackages.flex
-            ];
-            buildInputs = [
-              sdl2Win64
-              openalWin64
-              modplugWin64
-            ];
-            # Full external/* cmake graph for MinGW is still WIP (see PORTS.md).
-            # This derivation is the packaging hook; link failures are expected
-            # until mkExternal is exercised under pkgsCross.mingwW64.
-            # hostPlatform is x86_64-windows (pkgsCross.mingwW64) — meta must match.
-            meta = {
-              description = "Windstille Windows x86_64 game binary (mingwW64) — WIP";
-              platforms = [ "x86_64-windows" ];
-            };
+            version = "0.3.0";
+            squirrelSrc = squirrel.inputs.squirrel_src;
+            sdl2 = sdl2Win64;
+            openal = openalWin64;
+            modplug = modplugWin64;
           };
-
-        # Flat layout: .exe + DLLs + data/ (Pingus-style zip-friendly tree).
-        # runCommand on the Linux evaluator; ships the mingw output + runtime DLLs.
-        windstille-win64 =
-          if windstille-win64-game == null then null
-          else pkgs.runCommand "windstille-win64" {
-            meta = {
-              description = "Windstille Windows x86_64 flat package (exe + DLLs)";
-              platforms = pkgs.lib.platforms.linux;
-            };
-          } ''
-            mkdir -p $out
-            # Game binary (when the cross link succeeds)
-            if [ -d "${windstille-win64-game}/bin" ]; then
-              cp -v ${windstille-win64-game}/bin/*.exe $out/ 2>/dev/null || true
-              cp -vL ${windstille-win64-game}/bin/*.dll $out/ 2>/dev/null || true
-            fi
-            # Runtime DLLs from prebuilt MinGW packages
-            for pkg in ${sdl2Win64} ${openalWin64} ${modplugWin64}; do
-              find "$pkg" -name '*.dll' -exec cp -v {} $out/ \; 2>/dev/null || true
-            done
-            # Data next to the binary (relative "data/" path)
-            if [ -d ${./data} ]; then
-              mkdir -p $out/data
-              cp -a ${./data}/. $out/data/ || true
-            elif [ -d "${windstille-win64-game}/share" ]; then
-              cp -a ${windstille-win64-game}/share/windstille/. $out/data/ 2>/dev/null || true
-            fi
-            # Placeholder so the package always exists while cross-link is WIP
-            if ! ls $out/*.exe >/dev/null 2>&1; then
-              echo "windstille-win64: game binary not built yet (externals WIP)" > $out/README-WIP.txt
-            fi
-            ls -la $out || true
-          '';
+        windstille-win64 = if win64 == null then null else win64.package;
 
         # ---- Linux-only: WASM / Android / R36S (Pingus-derived recipes) ----
         # Full APK/sysroot wiring needs SDK license accept + published ArkOS
@@ -623,14 +569,9 @@
               export WINEARCH=win64
               export WINEDLLOVERRIDES="mscoree,mshtml=;SDL2=n"
               cd ${windstille-win64}
-              exe=$(ls *.exe 2>/dev/null | head -1 || true)
-              if [ -z "$exe" ]; then
-                echo "windstille-win64: no .exe yet (cross-link still WIP)" >&2
-                exit 1
-              fi
-              exec ${pkgs.wineWow64Packages.stable}/bin/wine "./$exe" "$@"
+              exec ${pkgs.wineWow64Packages.stable}/bin/wine ./windstille.exe "$@"
             '');
-            meta.description = "Windstille (MinGW x86_64) via Wine — WIP until externals cross-build";
+            meta.description = "Windstille (MinGW x86_64) via Wine";
           };
         };
       }
