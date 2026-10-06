@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include <sigc++/signal.h>
+#include <wstsystem/signal.hpp>
 #include <wstdisplay/fwd.hpp>
 #include <geom/geom.hpp>
 
@@ -54,7 +54,7 @@ private: // FIXME: Convert this into a generic enum/value slider
 
   int index;
   std::vector<EnumValue> labels;
-  sigc::signal<void (int)> on_change;
+  wstsystem::Signal<void (int)> on_change;
 public:
   EnumMenuItem(MenuComponent* parent_,
                const std::string& label_, int index_ = 0);
@@ -65,7 +65,7 @@ public:
   void decr() override;
   void click() override {}
   void draw(wstdisplay::Canvas& canvas, const geom::frect& rect, bool is_active) override;
-  sigc::signal<void (int)>& sig_change() { return on_change; }
+  wstsystem::Signal<void (int)>& sig_change() { return on_change; }
 };
 
 /** A slider widget for use in volume controls, gamma controls and
@@ -77,7 +77,7 @@ public:
   int min_value;
   int max_value;
   int step;
-  sigc::signal<void (int)> on_change;
+  wstsystem::Signal<void (int)> on_change;
 public:
   SliderMenuItem(MenuComponent* parent_,
                  const std::string& label_, int value_, int mix_value_ = 0, int max_value_ = 100, int step = 10);
@@ -85,13 +85,13 @@ public:
   void decr() override;
   void click() override {}
   void draw(wstdisplay::Canvas& canvas, const geom::frect& rect, bool is_active) override;
-  sigc::signal<void (int)>& sig_change() { return on_change; }
+  wstsystem::Signal<void (int)>& sig_change() { return on_change; }
 };
 
 class ButtonMenuItem : public MenuItem
 {
 public:
-  sigc::signal<void ()> on_click;
+  wstsystem::Signal<void ()> on_click;
 
 public:
   ButtonMenuItem(MenuComponent* parent_, const std::string& label_);
@@ -99,7 +99,7 @@ public:
   void decr() override {}
   void click() override;
   void draw(wstdisplay::Canvas& canvas, const geom::frect& rect, bool is_active) override;
-  sigc::signal<void ()>& sig_click() { return on_click; }
+  wstsystem::Signal<void ()>& sig_click() { return on_click; }
 };
 
 } // namespace wstgui

@@ -18,7 +18,6 @@ find_dependency(surf)
 find_dependency(logmich)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
-pkg_search_module(SIGCXX REQUIRED sigc++-3.0 IMPORTED_TARGET)
 
 include("${CMAKE_CURRENT_LIST_DIR}/wstdisplay-targets.cmake")
 
