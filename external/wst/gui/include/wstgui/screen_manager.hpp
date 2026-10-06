@@ -30,7 +30,9 @@ public:
   ScreenManager(wstsystem::System& system, wstdisplay::OpenGLWindow& window, wstinput::InputManagerSDL& input);
   ~ScreenManager();
 
-  /** Displays the previously set screen in until quit() is called */
+  /** Displays the previously set screen in until quit() is called.
+      With Emscripten the browser drives the frames and run() doesn't
+      return. */
   void run();
 
   /** Breaks out of the run() function */
@@ -63,6 +65,8 @@ public:
   wstsystem::Signal<void (wstdisplay::Canvas&)>& sig_draw_end() { return m_sig_draw_end; };
 
 private:
+  /** Update and draw one frame */
+  void run_frame();
   void apply_pending_actions();
   void draw();
   void handle_event(const SDL_Event& event);

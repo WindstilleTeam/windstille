@@ -3,6 +3,10 @@
 
 #include "screen_manager.hpp"
 
+#ifdef __EMSCRIPTEN__
+#  include <emscripten.h>
+#endif
+
 #include <logmich/log.hpp>
 
 #include <surf/save.hpp>
@@ -54,45 +58,64 @@ ScreenManager::run()
 
   apply_pending_actions();
 
+#ifdef __EMSCRIPTEN__
+  // The browser calls run_frame() on every animation frame. run() doesn't
+  // return, as the screens and the game state on the caller's stack must
+  // stay alive while the loop runs.
+  emscripten_set_main_loop_arg([](void* arg) {
+    ScreenManager& self = *static_cast<ScreenManager*>(arg);
+    if (self.m_do_quit || self.m_screens.empty()) {
+      emscripten_cancel_main_loop();
+    } else {
+      self.run_frame();
+    }
+  }, this, 0, true);
+#else
   while (!m_do_quit && !m_screens.empty())
   {
-    /// Amount of time the world moves forward each update(), this is
-    /// independed of the number of frames and always constant
-    static const float step = 0.001f;
-
-    Uint32 const now = m_system.get_ticks();
-    float delta = static_cast<float>(now - m_ticks) / 1000.0f + m_overlap_delta;
-    m_ticks = now;
-
-    while (delta > step)
-    {
-      m_input.update(delta);
-
-      if (!m_overlay_screens.empty()) {
-        m_overlay_screens.back()->update(step, m_input.get_controller());
-      } else if (!m_screens.empty()) {
-        m_screens.back()->update(step, m_input.get_controller());
-      }
-
-      for(Screen* hud : m_huds) {
-        hud->update(step, m_input.get_controller());
-      }
-      m_input.clear();
-
-      delta -= step;
-    }
-
-    m_overlap_delta = delta;
-
-    m_sig_update(delta);
-    m_system.update();
-
-    draw();
-
-    apply_pending_actions();
-
+    run_frame();
     m_system.delay(5);
   }
+#endif
+}
+
+void
+ScreenManager::run_frame()
+{
+  /// Amount of time the world moves forward each update(), this is
+  /// independed of the number of frames and always constant
+  static const float step = 0.001f;
+
+  Uint32 const now = m_system.get_ticks();
+  float delta = static_cast<float>(now - m_ticks) / 1000.0f + m_overlap_delta;
+  m_ticks = now;
+
+  while (delta > step)
+  {
+    m_input.update(delta);
+
+    if (!m_overlay_screens.empty()) {
+      m_overlay_screens.back()->update(step, m_input.get_controller());
+    } else if (!m_screens.empty()) {
+      m_screens.back()->update(step, m_input.get_controller());
+    }
+
+    for(Screen* hud : m_huds) {
+      hud->update(step, m_input.get_controller());
+    }
+    m_input.clear();
+
+    delta -= step;
+  }
+
+  m_overlap_delta = delta;
+
+  m_sig_update(delta);
+  m_system.update();
+
+  draw();
+
+  apply_pending_actions();
 }
 
 void
@@ -222,6 +245,25 @@ ScreenManager::apply_pending_actions()
 void
 ScreenManager::handle_event(const SDL_Event& event)
 {
+  // pointer and touch input reaches the HUDs too, e.g. an on-screen
+  // gamepad, in addition to the screens below
+  switch(event.type)
+  {
+    case SDL_FINGERDOWN:
+    case SDL_FINGERMOTION:
+    case SDL_FINGERUP:
+    case SDL_MOUSEBUTTONDOWN:
+    case SDL_MOUSEBUTTONUP:
+    case SDL_MOUSEMOTION:
+      for(Screen* hud : m_huds) {
+        hud->handle_event(event);
+      }
+      break;
+
+    default:
+      break;
+  }
+
   switch(event.type)
   {
     case SDL_QUIT:
