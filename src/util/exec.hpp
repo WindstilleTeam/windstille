@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_GALAPIX_UTIL_EXEC_HPP
-#define HEADER_GALAPIX_UTIL_EXEC_HPP
+#ifndef HEADER_SURF_UTIL_EXEC_HPP
+#define HEADER_SURF_UTIL_EXEC_HPP
 
+#include <cstdint>
 #include <span>
 #include <vector>
 #include <string>

@@ -24,6 +24,7 @@
 #include <limits>
 
 #include "pixel_format.hpp"
+#include "promote.hpp"
 
 namespace surf {
 
@@ -156,10 +157,12 @@ constexpr Pixel make_pixel(typename Pixel::value_type r,
       return Pixel{r, g, b};
     }
   } else {
+    using acc = accumulate_t<typename Pixel::value_type>;
+    auto const l = static_cast<typename Pixel::value_type>((acc(r) + g + b) / 3);
     if constexpr (Pixel::has_alpha()) {
-      return Pixel{static_cast<typename Pixel::value_type>((r + g + b) / 3), a};
+      return Pixel{l, a};
     } else {
-      return Pixel{static_cast<typename Pixel::value_type>((r + g + b) / 3)};
+      return Pixel{l};
     }
   }
 }
@@ -218,14 +221,14 @@ typename DstPixel::value_type f2value(float v)
   using dsttype = typename DstPixel::value_type;
 
   if constexpr (std::is_integral<dsttype>::value) {
-    if (sizeof(dsttype) == sizeof(srctype)) {
+    v = std::clamp(v, 0.0f, 1.0f);
+    if constexpr (sizeof(dsttype) == sizeof(srctype)) {
       // special case, as uint32 -> float32 will overflow
       return static_cast<dsttype>(
-        std::clamp(static_cast<uint64_t>(v * static_cast<srctype>(DstPixel::max())),
-                   static_cast<uint64_t>(0), static_cast<uint64_t>(DstPixel::max())));
+        std::min(static_cast<uint64_t>(v * static_cast<srctype>(DstPixel::max()) + 0.5f),
+                 static_cast<uint64_t>(DstPixel::max())));
     } else {
-      return static_cast<dsttype>(std::clamp(v * static_cast<srctype>(DstPixel::max()),
-                                             0.0f, static_cast<srctype>(DstPixel::max())));
+      return static_cast<dsttype>(v * static_cast<srctype>(DstPixel::max()) + 0.5f);
     }
   } else {
     return static_cast<dsttype>(v * static_cast<srctype>(DstPixel::max()));
@@ -325,16 +328,16 @@ template<>
 struct PPixelFormat<RGB64fPixel>
 {
   static constexpr PixelFormat format = PixelFormat::RGB64f;
-  static constexpr int bits_per_pixel = 96;
-  static constexpr int bytes_per_pixel = 12;
+  static constexpr int bits_per_pixel = 192;
+  static constexpr int bytes_per_pixel = 24;
 };
 
 template<>
 struct PPixelFormat<RGBA64fPixel>
 {
   static constexpr PixelFormat format = PixelFormat::RGBA64f;
-  static constexpr int bits_per_pixel = 128;
-  static constexpr int bytes_per_pixel = 16;
+  static constexpr int bits_per_pixel = 256;
+  static constexpr int bytes_per_pixel = 32;
 };
 
 template<>

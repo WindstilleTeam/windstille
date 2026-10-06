@@ -41,10 +41,10 @@ constexpr typename DstPixel::value_type convert_value(typename SrcPixel::value_t
         if constexpr (sizeof(dsttype) == sizeof(srctype)) {
           // special case, as uint32 -> float32 will overflow
           return static_cast<dsttype>(
-            std::clamp(static_cast<uint64_t>(v * static_cast<srctype>(DstPixel::max())),
-                       static_cast<uint64_t>(0), static_cast<uint64_t>(DstPixel::max())));
+            std::min(static_cast<uint64_t>(std::clamp<srctype>(v, 0.0, 1.0) * static_cast<srctype>(DstPixel::max()) + static_cast<srctype>(0.5)),
+                     static_cast<uint64_t>(DstPixel::max())));
         } else {
-          return static_cast<dsttype>(std::clamp<srctype>(v, 0.0, 1.0) * static_cast<srctype>(DstPixel::max()));
+          return static_cast<dsttype>(std::clamp<srctype>(v, 0.0, 1.0) * static_cast<srctype>(DstPixel::max()) + static_cast<srctype>(0.5));
         }
       }
     } else {

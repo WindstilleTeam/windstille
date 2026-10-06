@@ -66,9 +66,9 @@ Color::from_string(std::string_view text) {
                                 x2i(text[2]) * 17,
                                 x2i(text[3]) * 17);
     } else if (text.size() == 7) {
-      return Color::from_rgb888(static_cast<uint8_t>((x2i(text[1]) << 8) | x2i(text[2])),
-                                static_cast<uint8_t>((x2i(text[3]) << 8) | x2i(text[4])),
-                                static_cast<uint8_t>((x2i(text[5]) << 8) | x2i(text[6])));
+      return Color::from_rgb888(static_cast<uint8_t>((x2i(text[1]) << 4) | x2i(text[2])),
+                                static_cast<uint8_t>((x2i(text[3]) << 4) | x2i(text[4])),
+                                static_cast<uint8_t>((x2i(text[5]) << 4) | x2i(text[6])));
     } else {
       throw std::invalid_argument(std::format("invalid color string: {}", text));
     }

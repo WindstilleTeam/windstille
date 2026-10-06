@@ -16,6 +16,9 @@
 
 #include "transform.hpp"
 
+#include <format>
+#include <stdexcept>
+
 namespace surf {
 
 Transform transform_from_string(std::string_view text)

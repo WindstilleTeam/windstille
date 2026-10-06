@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_GALAPIX_PLUGINS_DDS_SURFACE_HPP
-#define HEADER_GALAPIX_PLUGINS_DDS_SURFACE_HPP
+#ifndef HEADER_SURF_PLUGINS_DDS_SURFACE_HPP
+#define HEADER_SURF_PLUGINS_DDS_SURFACE_HPP
 
 #include <stdint.h>
 

@@ -11,6 +11,31 @@ TEST(ConvertTest, convert_value)
   EXPECT_EQ((convert_value<Color, RGB32Pixel>(1.0f)), 4294967295);
 }
 
+TEST(ConvertTest, convert_value__rounding)
+{
+  EXPECT_EQ((convert_value<Color, RGB8Pixel>(0.5f)), 128);
+  EXPECT_EQ((convert_value<Color, RGB8Pixel>(0.999f)), 255);
+  EXPECT_EQ((convert_value<Color, RGB8Pixel>(-1.0f)), 0);
+  EXPECT_EQ((convert_value<Color, RGB8Pixel>(2.0f)), 255);
+  EXPECT_EQ((convert_value<Color, RGB32Pixel>(-1.0f)), 0u);
+  EXPECT_EQ((convert_value<Color, RGB32Pixel>(2.0f)), 4294967295u);
+  EXPECT_EQ(f2value<RGB8Pixel>(0.5f), 128);
+  EXPECT_EQ(Color(0.5f, 0.5f, 0.5f).r8(), 128);
+}
+
+TEST(ConvertTest, roundtrip)
+{
+  for (int i = 0; i < 256; ++i) {
+    RGB8Pixel const pixel{static_cast<uint8_t>(i), static_cast<uint8_t>(255 - i), 0};
+    EXPECT_EQ((convert<Color, RGB8Pixel>(convert<RGB8Pixel, Color>(pixel))), pixel);
+  }
+
+  for (int i = 0; i < 65536; i += 7) {
+    RGB16Pixel const pixel{static_cast<uint16_t>(i), static_cast<uint16_t>(65535 - i), 0};
+    EXPECT_EQ((convert<RGB32fPixel, RGB16Pixel>(convert<RGB16Pixel, RGB32fPixel>(pixel))), pixel);
+  }
+}
+
 TEST(ConvertTest, convert_rgb)
 {
   RGB32Pixel rgb32 = convert<Color, RGB32Pixel>(Color(1.0f, 1.0f, 1.0f));

@@ -17,6 +17,9 @@
 #ifndef HEADER_SURF_PROMOTE_HPP
 #define HEADER_SURF_PROMOTE_HPP
 
+#include <cstdint>
+#include <type_traits>
+
 namespace surf {
 
 template<typename A, typename B>
@@ -32,6 +35,13 @@ template<typename A, typename B>
 typename promote_t<A, B>::type promote(A a) {
   return static_cast<typename promote_t<A, B>::type>(a);
 }
+
+/** Type wide enough to sum or multiply a few values of T without
+    overflow, T itself for floating point */
+template<typename T>
+using accumulate_t = typename std::conditional<std::is_floating_point<T>::value,
+                                               T,
+                                               typename promote_t<T, T>::type>::type;
 
 } // namespace surf
 

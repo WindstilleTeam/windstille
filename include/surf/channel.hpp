@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_SURF_JOIN_HPP
-#define HEADER_SURF_JOIN_HPP
+#ifndef HEADER_SURF_CHANNEL_HPP
+#define HEADER_SURF_CHANNEL_HPP
 
+#include <stdexcept>
 #include <vector>
 
 #include "fwd.hpp"
@@ -135,7 +136,7 @@ split_channel(PixelView<tRGBAPixel<T>> const& src)
     }
   }
 
-  return {red_c, green_c, blue_c};
+  return {red_c, green_c, blue_c, alpha_c};
 }
 
 std::vector<SoftwareSurface> split_channel(SoftwareSurface const& src);

@@ -51,8 +51,7 @@ SoftwareSurface load_from_file(std::filesystem::path const& filename)
   std::ifstream in(filename, std::ios::binary);
   if (!in)
   {
-    // raise_runtime_error(strerror(errno));
-    return {};
+    throw std::runtime_error("DDS::load_from_file(): " + filename.string() + ": " + strerror(errno));
   }
   else
   {

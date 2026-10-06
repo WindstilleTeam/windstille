@@ -17,6 +17,9 @@
 #include "plugins/png.hpp"
 
 #include <assert.h>
+#include <bit>
+#include <memory>
+#include <sstream>
 #include <fstream>
 #include <stdexcept>
 #include <string.h>
@@ -102,6 +105,40 @@ void writePNGMemory(png_structp png_ptr, png_bytep data, png_size_t length)
   std::copy(data, data+length, std::back_inserter(mem->data));
 }
 
+/** Destroys the png read struct when going out of scope */
+struct PNGReadStructGuard
+{
+  png_structp png_ptr;
+  png_infop info_ptr;
+
+  PNGReadStructGuard() :
+    png_ptr(png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr)),
+    info_ptr(png_ptr ? png_create_info_struct(png_ptr) : nullptr)
+  {
+    if (!png_ptr || !info_ptr) {
+      png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+      throw std::runtime_error("PNG: failed to create read struct");
+    }
+  }
+
+  ~PNGReadStructGuard() {
+    png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+  }
+
+  PNGReadStructGuard(PNGReadStructGuard const&) = delete;
+  PNGReadStructGuard& operator=(PNGReadStructGuard const&) = delete;
+};
+
+/** PNG stores 16bit samples big-endian, PixelData uses native endian */
+void set_swap_16bit(png_structp png_ptr, int bit_depth)
+{
+  if constexpr (std::endian::native == std::endian::little) {
+    if (bit_depth == 16) {
+      png_set_swap(png_ptr);
+    }
+  }
+}
+
 } // namespace
 
 bool get_size(void* data, int len, geom::isize& size)
@@ -136,7 +173,8 @@ bool get_size(void* data, int len, geom::isize& size)
 
 bool get_size(std::filesystem::path const& filename, geom::isize& size)
 {
-  FILE* in = fopen(filename.string().c_str(), "rb");
+  std::unique_ptr<FILE, int(*)(FILE*)> in_guard(fopen(filename.string().c_str(), "rb"), &fclose);
+  FILE* in = in_guard.get();
   if (!in) {
     return false;
   }
@@ -158,8 +196,6 @@ bool get_size(std::filesystem::path const& filename, geom::isize& size)
                        static_cast<int>(png_get_image_height(png_ptr, info_ptr)));
 
     png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
-
-    fclose(in);
 
     return true;
   }
@@ -189,18 +225,24 @@ bool is_png(std::filesystem::path const& filename)
 
 SoftwareSurface load_from_stream(std::istream& is, std::string const& context)
 {
-  png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
-  png_infop info_ptr  = png_create_info_struct(png_ptr);
+  // Everything with a destructor is declared before setjmp(), as
+  // longjmp() would otherwise skip over it
+  PNGReadStructGuard png;
+  png_structp const png_ptr = png.png_ptr;
+  png_infop const info_ptr = png.info_ptr;
+
+  SoftwareSurface surface;
+  std::vector<png_bytep> row_pointers;
 
   if (setjmp(png_jmpbuf(png_ptr))) {
-    png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
-    throw std::runtime_error("PNG::load_from_mem(): setjmp: Couldn't load " + context);
+    throw std::runtime_error("PNG::load_from_stream(): setjmp: Couldn't load " + context);
   }
 
-  //png_init_io(png_ptr, in);
   png_set_read_fn(png_ptr, &is, [](png_structp l_png_ptr, png_bytep buffer, size_t len) {
-    std::ifstream& l_is = *static_cast<std::ifstream*>(png_get_io_ptr(l_png_ptr));
-    l_is.read(reinterpret_cast<char*>(buffer), len);
+    std::istream& l_is = *static_cast<std::istream*>(png_get_io_ptr(l_png_ptr));
+    if (!l_is.read(reinterpret_cast<char*>(buffer), static_cast<std::streamsize>(len))) {
+      png_error(l_png_ptr, "unexpected end of file");
+    }
   });
 
   png_read_info(png_ptr, info_ptr);
@@ -213,6 +255,7 @@ SoftwareSurface load_from_stream(std::istream& is, std::string const& context)
   png_set_expand(png_ptr); // FIXME: What does this do? what the other don't?
   png_set_tRNS_to_alpha(png_ptr);
   png_set_gray_to_rgb(png_ptr);
+  set_swap_16bit(png_ptr, png_get_bit_depth(png_ptr, info_ptr));
 
   png_read_update_info(png_ptr, info_ptr);
 
@@ -261,16 +304,12 @@ SoftwareSurface load_from_stream(std::istream& is, std::string const& context)
   geom::isize const size(static_cast<int>(png_get_image_width(png_ptr, info_ptr)),
                          static_cast<int>(png_get_image_height(png_ptr, info_ptr)));
 
-  SoftwareSurface surface = SoftwareSurface::create(format, size);
-  { // read data from .png
-    std::vector<png_bytep> row_pointers(surface.get_height());
-    for (int y = 0; y < surface.get_height(); ++y) {
-      row_pointers[y] = static_cast<png_bytep>(surface.get_row_data(y));
-    }
-    png_read_image(png_ptr, row_pointers.data());
+  surface = SoftwareSurface::create(format, size);
+  row_pointers.resize(static_cast<size_t>(surface.get_height()));
+  for (int y = 0; y < surface.get_height(); ++y) {
+    row_pointers[static_cast<size_t>(y)] = static_cast<png_bytep>(surface.get_row_data(y));
   }
-
-  png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+  png_read_image(png_ptr, row_pointers.data());
 
   return surface;
 }
@@ -327,6 +366,7 @@ void save(SoftwareSurface const& surface, std::filesystem::path const& filename)
                  PNG_FILTER_TYPE_DEFAULT);
 
     png_write_info(png_ptr, info_ptr);
+    set_swap_16bit(png_ptr, PixelFormat2bitdepth(surface.get_format()));
 
     for (int y = 0; y < src.get_height(); ++y) {
       png_write_row(png_ptr, const_cast<png_bytep>(static_cast<png_byte const*>(src.get_row_data(y))));
@@ -368,6 +408,7 @@ std::vector<uint8_t> save(SoftwareSurface const& surface)
                PNG_FILTER_TYPE_DEFAULT);
 
   png_write_info(png_ptr, info_ptr);
+  set_swap_16bit(png_ptr, PixelFormat2bitdepth(surface.get_format()));
 
   for (int y = 0; y < src.get_height(); ++y) {
     png_write_row(png_ptr, const_cast<png_bytep>(static_cast<png_byte const*>(src.get_row_data(y))));

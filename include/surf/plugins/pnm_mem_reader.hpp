@@ -14,8 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_GALAPIX_PLUGINS_PNM_MEM_READER_HPP
-#define HEADER_GALAPIX_PLUGINS_PNM_MEM_READER_HPP
+#ifndef HEADER_SURF_PLUGINS_PNM_MEM_READER_HPP
+#define HEADER_SURF_PLUGINS_PNM_MEM_READER_HPP
+
+#include <cctype>
+#include <cstdint>
+#include <cstdlib>
+#include <span>
+#include <string>
 
 #include <geom/size.hpp>
 

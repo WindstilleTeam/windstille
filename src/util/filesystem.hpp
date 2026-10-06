@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_GALAPIX_UTIL_FILESYSTEM_HPP
-#define HEADER_GALAPIX_UTIL_FILESYSTEM_HPP
+#ifndef HEADER_SURF_UTIL_FILESYSTEM_HPP
+#define HEADER_SURF_UTIL_FILESYSTEM_HPP
 
 #include <filesystem>
 #include <string>
@@ -26,7 +26,6 @@ namespace surf {
 class Filesystem
 {
 public:
-  static void readlines_from_file(const std::string& pathname, std::vector<std::string>& lst);
   static std::string find_exe(const std::string& name);
   static std::string get_extension(std::filesystem::path const& pathname);
   static std::string get_magic(std::filesystem::path const& filename);

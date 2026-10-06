@@ -24,7 +24,7 @@ struct jpeg_memory_source_mgr {
   struct jpeg_source_mgr pub;   /* public fields */
 
   const uint8_t* data;
-  int      len;
+  size_t   len;
 };
 
 void jpeg_memory_init_source(j_decompress_ptr cinfo)
@@ -51,7 +51,7 @@ boolean jpeg_memory_fill_input_buffer(j_decompress_ptr cinfo)
     struct jpeg_memory_source_mgr* mgr = reinterpret_cast<struct jpeg_memory_source_mgr*>(cinfo->src);
 
     cinfo->src->next_input_byte = mgr->data;
-    cinfo->src->bytes_in_buffer = static_cast<size_t>(mgr->len);
+    cinfo->src->bytes_in_buffer = mgr->len;
 
     return TRUE;
   }
@@ -59,16 +59,19 @@ boolean jpeg_memory_fill_input_buffer(j_decompress_ptr cinfo)
 
 void jpeg_memory_skip_input_data(j_decompress_ptr cinfo, long num_bytes)
 {
-  cinfo->src->next_input_byte = cinfo->src->next_input_byte + static_cast<unsigned long>(num_bytes);
-  cinfo->src->bytes_in_buffer = cinfo->src->bytes_in_buffer - static_cast<unsigned long>(num_bytes);
+  if (num_bytes <= 0) {
+    return;
+  }
 
-  struct jpeg_memory_source_mgr* mgr = reinterpret_cast<struct jpeg_memory_source_mgr*>(cinfo->src);
-
-  if (cinfo->src->next_input_byte >= &mgr->data[mgr->len])
+  if (static_cast<unsigned long>(num_bytes) > cinfo->src->bytes_in_buffer)
   {
     (cinfo)->err->msg_code = JERR_INPUT_EOF;
     (*(cinfo)->err->error_exit)(reinterpret_cast<j_common_ptr>(cinfo));
+    return;
   }
+
+  cinfo->src->next_input_byte = cinfo->src->next_input_byte + static_cast<unsigned long>(num_bytes);
+  cinfo->src->bytes_in_buffer = cinfo->src->bytes_in_buffer - static_cast<unsigned long>(num_bytes);
 }
 
 } // namespace
@@ -95,7 +98,7 @@ void jpeg_memory_src(j_decompress_ptr cinfo, std::span<uint8_t const> data)
 
   struct jpeg_memory_source_mgr* mgr = reinterpret_cast<struct jpeg_memory_source_mgr*>(cinfo->src);
   mgr->data = data.data();
-  mgr->len  = static_cast<int>(data.size());
+  mgr->len  = data.size();
 }
 
 } // namespace surf

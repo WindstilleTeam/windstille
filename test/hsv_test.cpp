@@ -29,6 +29,36 @@ TEST(HSVTest, hsv_from_color)
   EXPECT_FLOAT_EQ(hsv.saturation, 1.0f);
 }
 
+TEST(HSVTest, hsv_from_color__hue_range)
+{
+  // red with some blue gives a hue just below 1.0, not a negative one
+  HSVColor const hsv = hsv_from_color(Color(1.0f, 0.0f, 0.5f));
+  EXPECT_GE(hsv.hue, 0.0f);
+  EXPECT_LT(hsv.hue, 1.0f);
+  EXPECT_FLOAT_EQ(hsv.hue, 11.0f / 12.0f);
+}
+
+TEST(HSVTest, color_from_hue__wrap)
+{
+  Color const red = color_from_hue(0.0f);
+  EXPECT_EQ(color_from_hue(1.0f), red);
+  EXPECT_EQ(color_from_hue(-1.0f), red);
+
+  Color const almost_red = color_from_hue(0.9999999f);
+  EXPECT_NEAR(almost_red.r, 1.0f, 0.001f);
+  EXPECT_NEAR(almost_red.g, 0.0f, 0.001f);
+  EXPECT_NEAR(almost_red.b, 0.0f, 0.001f);
+}
+
+TEST(HSVTest, roundtrip)
+{
+  Color const color(1.0f, 0.0f, 0.5f);
+  Color const result = color_from_hsv(hsv_from_color(color));
+  EXPECT_NEAR(result.r, color.r, 0.0001f);
+  EXPECT_NEAR(result.g, color.g, 0.0001f);
+  EXPECT_NEAR(result.b, color.b, 0.0001f);
+}
+
 TEST(HSVTest, color_from_hue)
 {
   Color color;

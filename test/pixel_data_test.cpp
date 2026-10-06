@@ -6,12 +6,13 @@
 #include <surf/blend.hpp>
 #include <surf/blit.hpp>
 #include <surf/color.hpp>
+#include <surf/fill.hpp>
 #include <surf/pixel_data.hpp>
 #include <surf/sdl.hpp>
 #include <surf/transform.hpp>
 #include <surf/io.hpp>
+#include <surf/save.hpp>
 
-#include "plugins/png.hpp"
 
 using namespace surf;
 
@@ -145,7 +146,7 @@ TEST(PixelDataTest, blend)
     }
   }
 
-  png::save(SoftwareSurface(std::move(dst)), "/tmp/foo2.png");
+  save(SoftwareSurface(std::move(dst)), std::filesystem::path(testing::TempDir()) / "surf.PixelDataTest.blend.png");
 }
 
 TEST(PixelDataTest, empty)
@@ -166,6 +167,68 @@ TEST(PixelDataTest, create_view__const)
   std::unique_ptr<IPixelData const> pixelview = pixeldata.create_view(geom::irect(pixeldata.get_size()));
   // This shall not compile:
   // fill(*pixelview, RGBPixel{0, 0, 0});
+}
+
+TEST(PixelDataTest, move_leaves_empty)
+{
+  PixelData<RGB8Pixel> a({4, 4}, RGB8Pixel{1, 2, 3});
+  PixelData<RGB8Pixel> b(std::move(a));
+  EXPECT_EQ(b.get_size(), geom::isize(4, 4));
+  EXPECT_TRUE(a.empty()); // NOLINT(bugprone-use-after-move)
+  EXPECT_EQ(a.get_size(), geom::isize(0, 0)); // NOLINT(bugprone-use-after-move)
+
+  PixelData<RGB8Pixel> c;
+  c = std::move(b);
+  EXPECT_EQ(c.get_size(), geom::isize(4, 4));
+  EXPECT_TRUE(b.empty()); // NOLINT(bugprone-use-after-move)
+}
+
+TEST(PixelDataTest, vector_too_small)
+{
+  EXPECT_THROW(PixelData<RGB8Pixel>(geom::isize(4, 4), std::vector<RGB8Pixel>(15)), std::invalid_argument);
+  EXPECT_THROW(PixelData<RGB8Pixel>(geom::isize(4, 4), std::vector<RGB8Pixel>(16), 5), std::invalid_argument);
+  EXPECT_NO_THROW(PixelData<RGB8Pixel>(geom::isize(4, 4), std::vector<RGB8Pixel>(19), 5));
+}
+
+TEST(PixelDataTest, create_view__out_of_bounds)
+{
+  PixelData<RGB8Pixel> img({4, 4});
+  EXPECT_THROW(img.create_view(geom::irect(2, 2, 6, 6)), std::invalid_argument);
+  EXPECT_THROW(img.get_view(geom::irect(-1, 0, 2, 2)), std::invalid_argument);
+}
+
+TEST(PixelDataTest, fill_variants)
+{
+  for (int width : {1, 7, 8, 13, 16}) {
+    // one extra column on the right that must not be touched
+    PixelData<RGB8Pixel> img({width + 1, 2}, RGB8Pixel{0, 0, 0});
+    PixelView<RGB8Pixel> view = img.get_view(geom::irect(0, 0, width, 2));
+    detail::fill__fast(view, RGB8Pixel{1, 2, 3});
+    for (int y = 0; y < 2; ++y) {
+      for (int x = 0; x < width; ++x) {
+        EXPECT_EQ(img.get_pixel({x, y}), (RGB8Pixel{1, 2, 3}));
+      }
+      EXPECT_EQ(img.get_pixel({width, y}), (RGB8Pixel{0, 0, 0}));
+    }
+  }
+}
+
+TEST(PixelDataTest, fill_checkerboard_clipped)
+{
+  PixelData<RGB8Pixel> img({4, 4}, RGB8Pixel{0, 0, 0});
+  fill_checkerboard(img, geom::isize(1, 1), RGB8Pixel{1, 1, 1}, geom::irect(-10, -10, 10, 10));
+  EXPECT_EQ(img.get_pixel({0, 0}), (RGB8Pixel{1, 1, 1}));
+  EXPECT_EQ(img.get_pixel({1, 0}), (RGB8Pixel{0, 0, 0}));
+}
+
+TEST(PixelDataTest, copy_from_subview)
+{
+  PixelData<L8Pixel> img({8, 8});
+  img.put_pixel({7, 7}, L8Pixel{42});
+  PixelData<L8Pixel> const copy(img.get_view(geom::irect(4, 4, 8, 8)));
+  EXPECT_EQ(copy.get_size(), geom::isize(4, 4));
+  EXPECT_EQ(copy.get_pitch(), 4);
+  EXPECT_EQ(copy.get_pixel({3, 3}).l, 42);
 }
 
 /* EOF */

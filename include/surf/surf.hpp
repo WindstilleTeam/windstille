@@ -17,13 +17,16 @@
 #ifndef HEADER_SURF_SURF_HPP
 #define HEADER_SURF_SURF_HPP
 
+#include "algorithm.hpp"
 #include "blend.hpp"
 #include "blit.hpp"
+#include "channel.hpp"
 #include "color.hpp"
 #include "convert.hpp"
 #include "fill.hpp"
 #include "filter.hpp"
 #include "fwd.hpp"
+#include "hsv.hpp"
 #include "io.hpp"
 #include "ipixel_data.hpp"
 #include "palette.hpp"
@@ -35,7 +38,6 @@
 #include "software_surface_factory.hpp"
 #include "software_surface.hpp"
 #include "software_surface_loader.hpp"
-#include "surf.hpp"
 #include "transform.hpp"
 #include "unwrap.hpp"
 

@@ -24,9 +24,13 @@
 #include "util/filesystem.hpp"
 #include "software_surface_loader.hpp"
 
-#include "plugins/jpeg.hpp"
 #include "plugins/dds.hpp"
-#include "plugins/png.hpp"
+#ifdef HAVE_STB
+#  include "plugins/stb.hpp"
+#else
+#  include "plugins/jpeg.hpp"
+#  include "plugins/png.hpp"
+#endif
 
 #ifdef HAVE_MAGICKXX
 #  include "plugins/imagemagick.hpp"
@@ -50,8 +54,12 @@ SoftwareSurfaceFactory::SoftwareSurfaceFactory() :
 {
   // order matters, first come, first serve, later registrations for
   // an already registered type will be ignored
+#ifdef HAVE_STB
+  stb::register_loader(*this);
+#else
   jpeg::register_loader(*this);
   png::register_loader(*this);
+#endif
   dds::register_loader(*this);
 
 #ifdef HAVE_EXEC
@@ -183,13 +191,6 @@ SoftwareSurfaceFactory::from_file(std::filesystem::path const& filename, Softwar
   {
     return loader.from_file(filename);
   }
-#if 0
-  else if (loader.supports_from_mem())
-  {
-    Blob blob = Blob::from_file(filename);
-    return loader.from_mem(blob);
-  }
-#endif
   else
   {
     throw std::runtime_error("'" + loader.get_name() + "' loader does not support loading");
@@ -207,7 +208,7 @@ SoftwareSurfaceFactory::from_file(std::filesystem::path const& filename, std::st
     throw std::runtime_error(std::format("non-existing loader specified: {}", loader));
   }
 
-  return (*it)->from_file(filename);
+  return from_file(filename, **it);
 }
 
 SoftwareSurface
@@ -273,7 +274,7 @@ SoftwareSurfaceFactory::from_mem(std::span<uint8_t const> data,
   if (!loader)
   {
     std::ostringstream out;
-    out << "SoftwareSurfaceFactory::from_url(): " << filename << ": unknown file type";
+    out << "SoftwareSurfaceFactory::from_mem(): " << filename << ": unknown file type";
     throw std::runtime_error(out.str());
   }
   else
@@ -285,7 +286,7 @@ SoftwareSurfaceFactory::from_mem(std::span<uint8_t const> data,
     else
     {
       std::ostringstream out;
-      out << "SoftwareSurfaceFactory::from_url(): " << filename << ": loader doesn't support from_mem(), workaround not implemented";
+      out << "SoftwareSurfaceFactory::from_mem(): " << filename << ": loader doesn't support from_mem(), workaround not implemented";
       throw std::runtime_error(out.str());
     }
   }

@@ -11,9 +11,12 @@
 , libpng
 , logmich
 , pkg-config
+, stb
 , withImagemagick ? false
 , withLibexif ? false
 , withSDL2 ? false
+  # PNG and JPEG via stb instead of libpng and libjpeg
+, withStb ? false
 , version ? "0.0.0"
 }:
 
@@ -31,7 +34,8 @@ stdenv.mkDerivation {
   ++ lib.optional (!stdenv.hostPlatform.isWindows) "-DBUILD_BENCHMARKS=ON"
   ++ (lib.optional withImagemagick "-DWITH_MAGICKXX=ON")
   ++ (lib.optional withLibexif "-DWITH_EXIF=ON")
-  ++ (lib.optional withSDL2 "-DWITH_SDL2=ON");
+  ++ (lib.optional withSDL2 "-DWITH_SDL2=ON")
+  ++ (lib.optional withStb "-DWITH_STB=ON");
   nativeBuildInputs = [
     cmake
     pkg-config
@@ -39,13 +43,13 @@ stdenv.mkDerivation {
   buildInputs = [
     gtest
     SDL2
-  ] ++ lib.optional (!stdenv.hostPlatform.isWindows) gbenchmark;
+  ] ++ lib.optional (!stdenv.hostPlatform.isWindows) gbenchmark
+  ++ lib.optional withStb stb;
   propagatedBuildInputs = [
     geomcpp
     logmich
-    libpng
-    libjpeg
   ]
+  ++ (lib.optionals (!withStb) [ libpng libjpeg ])
   ++ (lib.optional withImagemagick imagemagick6)
   ++ (lib.optional withLibexif libexif);
 }

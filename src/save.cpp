@@ -17,26 +17,54 @@
 #include <stdexcept>
 
 #include "pixel_data.hpp"
-#include "plugins/jpeg.hpp"
-#include "plugins/png.hpp"
+#ifdef HAVE_STB
+#  include "plugins/stb.hpp"
+#else
+#  include "plugins/jpeg.hpp"
+#  include "plugins/png.hpp"
+#endif
 #include "save.hpp"
+#include "util/filesystem.hpp"
 
 namespace surf {
+
+namespace {
+
+void save_png(SoftwareSurface const& surface, std::filesystem::path const& path)
+{
+#ifdef HAVE_STB
+  stb::save_png(surface, path);
+#else
+  png::save(surface, path);
+#endif
+}
+
+void save_jpeg(SoftwareSurface const& surface, std::filesystem::path const& path, int quality)
+{
+#ifdef HAVE_STB
+  stb::save_jpeg(surface, path, quality);
+#else
+  jpeg::save(surface, path, quality);
+#endif
+}
+
+} // namespace
 
 void save(SoftwareSurface const& surface, std::filesystem::path const& path, std::string_view format)
 {
   if (format == "auto") {
-    if (path.extension() == ".jpg" || path.extension() == ".JPG") {
-      surf::jpeg::save(surface, path, 70);
-    } else if (path.extension() == ".png" || path.extension() == ".PNG") {
-      surf::png::save(surface, path);
+    std::string const extension = Filesystem::get_extension(path);
+    if (extension == "jpg" || extension == "jpeg") {
+      save_jpeg(surface, path, 70);
+    } else if (extension == "png") {
+      save_png(surface, path);
     } else {
-      throw std::invalid_argument("unknown file extension");
+      throw std::invalid_argument("unknown file extension: " + path.string());
     }
   } else if (format == "png") {
-    surf::png::save(surface, path);
+    save_png(surface, path);
   } else if (format == "jpeg") {
-    surf::jpeg::save(surface, path, 70);
+    save_jpeg(surface, path, 70);
   } else {
     throw std::runtime_error("unsupported format");
   }

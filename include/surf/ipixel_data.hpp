@@ -21,6 +21,8 @@
 
 #include <geom/fwd.hpp>
 
+#include "fwd.hpp"
+
 namespace surf {
 
 class IPixelData

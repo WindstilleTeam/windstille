@@ -56,10 +56,10 @@ public:
     r(r_), g(g_), b(b_), a(a_)
   {}
 
-  inline constexpr uint8_t r8() const { return static_cast<uint8_t>(std::clamp(255.0f * r, 0.0f, 255.0f)); }
-  inline constexpr uint8_t g8() const { return static_cast<uint8_t>(std::clamp(255.0f * g, 0.0f, 255.0f)); }
-  inline constexpr uint8_t b8() const { return static_cast<uint8_t>(std::clamp(255.0f * b, 0.0f, 255.0f)); }
-  inline constexpr uint8_t a8() const { return static_cast<uint8_t>(std::clamp(255.0f * a, 0.0f, 255.0f)); }
+  inline constexpr uint8_t r8() const { return static_cast<uint8_t>(std::clamp(255.0f * r, 0.0f, 255.0f) + 0.5f); }
+  inline constexpr uint8_t g8() const { return static_cast<uint8_t>(std::clamp(255.0f * g, 0.0f, 255.0f) + 0.5f); }
+  inline constexpr uint8_t b8() const { return static_cast<uint8_t>(std::clamp(255.0f * b, 0.0f, 255.0f) + 0.5f); }
+  inline constexpr uint8_t a8() const { return static_cast<uint8_t>(std::clamp(255.0f * a, 0.0f, 255.0f) + 0.5f); }
 
   bool operator==(Color const& rhs) const = default;
 
@@ -93,7 +93,7 @@ Color boxclamp(Color const& color)
                  color.g / color.r,
                  color.b / color.r,
                  color.a);
-  } else if (color.g >= color.r && color.r >= color.b) {
+  } else if (color.g >= color.r && color.g >= color.b) {
     return Color(color.r / color.g,
                  color.g / color.g,
                  color.b / color.g,

@@ -30,25 +30,32 @@
 #include "fill.hpp"
 #include "pixel.hpp"
 #include "software_surface_factory.hpp"
+#include "unwrap.hpp"
 
 namespace surf {
 
 namespace {
 
-SoftwareSurfaceFactory g_pixeldata_fatory;
+SoftwareSurfaceFactory& get_factory()
+{
+  // function local static to avoid the static initialization order
+  // problem when loading images from other static constructors
+  static SoftwareSurfaceFactory factory;
+  return factory;
+}
 
 } // namespace
 
 SoftwareSurface
 SoftwareSurface::from_file(std::filesystem::path const& filename)
 {
-  return g_pixeldata_fatory.from_file(filename);
+  return get_factory().from_file(filename);
 }
 
 SoftwareSurface
 SoftwareSurface::from_file(std::filesystem::path const& filename, std::string_view loader)
 {
-  return g_pixeldata_fatory.from_file(filename, loader);
+  return get_factory().from_file(filename, loader);
 }
 
 SoftwareSurface
@@ -67,7 +74,7 @@ SoftwareSurface::create_view(PixelFormat format, geom::isize const& size, void* 
     format,
     pixeltype,
     return SoftwareSurface(std::make_unique<PixelView<pixeltype>>(
-                             size, static_cast<pixeltype*>(ptr), pitch / sizeof(pixeltype))));
+                             PixelView<pixeltype>::from_pitch(size, static_cast<pixeltype*>(ptr), pitch))));
 }
 
 SoftwareSurface
@@ -77,7 +84,7 @@ SoftwareSurface::create_view(PixelFormat format, geom::isize const& size, void c
     format,
     pixeltype,
     return SoftwareSurface(std::make_unique<PixelView<pixeltype>>(
-                             size, static_cast<pixeltype const*>(ptr), pitch / sizeof(pixeltype))));
+                             PixelView<pixeltype>::from_pitch(size, static_cast<pixeltype const*>(ptr), pitch))));
 }
 
 SoftwareSurface::SoftwareSurface() :
@@ -86,14 +93,16 @@ SoftwareSurface::SoftwareSurface() :
 }
 
 SoftwareSurface::SoftwareSurface(SoftwareSurface const& other) :
-  m_pixel_data(other.m_pixel_data->copy())
+  m_pixel_data(other.m_pixel_data ? other.m_pixel_data->copy() : nullptr)
 {
 }
 
 SoftwareSurface&
 SoftwareSurface::operator=(SoftwareSurface const& other)
 {
-  m_pixel_data = other.m_pixel_data->copy();
+  if (this != &other) {
+    m_pixel_data = other.m_pixel_data ? other.m_pixel_data->copy() : nullptr;
+  }
   return *this;
 }
 
@@ -172,19 +181,38 @@ SoftwareSurface::get_row_data(int y) const
 Color
 SoftwareSurface::get_pixel(geom::ipoint const& position) const
 {
-  return m_pixel_data->get_pixel_color(position);
+  return pixel_data().get_pixel_color(position);
 }
 
 void
 SoftwareSurface::put_pixel(geom::ipoint const& position, Color const& color)
 {
-  m_pixel_data->put_pixel_color(position, color);
+  pixel_data().put_pixel_color(position, color);
 }
 
 SoftwareSurface
 SoftwareSurface::get_view(geom::irect const& rect) const
 {
+  pixel_data(); // throws when empty
   return SoftwareSurface(m_pixel_data->create_view(rect));
+}
+
+IPixelData&
+SoftwareSurface::pixel_data()
+{
+  if (!m_pixel_data) {
+    throw std::runtime_error("SoftwareSurface: surface is empty");
+  }
+  return *m_pixel_data;
+}
+
+IPixelData const&
+SoftwareSurface::pixel_data() const
+{
+  if (!m_pixel_data) {
+    throw std::runtime_error("SoftwareSurface: surface is empty");
+  }
+  return *m_pixel_data;
 }
 
 } // namespace surf

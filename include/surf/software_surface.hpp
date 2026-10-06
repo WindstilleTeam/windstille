@@ -27,7 +27,6 @@
 #include "fwd.hpp"
 #include "blendfunc.hpp"
 #include "pixel_data.hpp"
-#include "unwrap.hpp"
 
 namespace surf {
 
@@ -88,7 +87,7 @@ public:
   void const* get_data() const;
   void const* get_row_data(int y) const;
 
-  IPixelData const& get_pixel_data() const { return *m_pixel_data; }
+  IPixelData const& get_pixel_data() const { return pixel_data(); }
 
   template<typename Pixel>
   PixelView<Pixel> const* as_pixelview_ptr() const {
@@ -97,19 +96,27 @@ public:
 
   template<typename Pixel>
   PixelView<Pixel> const& as_pixelview() const {
-    return dynamic_cast<PixelView<Pixel> const&>(*m_pixel_data);
+    return dynamic_cast<PixelView<Pixel> const&>(pixel_data());
   }
 
   template<typename Pixel>
   PixelView<Pixel>& as_pixelview() {
-    return dynamic_cast<PixelView<Pixel>&>(*m_pixel_data);
+    return dynamic_cast<PixelView<Pixel>&>(pixel_data());
   }
 
   bool operator==(SoftwareSurface const& rhs) const {
+    if (!m_pixel_data || !rhs.m_pixel_data) {
+      return !m_pixel_data && !rhs.m_pixel_data;
+    }
     return *m_pixel_data == *rhs.m_pixel_data;
   }
 
   SoftwareSurface get_view(geom::irect const& rect) const;
+
+private:
+  /** Throws if the surface is empty */
+  IPixelData& pixel_data();
+  IPixelData const& pixel_data() const;
 
 private:
   std::unique_ptr<IPixelData> m_pixel_data;

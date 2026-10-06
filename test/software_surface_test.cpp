@@ -118,4 +118,39 @@ TEST(SoftwareSurfaceTest, create_view__const)
   fill(view, Color(0, 0, 0, 0));
 }
 
+TEST(SoftwareSurfaceTest, empty_copy)
+{
+  SoftwareSurface const empty;
+  SoftwareSurface copy(empty);
+  EXPECT_EQ(copy.get_format(), PixelFormat::NONE);
+  EXPECT_EQ(copy, empty);
+
+  SoftwareSurface surface = SoftwareSurface::create(PixelFormat::RGB8, {4, 4});
+  EXPECT_NE(surface, empty);
+  surface = empty;
+  EXPECT_EQ(surface.get_format(), PixelFormat::NONE);
+
+  EXPECT_THROW(empty.get_pixel({0, 0}), std::runtime_error);
+  EXPECT_THROW(empty.get_view(geom::irect(0, 0, 1, 1)), std::runtime_error);
+  EXPECT_THROW(empty.get_pixel_data(), std::runtime_error);
+}
+
+TEST(SoftwareSurfaceTest, create_view__padded_pitch)
+{
+  // 3x2 RGB8 with rows padded to 12 bytes
+  std::vector<uint8_t> data(24, 0);
+  data[12 + 6 + 0] = 255;
+
+  SoftwareSurface const surface = SoftwareSurface::create_view(PixelFormat::RGB8, {3, 2}, data.data(), 12);
+  EXPECT_EQ(surface.get_pitch(), 12);
+  EXPECT_EQ(surface.get_pixel({2, 1}), Color(1.0f, 0.0f, 0.0f));
+  EXPECT_EQ(surface.get_view(geom::irect(2, 1, 3, 2)).get_pixel({0, 0}), Color(1.0f, 0.0f, 0.0f));
+}
+
+TEST(SoftwareSurfaceTest, create_64f_unsupported)
+{
+  EXPECT_THROW(SoftwareSurface::create(PixelFormat::RGB64f, {1, 1}), std::invalid_argument);
+  EXPECT_THROW(SoftwareSurface::create(PixelFormat::NONE, {1, 1}), std::invalid_argument);
+}
+
 /* EOF */

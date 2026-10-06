@@ -57,7 +57,7 @@ void fill__fast(PixelView<Pixel>& dst, Pixel const& pixel)
     Pixel* const row = dst.get_row(y);
     int const w = dst.get_width();
     int x = 0;
-    for (; x < w; x += 8) {
+    for (; x + 8 <= w; x += 8) {
       row[x + 0] = pixel;
       row[x + 1] = pixel;
 
@@ -70,7 +70,6 @@ void fill__fast(PixelView<Pixel>& dst, Pixel const& pixel)
       row[x + 6] = pixel;
       row[x + 7] = pixel;
     }
-    x -= 8;
     for (; x < w; x += 1) {
       row[x] = pixel;
     }
@@ -126,8 +125,13 @@ void fill_rect(PixelView<Pixel>& dst, geom::irect const& rect, Pixel const& pixe
 
 template<typename Pixel>
 void fill_checkerboard(PixelView<Pixel>& dst, geom::isize const& size,
-                       Pixel const& pixel, geom::irect const region)
+                       Pixel const& pixel, geom::irect const& rect)
 {
+  if (size.is_empty()) {
+    return;
+  }
+
+  geom::irect const region = geom::intersection(geom::irect(dst.get_size()), rect);
   for (int y = region.top(); y < region.bottom(); ++y) {
     Pixel* const row = dst.get_row(y);
 

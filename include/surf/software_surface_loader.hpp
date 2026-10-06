@@ -79,19 +79,18 @@ private:
   FromFileFunc m_from_file;
   FromMemFunc m_from_mem;
 
-private:
-  SoftwareSurfaceLoaderGeneric(const SoftwareSurfaceLoaderGeneric&);
-  SoftwareSurfaceLoaderGeneric& operator=(const SoftwareSurfaceLoaderGeneric&);
+public:
+  SoftwareSurfaceLoaderGeneric(const SoftwareSurfaceLoaderGeneric&) = delete;
+  SoftwareSurfaceLoaderGeneric& operator=(const SoftwareSurfaceLoaderGeneric&) = delete;
 };
 
 template<typename FromFileFunc, typename FromMemFunc> inline
 std::unique_ptr<SoftwareSurfaceLoader> make_loader(std::string name, FromFileFunc from_file, FromMemFunc&& from_mem) // NOLINT
 {
-  std::unique_ptr<SoftwareSurfaceLoader> loader(
-    new SoftwareSurfaceLoaderGeneric<FromFileFunc, FromMemFunc>(std::move(name),
-                                                                std::forward<FromFileFunc>(from_file),
-                                                                std::forward<FromMemFunc>(from_mem)));
-  return loader;
+  return std::make_unique<SoftwareSurfaceLoaderGeneric<FromFileFunc, FromMemFunc>>(
+    std::move(name),
+    std::forward<FromFileFunc>(from_file),
+    std::forward<FromMemFunc>(from_mem));
 }
 
 } // namespace surf

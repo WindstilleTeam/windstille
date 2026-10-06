@@ -17,6 +17,7 @@
 #ifndef HEADER_SURF_BLENDFUNC_HPP
 #define HEADER_SURF_BLENDFUNC_HPP
 
+#include <stdexcept>
 #include <string_view>
 
 #include "blend.hpp"
