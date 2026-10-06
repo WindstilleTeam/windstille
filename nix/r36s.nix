@@ -526,8 +526,9 @@ EOF
         "-DWINDSTILLE_CXXABI_SHIM=${../mk/r36s/cxxabi_shim.cpp}"
         # Relative data next to the binary on device (PortMaster layout).
         "-DPROJECT_VERSION_FULL=${version}"
-        "-DSQUIRREL_LIBRARIES=${squirrelR36s}/lib/libsquirrel.a;${squirrelR36s}/lib/libsqstdlib.a"
-        "-DSQUIRREL_INCLUDE_DIRS=${squirrelR36s}/include"
+        "-DSQUIRREL_LIBRARY=${squirrelR36s}/lib/libsquirrel.a"
+        "-DSQSTDLIB_LIBRARY=${squirrelR36s}/lib/libsqstdlib.a"
+        "-DSQUIRREL_INCLUDE_DIR=${squirrelR36s}/include"
         "-DFREETYPE_LIBRARY=${freetypeR36s}/lib/libfreetype.a"
         "-DFREETYPE_INCLUDE_DIRS=${freetypeR36s}/include/freetype2"
         "-DFREETYPE_DIR=${freetypeR36s}"

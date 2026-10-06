@@ -82,8 +82,9 @@ let
       # Upstream glm headers, nixpkgs patches gtc/packing.inl to include
       # <endian.h>, which MinGW lacks
       "-DWINDSTILLE_GLM_INCLUDE_DIR=${pkgs.glm.src}"
-      "-DSQUIRREL_LIBRARIES=${squirrelWin64}/lib/libsquirrel.a;${squirrelWin64}/lib/libsqstdlib.a"
-      "-DSQUIRREL_INCLUDE_DIRS=${squirrelWin64}/include"
+      "-DSQUIRREL_LIBRARY=${squirrelWin64}/lib/libsquirrel.a"
+      "-DSQSTDLIB_LIBRARY=${squirrelWin64}/lib/libsqstdlib.a"
+      "-DSQUIRREL_INCLUDE_DIR=${squirrelWin64}/include"
       "-DWITH_STB=ON"
       "-DSTB_INCLUDE_DIR=${stbImageIncludeDir}"
       # Same slim codec set as the other ports: WAV and modplug modules
