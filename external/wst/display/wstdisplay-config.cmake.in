@@ -9,7 +9,8 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(Threads)
 find_dependency(Freetype)
-find_dependency(OpenGL)
+# only linked where a GL library exists
+find_package(OpenGL QUIET)
 find_dependency(PkgConfig)
 
 find_dependency(babyxml)
