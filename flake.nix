@@ -150,13 +150,6 @@
           buildInputs = [ tinycmmc_pkg ];
         };
 
-        strutcpp = mkExternal {
-          pname = "strutcpp";
-          src = ./external/strutcpp;
-          version = "0.0.0";
-          buildInputs = [ tinycmmc_pkg ];
-        };
-
         prio = mkExternal {
           pname = "prio";
           src = ./external/prio;
@@ -220,7 +213,6 @@
         windstilleExternalDeps = [
           argpp babyxml biiocpp geomcpp logmich prio surfcpp
           wst wstsound tinycmmc_pkg sexpcpp
-          strutcpp
         ];
 
         commonNative = [
@@ -499,7 +491,7 @@
         packages = rec {
           inherit
             tinycmmc_pkg logmich sexpcpp geomcpp babyxml biiocpp argpp
-            strutcpp prio surfcpp wstsound wst
+            prio surfcpp wstsound wst
             miniswig
             libwindstille
             windstille
@@ -518,7 +510,7 @@
           # Externals (stb_image, no libjpeg/libpng)
           inherit
             tinycmmc_pkg logmich sexpcpp geomcpp babyxml biiocpp argpp
-            strutcpp prio surfcpp wstsound wst miniswig;
+            prio surfcpp wstsound wst miniswig;
           # Game binaries
           inherit
             libwindstille

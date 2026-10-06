@@ -89,7 +89,6 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../external_includes/geom \
 	$(LOCAL_PATH)/../external_includes/logmich \
 	$(LOCAL_PATH)/../external_includes/prio \
-	$(LOCAL_PATH)/../external_includes/strut \
 	$(LOCAL_PATH)/../external_includes/sexp \
 	$(LOCAL_PATH)/../external_includes/surf \
 	$(LOCAL_PATH)/../external_includes/wstdisplay \
@@ -103,7 +102,6 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/deps/argpp \
 	$(LOCAL_PATH)/deps/logmich \
 	$(LOCAL_PATH)/deps/sexpcpp \
-	$(LOCAL_PATH)/deps/strutcpp \
 	$(LOCAL_PATH)/deps/priocpp \
 	$(LOCAL_PATH)/deps/babyxml \
 	$(LOCAL_PATH)/deps/biiocpp \

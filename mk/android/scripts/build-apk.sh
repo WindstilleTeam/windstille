@@ -115,7 +115,7 @@ mkdir -p src/jni/external_includes
 # Copy then force owner-writable on the staging tree.
 # Header-only / public includes (layout: include/<ns>/… → external_includes/<ns>/…)
 # dir names in Windstille external/ (prio, not priocpp). optional → warn only.
-for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req              babyxml:req surfcpp:req wst/display:req wst/input:req wst/gui:req              wst/sprite:req wst/display/external/glad:req wstsound:req biiocpp:req              tinygettext:opt; do
+for entry in argpp:req geomcpp:req logmich:req prio:req sexpcpp:req              babyxml:req surfcpp:req wst/display:req wst/input:req wst/gui:req              wst/sprite:req wst/display/external/glad:req wstsound:req biiocpp:req              tinygettext:opt; do
   name="${entry%%:*}"
   mode="${entry##*:}"
   inc="$EXTERNAL_DIR/$name/include"
@@ -174,7 +174,6 @@ stage_lib_src() {
 stage_lib_src argpp
 stage_lib_src logmich
 stage_lib_src sexpcpp
-stage_lib_src strutcpp
 # Stage as priocpp only (Android.mk deps path). Staging both prio and a
 # priocpp symlink caused ndk-build to compile every .cpp twice.
 stage_lib_src prio
@@ -194,8 +193,6 @@ stage_lib_src tinygettext
 # Drop JSON backends (PRIO_USE_JSONCPP is off).
 rm -f src/jni/src/deps/priocpp/json_*.cpp \
       src/jni/src/deps/priocpp/jsonpretty_*.cpp
-# strut layout.cpp needs a missing polygon.hpp; Windstille does not use Layout.
-rm -f src/jni/src/deps/strutcpp/layout.cpp
 echo "==> staged external sources into jni/src/deps/"
 
 # Optional Squirrel (headers + sources compiled into libmain).
