@@ -259,7 +259,8 @@ let
     sdl2ImageSrc ? null,
     # Optional game data directory packaged as APK assets.
     gameDataDir ? null,
-    stbImageH ? null,
+    # Directory with stb_image.h and stb_image_write.h
+    stbImageIncludeDir,
     # Full version for WINDSTILLE_VERSION (e.g. 0.8.0-dev+gabc1234).
     gameVersion ? "0.8.0-dev",
   }:
@@ -309,8 +310,8 @@ let
         else {
           GAME_DATA_DIR = "${gameDataDir}";
         }
-      ) // pkgs.lib.optionalAttrs (stbImageH != null) {
-        STB_IMAGE_H = "${stbImageH}";
+      ) // {
+        STB_IMAGE_INCLUDE_DIR = "${stbImageIncludeDir}";
       };
 
       buildPhase = ''

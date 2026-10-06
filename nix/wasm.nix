@@ -5,6 +5,8 @@
 , sdlMixerSrc ? null
 , libxmpSrc ? null
 , squirrelSrc ? null
+  # stb_image.h and stb_image_write.h for surfcpp
+, stbImageIncludeDir
 }:
 
 let
@@ -248,24 +250,8 @@ EOF
 
 
 
-  # --- Image codecs for surfcpp (wasm): header-only stb_image -------------
-  # Prefer stb over emscripten-compiled libjpeg/libpng (faster builds, same
-  # path as Android/R36S). Legacy jpegWasm/pngWasm blocks below are unused.
-  stbImageH = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
-    sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
-  };
-  stbImageIncludeDir = pkgs.stdenvNoCC.mkDerivation {
-    name = "stb-image-include-wasm";
-    dontUnpack = true;
-    installPhase = ''
-      mkdir -p $out
-      cp ${stbImageH} $out/stb_image.h
-    '';
-  };
-
   # Unused legacy wasm codec builds (kept so older scripts do not break if
-  # referenced). Prefer stbImageIncludeDir.
+  # referenced). surfcpp uses the header-only stb_image instead.
   jpegWasm = pkgs.stdenv.mkDerivation {
     pname = "libjpeg-wasm";
     version = pkgs.libjpeg.version;

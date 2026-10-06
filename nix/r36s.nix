@@ -23,6 +23,9 @@
 , squirrelSrc ? null  # optional: path/tarball for upstream squirrel (cross-built static)
 , bison ? null
 , flex ? null
+  # stb_image.h and stb_image_write.h for surfcpp; the ArkOS sysroot has no
+  # libpng/libjpeg
+, stbImageIncludeDir
 }:
 
 let
@@ -40,21 +43,6 @@ let
   # Allow hash to be overridden by the user who already fetched the tarball;
   # if the placeholder remains, Nix will print the expected hash.
   khrplatformH = ../mk/r36s/include/KHR/khrplatform.h;
-
-  # stb_image.h for PNG/JPEG when the ArkOS sysroot has no libpng/libjpeg
-  # (same approach as the Android port).
-  stbImageH = fetchurl {
-    url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
-    sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
-  };
-  stbImageIncludeDir = stdenvNoCC.mkDerivation {
-    name = "stb-image-include";
-    dontUnpack = true;
-    installPhase = ''
-      mkdir -p $out
-      cp ${stbImageH} $out/stb_image.h
-    '';
-  };
 
   arkosSysroot = stdenvNoCC.mkDerivation {
     pname = "arkos-sysroot";

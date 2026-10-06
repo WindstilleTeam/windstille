@@ -436,7 +436,7 @@
           else
             let
               wasm = import ./nix/wasm.nix {
-                inherit pkgs;
+                inherit pkgs stbImageIncludeDir;
                 sdlSrc = sdl2-src;
                 sdlVersion = "2.30.9";
                 sdlImageSrc = sdl2-image-src;
@@ -495,11 +495,6 @@
                 else "00000000";
               gitRevShort = self.rev or "dirty";
               androidApkName = "windstille-${gitDate}-${builtins.substring 0 7 gitRevShort}.apk";
-              stbImageH = androidPkgs.fetchurl {
-                url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
-                sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
-              };
-
               windstille-android = android.mkApk {
                 appName = "windstille";
                 appDir = ./mk/android/app;
@@ -509,7 +504,7 @@
                 gameExternalDir = ./external;
                 glmIncludeDir = "${androidPkgs.glm}/include";
                 gameDataDir = if builtins.pathExists ./data then ./data else null;
-                inherit stbImageH;
+                inherit stbImageIncludeDir;
                 gameVersion = "0.3.0-dev";
               };
 
@@ -517,6 +512,7 @@
               # nix/r36s.nix; update hash when a permanent tarball is published.
               r36s = import ./nix/r36s.nix {
                 inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript writeTextFile zip glm bison flex;
+                inherit stbImageIncludeDir;
                 pkgsCross = pkgs.pkgsCross;
               };
               windstille-r36s = r36s.mkWindstilleR36s {
