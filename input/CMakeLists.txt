@@ -103,8 +103,12 @@ pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 
 find_library(CWIID_LIBRARY cwiid)
 
-find_package(logmich REQUIRED)
-find_package(prio REQUIRED)
+if(NOT TARGET logmich::logmich)
+  find_package(logmich REQUIRED)
+endif()
+if(NOT TARGET prio::prio)
+  find_package(prio REQUIRED)
+endif()
 
 file(GLOB WSTINPUT_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   include/wstinput/*.hpp)

@@ -107,15 +107,26 @@ endif()
 
 find_package(Threads REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(OpenGL REQUIRED)
+# GL is loaded at runtime through the loader given to Device, the GL
+# library is only linked where one exists, Emscripten and Android
+# provide the functions through SDL and EGL
+find_package(OpenGL)
 find_package(PkgConfig REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 
-find_package(babyxml REQUIRED)
-find_package(geom REQUIRED)
-find_package(surf REQUIRED)
-find_package(logmich REQUIRED)
+if(NOT TARGET babyxml::babyxml)
+  find_package(babyxml REQUIRED)
+endif()
+if(NOT TARGET geom::geom)
+  find_package(geom REQUIRED)
+endif()
+if(NOT TARGET surf::surf)
+  find_package(surf REQUIRED)
+endif()
+if(NOT TARGET logmich::logmich)
+  find_package(logmich REQUIRED)
+endif()
 
 file(GLOB WSTDISPLAY_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/*.cpp
@@ -142,9 +153,11 @@ target_link_libraries(wstdisplay PUBLIC
   geom::geom
   surf::surf
   logmich::logmich
-  OpenGL::GL
   PkgConfig::SDL2
   Threads::Threads)
+if(TARGET OpenGL::GL)
+  target_link_libraries(wstdisplay PUBLIC OpenGL::GL)
+endif()
 # FreeType is not part of the public headers
 target_link_libraries(wstdisplay PRIVATE
   Freetype::Freetype)
