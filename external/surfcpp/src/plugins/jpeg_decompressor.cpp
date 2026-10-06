@@ -75,6 +75,13 @@ JPEGDecompressor::read_image(int scale, geom::isize* image_size)
     throw std::invalid_argument("JPEGDecompressor::read_image: Invalid scale: " + std::to_string(scale));
   }
 
+  // Everything with a destructor is declared before setjmp(), as
+  // longjmp() would otherwise skip over it
+  PixelData<RGB8Pixel> dst;
+  std::vector<JSAMPLE const*> scanlines;
+  std::vector<JSAMPLE> output_data;
+  std::vector<JSAMPLE*> cmyk_scanlines;
+
   if (setjmp(m_err.setjmp_buffer)) {
     char buffer[JMSG_LENGTH_MAX];
     (m_cinfo.err->format_message)(reinterpret_cast<jpeg_common_struct*>(&m_cinfo), buffer);
@@ -102,12 +109,12 @@ JPEGDecompressor::read_image(int scale, geom::isize* image_size)
 
   jpeg_start_decompress(&m_cinfo);
 
-  PixelData<RGB8Pixel> dst(geom::isize(static_cast<int>(m_cinfo.output_width),
-                                      static_cast<int>(m_cinfo.output_height)));
+  dst = PixelData<RGB8Pixel>(geom::isize(static_cast<int>(m_cinfo.output_width),
+                                         static_cast<int>(m_cinfo.output_height)));
 
   if (m_cinfo.out_color_space == JCS_RGB &&
       m_cinfo.output_components == 3) {
-    std::vector<JSAMPLE const*> scanlines(m_cinfo.output_height);
+    scanlines.resize(m_cinfo.output_height);
 
     for (JDIMENSION y = 0; y < m_cinfo.output_height; ++y) {
       scanlines[y] = static_cast<JSAMPLE const*>(dst.get_row_data(static_cast<int>(y)));
@@ -119,7 +126,7 @@ JPEGDecompressor::read_image(int scale, geom::isize* image_size)
     }
   } else if (m_cinfo.out_color_space == JCS_GRAYSCALE &&
              m_cinfo.output_components == 1) {
-    std::vector<JSAMPLE const*> scanlines(m_cinfo.output_height);
+    scanlines.resize(m_cinfo.output_height);
 
     for (JDIMENSION y = 0; y < m_cinfo.output_height; ++y) {
       scanlines[y] = static_cast<JSAMPLE const*>(dst.get_row_data(static_cast<int>(y)));
@@ -145,18 +152,18 @@ JPEGDecompressor::read_image(int scale, geom::isize* image_size)
     }
   } else if (m_cinfo.out_color_space == JCS_CMYK &&
              m_cinfo.output_components == 4) {
-    std::vector<JSAMPLE> output_data(m_cinfo.output_width * m_cinfo.output_height *
-                                     m_cinfo.output_components);
-    std::vector<JSAMPLE*> scanlines(m_cinfo.output_height);
+    output_data.resize(static_cast<size_t>(m_cinfo.output_width) * m_cinfo.output_height *
+                       static_cast<size_t>(m_cinfo.output_components));
+    cmyk_scanlines.resize(m_cinfo.output_height);
 
     for(JDIMENSION y = 0; y < m_cinfo.output_height; ++y)
     {
-      scanlines[y] = &output_data[y * m_cinfo.output_width * m_cinfo.output_components];
+      cmyk_scanlines[y] = &output_data[static_cast<size_t>(y) * m_cinfo.output_width * static_cast<size_t>(m_cinfo.output_components)];
     }
 
     while (m_cinfo.output_scanline < m_cinfo.output_height)
     {
-      jpeg_read_scanlines(&m_cinfo, &scanlines[m_cinfo.output_scanline],
+      jpeg_read_scanlines(&m_cinfo, &cmyk_scanlines[m_cinfo.output_scanline],
                           m_cinfo.output_height - m_cinfo.output_scanline);
     }
 

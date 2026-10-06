@@ -18,6 +18,7 @@
 
 #include <assert.h>
 #include <stdexcept>
+#include <string>
 
 #include <geom/size.hpp>
 
@@ -30,22 +31,34 @@ SoftwareSurface load_from_mem(std::span<uint8_t const> data)
 {
   PNMMemReader pnm(data);
 
+  if (pnm.get_pixel_data() == nullptr ||
+      pnm.get_pixel_data() > data.data() + data.size()) {
+    throw std::runtime_error("PNM::load_from_mem(): incomplete header");
+  }
+
+  if (pnm.get_size().is_empty()) {
+    throw std::runtime_error("PNM::load_from_mem(): invalid image size");
+  }
+
+  if (pnm.get_maxval() != 255) {
+    throw std::runtime_error("PNM::load_from_mem(): unsupported maxval: " + std::to_string(pnm.get_maxval()));
+  }
+
   PixelData<RGBPixel> dst(pnm.get_size());
   uint8_t const* src_pixels = pnm.get_pixel_data();
   RGBPixel* dst_pixels = dst.get_data();
-  //std::cout << "MaxVal: " << pnm.get_maxval() << std::endl;
-  assert(pnm.get_maxval() == 255);
 
-  const int pixel_data_len = static_cast<int>((data.data() + data.size()) - src_pixels);
+  size_t const pixel_data_len = static_cast<size_t>((data.data() + data.size()) - src_pixels);
+  size_t const num_pixels = static_cast<size_t>(dst.get_width()) * static_cast<size_t>(dst.get_height());
 
   if (pnm.get_magic() == "P6") // RGB
   {
-    if (dst.get_width() * dst.get_height() * 3 > pixel_data_len)
+    if (num_pixels * 3 > pixel_data_len)
     {
       throw std::runtime_error("PNM::load_from_mem(): premature end of pixel data");
     }
 
-    for(int i = 0; i < dst.get_width() * dst.get_height(); ++i)
+    for(size_t i = 0; i < num_pixels; ++i)
     {
       dst_pixels[i+0] = RGBPixel{
         src_pixels[3*i+0],
@@ -56,12 +69,12 @@ SoftwareSurface load_from_mem(std::span<uint8_t const> data)
   }
   else if (pnm.get_magic() == "P5") // Grayscale
   {
-    if (dst.get_width() * dst.get_height()  > pixel_data_len)
+    if (num_pixels > pixel_data_len)
     {
       throw std::runtime_error("PNM::load_from_mem(): premature end of pixel data");
     }
 
-    for(int i = 0; i < dst.get_width() * dst.get_height(); ++i)
+    for(size_t i = 0; i < num_pixels; ++i)
     {
       dst_pixels[i+0] = RGBPixel{
         src_pixels[i],

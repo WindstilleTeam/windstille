@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_GALAPIX_PLUGINS_JPEG_DECOMPRESSOR_HPP
-#define HEADER_GALAPIX_PLUGINS_JPEG_DECOMPRESSOR_HPP
+#ifndef HEADER_SURF_PLUGINS_JPEG_DECOMPRESSOR_HPP
+#define HEADER_SURF_PLUGINS_JPEG_DECOMPRESSOR_HPP
 
 #include <stdio.h>
 #include <jpeglib.h>

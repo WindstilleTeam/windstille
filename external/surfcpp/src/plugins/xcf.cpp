@@ -46,47 +46,6 @@
 namespace surf {
 namespace xcf {
 
-#if 0 // unused
-namespace {
-
-std::vector<std::string>
-xcfinfo_get_layer(std::string_view text)
-{
-  std::vector<std::string> layer_names;
-
-  const char* start = text.begin();
-  const char* end = text.end();
-
-  while(start != end)
-  {
-    const char* line_end = std::find(start, end, '\n');
-    std::string line(&*start, static_cast<size_t>(line_end - start));
-    start = line_end+1;
-
-    char visible;
-    int  width, height;
-    char x_sign, y_sign;
-    int  x, y;
-    char color[128];
-    char mode[128];
-    char layer_name[1024];
-
-    if (sscanf(line.c_str(), "%c %dx%d%c%d%c%d %127s %127s %[^\n]s",
-               &visible, &width, &height, &x_sign, &x, &y_sign, &y,
-               color, mode, layer_name) != 10)
-    {
-      throw std::runtime_error("XCF::get_layer(): Couldn't parse output line:\n" + line);
-    }
-
-    layer_names.push_back(layer_name);
-  }
-
-  return layer_names;
-}
-
-} // namespace
-#endif
-
 bool is_available()
 {
   try
@@ -102,39 +61,6 @@ bool is_available()
     return false;
   }
 }
-
-#if 0
-std::vector<std::string> get_layers(const URL& url)
-{
-  Exec xcfinfo("xcfinfo");
-
-  if (url.has_stdio_name()) {
-    xcfinfo.arg(url.get_stdio_name());
-  } else {
-    xcfinfo.arg("-").set_stdin(url.get_blob());
-  }
-
-  if (xcfinfo.exec() == 0)
-  {
-    auto const& stdout_lst = xcfinfo.get_stdout_txt();
-    const auto *line_end = std::find(stdout_lst.begin(), stdout_lst.end(), '\n');
-    if (line_end == stdout_lst.end())
-    {
-      throw std::runtime_error("XCF::get_layers(): Couldn't parse output");
-      return std::vector<std::string>();
-    }
-    else
-    {
-      return xcfinfo_get_layer(std::string_view(line_end + 1, stdout_lst.end()));
-    }
-  }
-  else
-  {
-    throw std::runtime_error("XCF::get_layers(): " + std::string(xcfinfo.get_stderr().begin(), xcfinfo.get_stderr().end()));
-    return std::vector<std::string>();
-  }
-}
-#endif
 
 bool get_size(std::filesystem::path const& filename, geom::isize& size)
 {

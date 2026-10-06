@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+#include <algorithm>
 #include <cctype>
+#include <stdexcept>
+#include <string>
 #include <unordered_map>
 
 #include <format>

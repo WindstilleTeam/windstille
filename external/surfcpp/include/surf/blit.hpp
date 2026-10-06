@@ -66,7 +66,7 @@ void blit__slow(PixelView<SrcPixel>& src, PixelView<DstPixel>& dst, const geom::
   for(int y = start_y; y < end_y; ++y) {
     for(int x = start_x; x < end_x; ++x) {
       SrcPixel const srcpx = src.get_pixel(geom::ipoint(x, y));
-      dst.put_pixel(geom::ipoint(pos.x() + x - start_x, pos.y() + y - start_y), convert<SrcPixel, DstPixel>(srcpx));
+      dst.put_pixel(geom::ipoint(pos.x() + x, pos.y() + y), convert<SrcPixel, DstPixel>(srcpx));
     }
   }
 }
@@ -80,6 +80,9 @@ void blit__copy(PixelView<SrcPixel> const& src, geom::irect const& srcrect,
 
   geom::irect const cliprect(dst.get_size());
   geom::irect const region = intersection(geom::irect(srcrect.size()) + geom::ioffset(pos), cliprect);
+  if (region.size().is_empty()) {
+    return;
+  }
   geom::ioffset const dst2src(-pos.x() + srcrect.left(), -pos.y() + srcrect.top());
 
   for (int y = region.top(); y < region.bottom(); ++y) {
@@ -96,16 +99,11 @@ template<typename SrcPixel, typename DstPixel,
 void blit(PixelView<SrcPixel> const& src, geom::irect const& srcrect,
           PixelView<DstPixel>& dst, const geom::ipoint& pos)
 {
-  // Runtime guard: assert() is a no-op under NDEBUG / RelWithDebInfo and a
-  // bad srcrect previously led to OOB memcpy (e.g. TilePacker building
-  // irect(x,y,w,h) instead of irect(x,y,x+w,y+h)).
-  if (!contains(geom::irect(src.get_size()), srcrect) || srcrect.width() <= 0 || srcrect.height() <= 0) {
-    return;
-  }
+  assert(contains(geom::irect(src.get_size()), srcrect));
 
   geom::irect const cliprect(dst.get_size());
   geom::irect const region = intersection(geom::irect(srcrect.size()) + geom::ioffset(pos), cliprect);
-  if (region.width() <= 0 || region.height() <= 0) {
+  if (region.size().is_empty()) {
     return;
   }
   geom::ioffset const dst2src(-pos.x() + srcrect.left(), -pos.y() + srcrect.top());
@@ -113,7 +111,7 @@ void blit(PixelView<SrcPixel> const& src, geom::irect const& srcrect,
   for (int y = region.top(); y < region.bottom(); ++y) {
     std::memcpy(dst.get_row(y) + region.left(),
                 src.get_row(y + dst2src.y()) + region.left() + dst2src.x(),
-                static_cast<size_t>(region.width()) * sizeof(SrcPixel));
+                region.width() * sizeof(SrcPixel));
   }
 }
 
@@ -122,13 +120,11 @@ template<typename SrcPixel, typename DstPixel,
 void blit(PixelView<SrcPixel> const& src, geom::irect const& srcrect,
           PixelView<DstPixel>& dst, const geom::ipoint& pos)
 {
-  if (!contains(geom::irect(src.get_size()), srcrect) || srcrect.width() <= 0 || srcrect.height() <= 0) {
-    return;
-  }
+  assert(contains(geom::irect(src.get_size()), srcrect));
 
   geom::irect const cliprect(dst.get_size());
   geom::irect const region = intersection(geom::irect(srcrect.size()) + geom::ioffset(pos), cliprect);
-  if (region.width() <= 0 || region.height() <= 0) {
+  if (region.size().is_empty()) {
     return;
   }
   geom::ioffset const dst2src(-pos.x() + srcrect.left(), -pos.y() + srcrect.top());
@@ -153,17 +149,30 @@ void blend_scaled(BlendFuncType blendfunc,
                   PixelView<SrcPixel> const& src, geom::irect const& srcrect_unclipped,
                   PixelView<DstPixel>& dst, geom::irect const& dstrect_unclipped)
 {
+  if (srcrect_unclipped.size().is_empty() || dstrect_unclipped.size().is_empty()) {
+    return;
+  }
+
   geom::irect const dstrect1 = geom::intersection(geom::irect(dst.get_size()), dstrect_unclipped);
+  if (dstrect1.size().is_empty()) {
+    return;
+  }
   geom::irect const srcrect1 = detail::equivalence_clip(dstrect_unclipped, dstrect1, srcrect_unclipped);
 
   geom::irect const srcrect = geom::intersection(geom::irect(src.get_size()), srcrect1);
+  if (srcrect1.size().is_empty() || srcrect.size().is_empty()) {
+    return;
+  }
   geom::irect const dstrect = detail::equivalence_clip(srcrect1, srcrect, dstrect1);
+  if (dstrect.size().is_empty()) {
+    return;
+  }
 
   assert(contains(geom::irect(src.get_size()), srcrect));
   assert(contains(geom::irect(dst.get_size()), dstrect));
 
   for (int y = 0; y < dstrect.height(); ++y) {
-    SrcPixel const* const srcrow = src.get_row((y + srcrect.top()) * srcrect.height() / dstrect.height()) + srcrect.left();
+    SrcPixel const* const srcrow = src.get_row(srcrect.top() + y * srcrect.height() / dstrect.height()) + srcrect.left();
     DstPixel* const dstrow = dst.get_row(y + dstrect.top()) + dstrect.left();
 
     for (int x = 0; x < dstrect.width(); ++x) {
@@ -178,7 +187,7 @@ void blend_scaled(BlendFunc blendfunc,
                   PixelView<SrcPixel> const& src,
                   PixelView<DstPixel>& dst, geom::irect const& dstrect)
 {
-  blend_scaled(blendfunc, src, geom::irect(dst.get_size()), dst, dstrect);
+  blend_scaled(blendfunc, src, geom::irect(src.get_size()), dst, dstrect);
 }
 
 template<typename SrcPixel, typename DstPixel>
@@ -206,6 +215,9 @@ void blend(BlendFunc blend_func,
 
   geom::irect const cliprect(dst.get_size());
   geom::irect const region = intersection(geom::irect(srcrect.size()) + geom::ioffset(pos), cliprect);
+  if (region.size().is_empty()) {
+    return;
+  }
   geom::ioffset const dst2src(-pos.x() + srcrect.left(), -pos.y() + srcrect.top());
 
   for (int y = region.top(); y < region.bottom(); ++y) {

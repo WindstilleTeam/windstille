@@ -20,9 +20,12 @@
 #include <SDL.h>
 #include <assert.h>
 #include <string.h>
-#include <memory>
 
 #include <format>
+#include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <utility>
 
 #include "fwd.hpp"
 #include "software_surface.hpp"
@@ -71,7 +74,7 @@ SDLSurfacePtr create_sdl_surface_view(PixelData<Pixel>& pixeldata)
                                                   pixeldata.get_width(),
                                                   pixeldata.get_height(),
                                                   PPixelFormat<Pixel>::bits_per_pixel,
-                                                  pixeldata.get_row_length() * sizeof(Pixel),
+                                                  pixeldata.get_pitch(),
                                                   PPixelFormat<Pixel>::rmask,
                                                   PPixelFormat<Pixel>::gmask,
                                                   PPixelFormat<Pixel>::bmask,
@@ -140,14 +143,16 @@ std::unique_ptr<IPixelData> pixelview_from_sdl_surface(SDL_Surface& surface)
   switch (surface.format->format)
   {
     case SDL_PIXELFORMAT_RGB24:
-      return std::make_unique<PixelView<RGBPixel>>(geom::isize(surface.w, surface.h),
-                                                   static_cast<RGBPixel*>(surface.pixels),
-                                                   surface.pitch / sizeof(RGBPixel));
+      return std::make_unique<PixelView<RGBPixel>>(
+        PixelView<RGBPixel>::from_pitch(geom::isize(surface.w, surface.h),
+                                        static_cast<RGBPixel*>(surface.pixels),
+                                        surface.pitch));
 
     case SDL_PIXELFORMAT_RGBA32:
-      return std::make_unique<PixelView<RGBAPixel>>(geom::isize(surface.w, surface.h),
-                                                    static_cast<RGBAPixel*>(surface.pixels),
-                                                    surface.pitch / sizeof(RGBAPixel));
+      return std::make_unique<PixelView<RGBAPixel>>(
+        PixelView<RGBAPixel>::from_pitch(geom::isize(surface.w, surface.h),
+                                         static_cast<RGBAPixel*>(surface.pixels),
+                                         surface.pitch));
 
     default:
       throw std::runtime_error(std::format("unsupported SDL_PixelFormatEnum: {}", surface.format->format));

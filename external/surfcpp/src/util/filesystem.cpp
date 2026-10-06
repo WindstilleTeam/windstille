@@ -16,6 +16,8 @@
 
 #include <fstream>
 #include <future>
+#include <cctype>
+#include <string>
 #include <string.h>
 #include <dirent.h>
 #include <errno.h>
@@ -69,26 +71,31 @@ Filesystem::find_exe(const std::string& name)
 std::string
 Filesystem::get_extension(std::filesystem::path const& path)
 {
-  std::string const& pathname = path.string();
-  // FIXME: should take '/' into account and only check the actual
-  // filename, instead of the whole pathname
+  // only look at the filename, not at the directories
+  std::string const pathname = path.filename().string();
+
   std::string::size_type p = pathname.rfind('.');
-  std::string extension = pathname.substr(p+1, pathname.size() - p);
-
-  std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-
-  if (extension == "gz" ||
-      extension == "bz2")
-  {
-    p = pathname.rfind('.', p-1);
-    extension = pathname.substr(p+1, pathname.size() - p);
-    std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-    return extension;
+  if (p == std::string::npos) {
+    return {};
   }
-  else
+
+  auto tolower = [](std::string text) {
+    std::transform(text.begin(), text.end(), text.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    return text;
+  };
+
+  std::string extension = tolower(pathname.substr(p + 1));
+
+  if ((extension == "gz" || extension == "bz2") && p > 0)
   {
-    return extension;
+    std::string::size_type const p2 = pathname.rfind('.', p - 1);
+    if (p2 != std::string::npos) {
+      return tolower(pathname.substr(p2 + 1));
+    }
   }
+
+  return extension;
 }
 
 std::string
@@ -111,26 +118,6 @@ Filesystem::get_magic(std::filesystem::path const& filename)
     {
       return std::string(buf, static_cast<size_t>(in.gcount()));
     }
-  }
-}
-
-void
-Filesystem::readlines_from_file(const std::string& pathname, std::vector<std::string>& lst)
-{
-  std::ifstream in(pathname.c_str());
-
-  if (!in)
-  {
-    throw std::runtime_error("Filesystem::readlines_from_file(): Couldn't open file: " + pathname);
-  }
-  else
-  {
-    std::string line;
-    while(std::getline(in, line))
-    {
-      lst.push_back(line);
-    }
-    in.close();
   }
 }
 

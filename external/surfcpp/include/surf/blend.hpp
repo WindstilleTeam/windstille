@@ -17,13 +17,37 @@
 #ifndef HEADER_SURF_BLEND_HPP
 #define HEADER_SURF_BLEND_HPP
 
-#include <logmich/log.hpp>
+#include <algorithm>
+#include <cstdint>
 
 #include "color.hpp"
 #include "convert.hpp"
 #include "pixel.hpp"
 
 namespace surf {
+
+namespace detail {
+
+/** Convert a value in the range [0, 1] to DstPixel::value_type */
+template<typename DstPixel> inline
+typename DstPixel::value_type from_unit(double v)
+{
+  using dsttype = typename DstPixel::value_type;
+
+  if constexpr (std::is_floating_point<dsttype>::value) {
+    return static_cast<dsttype>(v);
+  } else {
+    return static_cast<dsttype>(std::clamp(v, 0.0, 1.0) * static_cast<double>(DstPixel::max()) + 0.5);
+  }
+}
+
+template<typename Pixel> inline
+double to_unit(typename Pixel::value_type v)
+{
+  return static_cast<double>(v) / static_cast<double>(Pixel::max());
+}
+
+} // namespace detail
 
 template<typename SrcPixel, typename DstPixel>
 struct pixel_copy
@@ -44,31 +68,65 @@ struct pixel_blend
 
     if constexpr (!SrcPixel::has_alpha()) {
       return convert<SrcPixel, DstPixel>(src);
-    } else if constexpr (std::is_floating_point<srctype>::value || std::is_floating_point<dsttype>::value) {
-      log_not_implemented();
-      return convert<SrcPixel, DstPixel>(src);
-    } else if constexpr (SrcPixel::has_alpha() && !DstPixel::has_alpha()) {
-      return make_pixel<DstPixel>(
-        static_cast<dsttype>((red(src) * alpha(src) + red(dst) * (SrcPixel::max() - alpha(src))) / SrcPixel::max()),
-        static_cast<dsttype>((green(src) * alpha(src) + green(dst) * (SrcPixel::max() - alpha(src))) / SrcPixel::max()),
-        static_cast<dsttype>((blue(src) * alpha(src) + blue(dst) * (SrcPixel::max() - alpha(src))) / SrcPixel::max())
-        );
-    } else if constexpr (SrcPixel::has_alpha() && DstPixel::has_alpha()) {
-      dsttype const out_a = static_cast<dsttype>(alpha(src) + alpha(dst) * (SrcPixel::max() - alpha(src)) / SrcPixel::max());
-      if (out_a == 0) {
-        return make_pixel<DstPixel>(0, 0, 0, 0);
-      } else {
+    } else if constexpr (std::is_floating_point<srctype>::value ||
+                         std::is_floating_point<dsttype>::value ||
+                         sizeof(dsttype) >= 4) {
+      // the integer path below would overflow for 32bit values
+      double const sa = detail::to_unit<SrcPixel>(alpha(src));
+      double const sr = detail::to_unit<SrcPixel>(red(src));
+      double const sg = detail::to_unit<SrcPixel>(green(src));
+      double const sb = detail::to_unit<SrcPixel>(blue(src));
+
+      double const dr = detail::to_unit<DstPixel>(red(dst));
+      double const dg = detail::to_unit<DstPixel>(green(dst));
+      double const db = detail::to_unit<DstPixel>(blue(dst));
+
+      if constexpr (!DstPixel::has_alpha()) {
         return make_pixel<DstPixel>(
-          static_cast<dsttype>((red(src) * alpha(src) * DstPixel::max() / SrcPixel::max() + red(dst) * alpha(dst) * (SrcPixel::max() - alpha(src)) / SrcPixel::max()) / out_a),
-          static_cast<dsttype>((green(src) * alpha(src) * DstPixel::max() / SrcPixel::max() + green(dst) * alpha(dst) * (SrcPixel::max() - alpha(src)) / SrcPixel::max()) / out_a),
-          static_cast<dsttype>((blue(src) * alpha(src) * DstPixel::max() / SrcPixel::max() + blue(dst) * alpha(dst) * (SrcPixel::max() - alpha(src)) / SrcPixel::max()) / out_a),
-          out_a
-          );
+          detail::from_unit<DstPixel>(sr * sa + dr * (1.0 - sa)),
+          detail::from_unit<DstPixel>(sg * sa + dg * (1.0 - sa)),
+          detail::from_unit<DstPixel>(sb * sa + db * (1.0 - sa)));
+      } else {
+        double const da = detail::to_unit<DstPixel>(alpha(dst));
+        double const out_a = sa + da * (1.0 - sa);
+        if (out_a == 0.0) {
+          return make_pixel<DstPixel>(0, 0, 0, 0);
+        } else {
+          return make_pixel<DstPixel>(
+            detail::from_unit<DstPixel>((sr * sa + dr * da * (1.0 - sa)) / out_a),
+            detail::from_unit<DstPixel>((sg * sa + dg * da * (1.0 - sa)) / out_a),
+            detail::from_unit<DstPixel>((sb * sa + db * da * (1.0 - sa)) / out_a),
+            detail::from_unit<DstPixel>(out_a));
+        }
       }
     } else {
-      static_assert(!std::is_same<SrcPixel, SrcPixel>::value,
-                    "blend<>() not implemented for the given types");
-      return DstPixel{};
+      // integer path, all values are converted to the DstPixel range
+      using acc = uint64_t;
+      acc const max = DstPixel::max();
+
+      acc const sa = convert_value<SrcPixel, DstPixel>(alpha(src));
+      acc const sr = convert_value<SrcPixel, DstPixel>(red(src));
+      acc const sg = convert_value<SrcPixel, DstPixel>(green(src));
+      acc const sb = convert_value<SrcPixel, DstPixel>(blue(src));
+
+      if constexpr (!DstPixel::has_alpha()) {
+        return make_pixel<DstPixel>(
+          static_cast<dsttype>((sr * sa + red(dst) * (max - sa)) / max),
+          static_cast<dsttype>((sg * sa + green(dst) * (max - sa)) / max),
+          static_cast<dsttype>((sb * sa + blue(dst) * (max - sa)) / max));
+      } else {
+        acc const da = alpha(dst);
+        acc const out_a = sa + da * (max - sa) / max;
+        if (out_a == 0) {
+          return make_pixel<DstPixel>(0, 0, 0, 0);
+        } else {
+          return make_pixel<DstPixel>(
+            static_cast<dsttype>((sr * sa + red(dst) * da / max * (max - sa)) / out_a),
+            static_cast<dsttype>((sg * sa + green(dst) * da / max * (max - sa)) / out_a),
+            static_cast<dsttype>((sb * sa + blue(dst) * da / max * (max - sa)) / out_a),
+            static_cast<dsttype>(out_a));
+        }
+      }
     }
   }
 };
@@ -78,7 +136,6 @@ struct pixel_add
 {
   inline constexpr DstPixel operator()(SrcPixel const src, DstPixel const dst)
   {
-    // using srctype = typename SrcPixel::value_type;
     using dsttype = typename DstPixel::value_type;
 
     if constexpr (SrcPixel::has_alpha()) {
@@ -95,15 +152,18 @@ struct pixel_add
         static_cast<dsttype>(alpha_f(dst))
         );
     } else {
-      dsttype const r = convert_value<SrcPixel, DstPixel>(red(src));
-      dsttype const g = convert_value<SrcPixel, DstPixel>(green(src));
-      dsttype const b = convert_value<SrcPixel, DstPixel>(blue(src));
-      dsttype const a = convert_value<SrcPixel, DstPixel>(alpha(src));
+      using acc = uint64_t;
+      acc const max = DstPixel::max();
+
+      acc const r = convert_value<SrcPixel, DstPixel>(red(src));
+      acc const g = convert_value<SrcPixel, DstPixel>(green(src));
+      acc const b = convert_value<SrcPixel, DstPixel>(blue(src));
+      acc const a = convert_value<SrcPixel, DstPixel>(alpha(src));
 
       return make_pixel<DstPixel>(
-        clamp_pixel_max<DstPixel>(red(dst) + r * a / DstPixel::max()),
-        clamp_pixel_max<DstPixel>(green(dst) + g * a / DstPixel::max()),
-        clamp_pixel_max<DstPixel>(blue(dst) + b * a / DstPixel::max()),
+        clamp_pixel_max<DstPixel>(red(dst) + r * a / max),
+        clamp_pixel_max<DstPixel>(green(dst) + g * a / max),
+        clamp_pixel_max<DstPixel>(blue(dst) + b * a / max),
         alpha(dst));
     }
   }
@@ -114,7 +174,6 @@ struct pixel_multiply
 {
   inline constexpr DstPixel operator()(SrcPixel const src, DstPixel const dst)
   {
-    // using srctype = typename SrcPixel::value_type;
     using dsttype = typename DstPixel::value_type;
 
     if constexpr (SrcPixel::has_alpha()) {
@@ -132,15 +191,17 @@ struct pixel_multiply
         static_cast<dsttype>(alpha_f(dst))
         );
     } else {
-      dsttype const r = convert_value<SrcPixel, DstPixel>(red(src));
-      dsttype const g = convert_value<SrcPixel, DstPixel>(green(src));
-      dsttype const b = convert_value<SrcPixel, DstPixel>(blue(src));
-      //dsttype const a = convert_value<SrcPixel, DstPixel>(alpha(src));
+      using acc = uint64_t;
+      acc const max = DstPixel::max();
+
+      acc const r = convert_value<SrcPixel, DstPixel>(red(src));
+      acc const g = convert_value<SrcPixel, DstPixel>(green(src));
+      acc const b = convert_value<SrcPixel, DstPixel>(blue(src));
 
       return make_pixel<DstPixel>(
-        clamp_pixel_max<DstPixel>(red(dst) * r / DstPixel::max()),
-        clamp_pixel_max<DstPixel>(green(dst) * g / DstPixel::max()),
-        clamp_pixel_max<DstPixel>(blue(dst) * b / DstPixel::max()),
+        clamp_pixel_max<DstPixel>(red(dst) * r / max),
+        clamp_pixel_max<DstPixel>(green(dst) * g / max),
+        clamp_pixel_max<DstPixel>(blue(dst) * b / max),
         alpha(dst));
     }
   }

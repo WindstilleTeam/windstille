@@ -25,7 +25,8 @@ enum class Transform;
 
 template<typename T> struct tRGBPixel;
 template<typename T> struct tRGBAPixel;
-template<typename T> struct tGreyscalePixel;
+template<typename T> struct tLPixel;
+template<typename T> struct tLAPixel;
 
 using RGB8Pixel = tRGBPixel<uint8_t>;
 using RGBA8Pixel = tRGBAPixel<uint8_t>;
@@ -45,7 +46,20 @@ using RGBA64fPixel = tRGBAPixel<double>;
 using RGBPixel = RGB8Pixel;
 using RGBAPixel = RGBA8Pixel;
 
-using GreyscalePixel = tGreyscalePixel<uint8_t>;
+using L8Pixel = tLPixel<uint8_t>;
+using LA8Pixel = tLAPixel<uint8_t>;
+
+using L16Pixel = tLPixel<uint16_t>;
+using LA16Pixel = tLAPixel<uint16_t>;
+
+using L32Pixel = tLPixel<uint32_t>;
+using LA32Pixel = tLAPixel<uint32_t>;
+
+using L32fPixel = tLPixel<float>;
+using LA32fPixel = tLAPixel<float>;
+
+using L64fPixel = tLPixel<double>;
+using LA64fPixel = tLAPixel<double>;
 
 class Color;
 class IPixelData;

@@ -17,7 +17,7 @@
 #ifndef HEADER_SURF_UNWRAP_HPP
 #define HEADER_SURF_UNWRAP_HPP
 
-#include <logmich/log.hpp>
+#include <stdexcept>
 
 #include "software_surface.hpp"
 
@@ -35,6 +35,16 @@
       default:                                                  \
       case PixelFormat::NONE: {                                 \
         throw std::invalid_argument("unknown PixelFormat");     \
+        break;                                                  \
+      }                                                         \
+                                                                \
+      /* see the #if 0 below */                                 \
+      case PixelFormat::RGB64f:                                 \
+      case PixelFormat::RGBA64f:                                \
+      case PixelFormat::L64f:                                   \
+      case PixelFormat::LA64f: {                                \
+        throw std::invalid_argument(                            \
+          "64-bit float PixelFormats are not supported by SoftwareSurface"); \
         break;                                                  \
       }                                                         \
                                                                 \

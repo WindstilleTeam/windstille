@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HEADER_GALAPIX_PLUGINS_XCF_HPP
-#define HEADER_GALAPIX_PLUGINS_XCF_HPP
+#ifndef HEADER_SURF_PLUGINS_XCF_HPP
+#define HEADER_SURF_PLUGINS_XCF_HPP
 
 #include <filesystem>
 #include <span>
@@ -32,9 +32,6 @@ namespace xcf {
 
 bool is_available();
 
-#if 0
-std::vector<std::string> get_layers(const URL& url);
-#endif
 bool get_size(std::filesystem::path const& filename, geom::isize& size);
 
 SoftwareSurface load_from_file(std::filesystem::path const& filename);

@@ -45,6 +45,22 @@ TEST(ColorTest, from_string)
   EXPECT_EQ(Color::from_string("0,0,1, 0.5 "), Color(0.0f, 0.0f, 1.0f, 0.5f));
 }
 
+TEST(ColorTest, from_string_hex)
+{
+  EXPECT_EQ(Color::from_string("#ff8000"), Color::from_rgb888(0xff, 0x80, 0x00));
+  EXPECT_EQ(Color::from_string("#0A1b2C"), Color::from_rgb888(0x0a, 0x1b, 0x2c));
+  EXPECT_EQ(Color::from_string("#f80"), Color::from_rgb888(0xff, 0x88, 0x00));
+  EXPECT_THROW(Color::from_string("#ff80"), std::invalid_argument);
+}
+
+TEST(ColorTest, boxclamp)
+{
+  EXPECT_EQ(boxclamp(Color(0.5f, 0.25f, 1.0f)), Color(0.5f, 0.25f, 1.0f));
+  EXPECT_EQ(boxclamp(Color(2.0f, 1.0f, 0.5f)), Color(1.0f, 0.5f, 0.25f));
+  EXPECT_EQ(boxclamp(Color(0.5f, 2.0f, 1.0f)), Color(0.25f, 1.0f, 0.5f));
+  EXPECT_EQ(boxclamp(Color(0.5f, 1.0f, 2.0f)), Color(0.25f, 0.5f, 1.0f));
+}
+
 TEST(ColorTest, u8)
 {
   EXPECT_EQ(palette::chocolate.r8(), 0xd2);

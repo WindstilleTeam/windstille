@@ -19,8 +19,10 @@
 
 #include <cmath>
 #include <numbers>
+#include <stdexcept>
 
 #include "algorithm.hpp"
+#include "blit.hpp"
 #include "color.hpp"
 #include "hsv.hpp"
 #include "pixel_view.hpp"
@@ -73,9 +75,9 @@ template<typename Pixel>
 void apply_add(PixelView<Pixel>& src, float addend)
 {
   using type = typename Pixel::value_type;
-  type const addend_v = f2value<Pixel>(addend);
 
   if constexpr (Pixel::is_floating_point()) {
+    type const addend_v = static_cast<type>(addend);
     for_each_pixel(src, [addend_v](Pixel& pixel) {
       pixel = make_pixel<Pixel>(
         red(pixel) + addend_v,
@@ -84,11 +86,14 @@ void apply_add(PixelView<Pixel>& src, float addend)
         alpha(pixel));
     });
   } else {
+    // signed, so that a negative addend darkens the image
+    int64_t const addend_v = std::llround(static_cast<double>(std::clamp(addend, -1.0f, 1.0f)) *
+                                          static_cast<double>(Pixel::max()));
     for_each_pixel(src, [addend_v](Pixel& pixel) {
       pixel = make_pixel<Pixel>(
-        clamp_pixel<Pixel>(promote<type, type>(red(pixel)) + addend_v),
-        clamp_pixel<Pixel>(promote<type, type>(green(pixel)) + addend_v),
-        clamp_pixel<Pixel>(promote<type, type>(blue(pixel)) + addend_v),
+        clamp_pixel<Pixel>(static_cast<int64_t>(red(pixel)) + addend_v),
+        clamp_pixel<Pixel>(static_cast<int64_t>(green(pixel)) + addend_v),
+        clamp_pixel<Pixel>(static_cast<int64_t>(blue(pixel)) + addend_v),
         alpha(pixel));
     });
   }
@@ -141,50 +146,54 @@ void apply_invert(PixelView<Pixel>& src)
   }
 }
 
-template<typename Pixel>
-void apply_lut(PixelView<Pixel>& src, typename Pixel::value_type* lut)
+/** Apply \a lut to the color channels, \a lut must have
+    Pixel::max() + 1 entries and match the pixel's value_type */
+template<typename Pixel, typename T>
+void apply_lut(PixelView<Pixel>& src, T const* lut)
 {
-  for(int y = 0; y < src.get_height(); ++y) {
-    Pixel* row = src.get_row(y);
-    for(int x = 0; x < src.get_width(); ++x) {
-      row[x] = lut[row[x]];
-    }
+  if constexpr (!std::is_same<T, typename Pixel::value_type>::value ||
+                !std::is_integral<T>::value) {
+    throw std::invalid_argument("apply_lut(): lut type doesn't match the PixelFormat");
+  } else {
+    for_each_pixel(src, [lut](Pixel& pixel) {
+      pixel = make_pixel<Pixel>(lut[red(pixel)],
+                                lut[green(pixel)],
+                                lut[blue(pixel)],
+                                alpha(pixel));
+    });
   }
 }
 
 template<typename Pixel>
 void apply_threshold(PixelView<Pixel>& src, Color threshold)
 {
-  constexpr typename Pixel::value_type min_val = std::numeric_limits<typename Pixel::value_type>::min();
-  constexpr typename Pixel::value_type max_val = std::numeric_limits<typename Pixel::value_type>::max();
+  using type = typename Pixel::value_type;
 
-  typename Pixel::value_type const irthreshold = static_cast<typename Pixel::value_type>(std::clamp(threshold.r, 0.0f, 1.0f) *
-                                                                                         static_cast<float>(std::numeric_limits<typename Pixel::value_type>::max()));
-  typename Pixel::value_type const igthreshold = static_cast<typename Pixel::value_type>(std::clamp(threshold.g, 0.0f, 1.0f) *
-                                                                                         static_cast<float>(std::numeric_limits<typename Pixel::value_type>::max()));
-  typename Pixel::value_type const ibthreshold = static_cast<typename Pixel::value_type>(std::clamp(threshold.b, 0.0f, 1.0f) *
-                                                                                         static_cast<float>(std::numeric_limits<typename Pixel::value_type>::max()));
+  type const min_val = 0;
+  type const max_val = Pixel::max();
 
-  for(int y = 0; y < src.get_height(); ++y) {
-    Pixel* row = src.get_row(y);
-    for(int x = 0; x < src.get_width(); ++x) {
-      row[x] = make_pixel<Pixel>(red(row[x]) > irthreshold ? max_val : min_val,
-                                 green(row[x]) > igthreshold ? max_val : min_val,
-                                 blue(row[x]) > ibthreshold ? max_val : min_val);
-    }
-  }
+  type const irthreshold = f2value<Pixel>(threshold.r);
+  type const igthreshold = f2value<Pixel>(threshold.g);
+  type const ibthreshold = f2value<Pixel>(threshold.b);
+
+  for_each_pixel(src, [&](Pixel& pixel) {
+    pixel = make_pixel<Pixel>(red(pixel) > irthreshold ? max_val : min_val,
+                              green(pixel) > igthreshold ? max_val : min_val,
+                              blue(pixel) > ibthreshold ? max_val : min_val,
+                              alpha(pixel));
+  });
 }
 
 template<typename Pixel>
 void apply_grayscale(PixelView<Pixel>& src)
 {
-  for(int y = 0; y < src.get_height(); ++y) {
-    Pixel* row = src.get_row(y);
-    for(int x = 0; x < src.get_width(); ++x) {
-      typename Pixel::value_type v = static_cast<typename Pixel::value_type>((red(row[x]) + green(row[x]) + blue(row[x])) / 3);
-      row[x] = make_pixel<Pixel>(v, v, v);
-    }
-  }
+  using type = typename Pixel::value_type;
+  using acc = accumulate_t<type>;
+
+  for_each_pixel(src, [](Pixel& pixel) {
+    type const v = static_cast<type>((acc(red(pixel)) + green(pixel) + blue(pixel)) / 3);
+    pixel = make_pixel<Pixel>(v, v, v, alpha(pixel));
+  });
 }
 
 template<typename Pixel>
@@ -200,28 +209,36 @@ void apply_hsv(PixelView<Pixel>& src, float hue, float saturation, float value)
       hsv.saturation += saturation;
       hsv.value += value;
 
-      hsv.hue = std::fmod(hsv.hue + 1.0f, 1.0f);
+      hsv.hue = hsv.hue - std::floor(hsv.hue);
       hsv.saturation = std::clamp(hsv.saturation, 0.0f, 1.0f);
       hsv.value = std::clamp(hsv.value, 0.0f, 1.0f);
 
-      src.put_pixel_color({x, y}, color_from_hsv(hsv));
+      Color result = color_from_hsv(hsv);
+      result.a = color.a;
+      src.put_pixel_color({x, y}, result);
     }
   }
 }
 
-namespace {
+namespace detail {
+
 inline int positive_mod(int i, int n) {
-    return (i % n + n) % n;
+  return (i % n + n) % n;
 }
-} // namespace
+
+} // namespace detail
 
 template<typename Pixel>
 void apply_offset(PixelView<Pixel>& src, geom::ioffset const& offset)
 {
+  if (src.get_size().is_empty()) {
+    return;
+  }
+
   PixelData<Pixel> copy(src);
 
-  geom::ipoint const pos(positive_mod(offset.x(), src.get_size().width()),
-                         positive_mod(offset.y(), src.get_size().height()));
+  geom::ipoint const pos(detail::positive_mod(offset.x(), src.get_size().width()),
+                         detail::positive_mod(offset.y(), src.get_size().height()));
   geom::isize const size(src.get_size());
 
   blit(copy, src, pos + geom::ioffset(0, -size.height()));

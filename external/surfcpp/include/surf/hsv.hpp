@@ -53,6 +53,10 @@ HSVColor hsv_from_color(Color const& color)
     } else if (max == color.b) {
       hsvcolor.hue = (4.0f + (color.r - color.g) / (max - min)) / 6;
     }
+
+    if (hsvcolor.hue < 0.0f) {
+      hsvcolor.hue += 1.0f;
+    }
   }
 
   if (max == 0.0f) {
@@ -79,9 +83,12 @@ Color color_from_hue(float hue)
     Color(1.0f, 0.0f, 0.0f),
   };
 
+  // wrap hue into [0, 1)
+  hue = hue - std::floor(hue);
+
   float const seg_len = (1.0f / 6.0f);
-  int const seg  = static_cast<int>(hue / seg_len);
-  float const prog = std::fmod(hue, seg_len);
+  int const seg  = std::clamp(static_cast<int>(hue / seg_len), 0, 5);
+  float const prog = std::clamp(hue - static_cast<float>(seg) * seg_len, 0.0f, seg_len);
 
   return Color(((((seg_len - prog) * colors[seg].r) + (prog * colors[seg + 1].r)) / seg_len),
                ((((seg_len - prog) * colors[seg].g) + (prog * colors[seg + 1].g)) / seg_len),

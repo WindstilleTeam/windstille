@@ -17,6 +17,9 @@
 #ifndef HEADER_SURF_PIXEL_VIEW_HPP
 #define HEADER_SURF_PIXEL_VIEW_HPP
 
+#include <cstddef>
+#include <memory>
+#include <stdexcept>
 #include <vector>
 
 #include <geom/point.hpp>
@@ -42,9 +45,25 @@ public:
   using value_type = Pixel;
 
 public:
+  /** Create a view on pixel data with rows \a pitch bytes apart.
+      Unlike the row length, the pitch doesn't need to be a multiple
+      of sizeof(Pixel), e.g. SDL pads RGB24 rows to four bytes. */
+  static PixelView<Pixel> from_pitch(geom::isize const& size, Pixel* pixels, int pitch) {
+    check_pitch(size, pitch);
+    PixelView<Pixel> view(size, pixels);
+    view.m_pitch = pitch;
+    return view;
+  }
+
+  static PixelView<Pixel> from_pitch(geom::isize const& size, Pixel const* pixels, int pitch) {
+    // FIXME: same const_cast as in the constructor
+    return from_pitch(size, const_cast<Pixel*>(pixels), pitch);
+  }
+
+public:
   PixelView() :
     m_size(0, 0),
-    m_row_length(0),
+    m_pitch(0),
     m_pixels(nullptr)
   {}
 
@@ -58,19 +77,20 @@ public:
 
   PixelView(geom::isize const& size, Pixel* pixels) :
     m_size(size),
-    m_row_length(m_size.width()),
+    m_pitch(m_size.width() * static_cast<int>(sizeof(Pixel))),
     m_pixels(pixels)
   {}
 
+  /** \a row_length is given in pixels, see from_pitch() for bytes */
   PixelView(geom::isize const& size, Pixel* pixels, int row_length) :
     m_size(size),
-    m_row_length(row_length),
+    m_pitch(row_length * static_cast<int>(sizeof(Pixel))),
     m_pixels(pixels)
   {}
 
   PixelView(geom::isize const& size, Pixel const* pixels, int row_length) :
     m_size(size),
-    m_row_length(row_length),
+    m_pitch(row_length * static_cast<int>(sizeof(Pixel))),
     // FIXME: this is ugly and dangerous, but less troublesome than
     // trying to make PixelView<Pixel const> work.
     m_pixels(const_cast<Pixel*>(pixels))
@@ -81,15 +101,17 @@ public:
   geom::isize get_size() const override { return m_size; }
   int get_width() const override { return m_size.width(); }
   int get_height() const override { return m_size.height(); }
-  int get_row_length() const override { return m_row_length; }
-  int get_pitch() const override { return m_row_length * sizeof(Pixel); }
+  /** Row length in pixels, rounded down when the pitch isn't a
+      multiple of sizeof(Pixel), use get_pitch() for the exact value */
+  int get_row_length() const override { return m_pitch / static_cast<int>(sizeof(Pixel)); }
+  int get_pitch() const override { return m_pitch; }
 
   bool empty() const override { return m_pixels == nullptr; }
 
   void put_pixel(geom::ipoint const& pos, Pixel const& pixel)
   {
     assert(geom::contains(m_size, pos));
-    m_pixels[pos.y() * m_row_length + pos.x()] = pixel;
+    get_row(pos.y())[pos.x()] = pixel;
   }
 
   void put_pixel_color(geom::ipoint const& pos, Color const& color) override
@@ -105,7 +127,7 @@ public:
   Pixel get_pixel(geom::ipoint const& pos) const
   {
     assert(geom::contains(m_size, pos));
-    return m_pixels[pos.y() * m_row_length + pos.x()];
+    return get_row(pos.y())[pos.x()];
   }
 
   Pixel* get_data() {
@@ -113,7 +135,7 @@ public:
   }
 
   Pixel* get_row(int y) {
-    return m_pixels + (y * m_row_length);
+    return reinterpret_cast<Pixel*>(reinterpret_cast<std::byte*>(m_pixels) + static_cast<std::ptrdiff_t>(y) * m_pitch);
   }
 
   void* get_row_data(int y) override {
@@ -125,7 +147,7 @@ public:
   }
 
   Pixel const* get_row(int y) const {
-    return m_pixels + (y * m_row_length);
+    return reinterpret_cast<Pixel const*>(reinterpret_cast<std::byte const*>(m_pixels) + static_cast<std::ptrdiff_t>(y) * m_pitch);
   }
 
   void const* get_row_data(int y) const override {
@@ -153,27 +175,24 @@ public:
   }
 
   PixelView<Pixel> get_view(geom::irect const& rect) {
-    if (!contains(geom::irect(m_size), rect)) {
-      throw std::invalid_argument("rect not within the SoftwareSurface area");
-    }
-
-    return PixelView<Pixel>(rect.size(),
-                            get_row(rect.top()) + rect.left(),
-                            m_row_length);
+    check_view_rect(rect);
+    return PixelView<Pixel>::from_pitch(rect.size(),
+                                        get_row(rect.top()) + rect.left(),
+                                        m_pitch);
   }
 
   std::unique_ptr<IPixelData> create_view(geom::irect const& rect) override
   {
-    return std::make_unique<PixelView<Pixel>>(rect.size(),
-                                              get_row(rect.top()) + rect.left(),
-                                              m_row_length);
+    check_view_rect(rect);
+    return std::make_unique<PixelView<Pixel>>(
+      PixelView<Pixel>::from_pitch(rect.size(), get_row(rect.top()) + rect.left(), m_pitch));
   }
 
   std::unique_ptr<IPixelData const> create_view(geom::irect const& rect) const override
   {
-    return std::make_unique<PixelView<Pixel> const>(rect.size(),
-                                                    get_row(rect.top()) + rect.left(),
-                                                    m_row_length);
+    check_view_rect(rect);
+    return std::make_unique<PixelView<Pixel> const>(
+      PixelView<Pixel>::from_pitch(rect.size(), get_row(rect.top()) + rect.left(), m_pitch));
   }
 
   std::unique_ptr<IPixelData> copy() const override {
@@ -181,6 +200,22 @@ public:
   }
 
 protected:
+  static void check_pitch(geom::isize const& size, int pitch) {
+    if (pitch < size.width() * static_cast<int>(sizeof(Pixel))) {
+      throw std::invalid_argument("PixelView: pitch smaller than a row of pixels");
+    }
+
+    if (pitch % static_cast<int>(alignof(Pixel)) != 0) {
+      throw std::invalid_argument("PixelView: pitch not a multiple of the pixel alignment");
+    }
+  }
+
+  void check_view_rect(geom::irect const& rect) const {
+    if (!contains(geom::irect(m_size), rect)) {
+      throw std::invalid_argument("rect not within the SoftwareSurface area");
+    }
+  }
+
   bool is_equal(IPixelData const& rhs) const override {
     PixelView<Pixel> const* rhs_ptr = dynamic_cast<PixelView<Pixel> const*>(&rhs);
     if (rhs_ptr == nullptr) {
@@ -200,7 +235,10 @@ protected:
 
 protected:
   geom::isize m_size;
-  int m_row_length;
+
+  /** distance between rows in bytes */
+  int m_pitch;
+
   Pixel* m_pixels;
 };
 

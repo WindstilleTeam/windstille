@@ -16,8 +16,6 @@
 
 #include "software_surface_factory.hpp"
 
-#include <format>
-
 #include <sstream>
 #include <stdexcept>
 
@@ -26,15 +24,12 @@
 #include "util/filesystem.hpp"
 #include "software_surface_loader.hpp"
 
-#if defined(HAVE_JPEG) && !defined(__ANDROID__)
-#  include "plugins/jpeg.hpp"
-#endif
-#if defined(HAVE_PNG) && !defined(__ANDROID__)
-#  include "plugins/png.hpp"
-#endif
 #include "plugins/dds.hpp"
-#if defined(__ANDROID__) || defined(SURF_USE_STB_IMAGE)
-#  include "plugins/stb_image_loader.hpp"
+#ifdef HAVE_STB
+#  include "plugins/stb.hpp"
+#else
+#  include "plugins/jpeg.hpp"
+#  include "plugins/png.hpp"
 #endif
 
 #ifdef HAVE_MAGICKXX
@@ -59,16 +54,13 @@ SoftwareSurfaceFactory::SoftwareSurfaceFactory() :
 {
   // order matters, first come, first serve, later registrations for
   // an already registered type will be ignored
-#if defined(HAVE_JPEG) && !defined(__ANDROID__)
+#ifdef HAVE_STB
+  stb::register_loader(*this);
+#else
   jpeg::register_loader(*this);
-#endif
-#if defined(HAVE_PNG) && !defined(__ANDROID__)
   png::register_loader(*this);
 #endif
   dds::register_loader(*this);
-#if defined(__ANDROID__) || defined(SURF_USE_STB_IMAGE)
-  stb_image_loader::register_loader(*this);
-#endif
 
 #ifdef HAVE_EXEC
   if (xcf::is_available()) {
@@ -199,13 +191,6 @@ SoftwareSurfaceFactory::from_file(std::filesystem::path const& filename, Softwar
   {
     return loader.from_file(filename);
   }
-#if 0
-  else if (loader.supports_from_mem())
-  {
-    Blob blob = Blob::from_file(filename);
-    return loader.from_mem(blob);
-  }
-#endif
   else
   {
     throw std::runtime_error("'" + loader.get_name() + "' loader does not support loading");
@@ -223,7 +208,7 @@ SoftwareSurfaceFactory::from_file(std::filesystem::path const& filename, std::st
     throw std::runtime_error(std::format("non-existing loader specified: {}", loader));
   }
 
-  return (*it)->from_file(filename);
+  return from_file(filename, **it);
 }
 
 SoftwareSurface
@@ -289,7 +274,7 @@ SoftwareSurfaceFactory::from_mem(std::span<uint8_t const> data,
   if (!loader)
   {
     std::ostringstream out;
-    out << "SoftwareSurfaceFactory::from_url(): " << filename << ": unknown file type";
+    out << "SoftwareSurfaceFactory::from_mem(): " << filename << ": unknown file type";
     throw std::runtime_error(out.str());
   }
   else
@@ -301,7 +286,7 @@ SoftwareSurfaceFactory::from_mem(std::span<uint8_t const> data,
     else
     {
       std::ostringstream out;
-      out << "SoftwareSurfaceFactory::from_url(): " << filename << ": loader doesn't support from_mem(), workaround not implemented";
+      out << "SoftwareSurfaceFactory::from_mem(): " << filename << ": loader doesn't support from_mem(), workaround not implemented";
       throw std::runtime_error(out.str());
     }
   }

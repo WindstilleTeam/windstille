@@ -16,8 +16,15 @@
 
 #include "util/exec.hpp"
 
+#include <array>
+#include <format>
 #include <iostream>
 #include <errno.h>
+#include <fcntl.h>
+#include <poll.h>
+#include <pthread.h>
+#include <signal.h>
+#include <time.h>
 #include <sstream>
 #include <stdexcept>
 #include <stdio.h>
@@ -67,9 +74,24 @@ Exec::exec()
   int stdout_fd[2];
   int stderr_fd[2];
 
-  // FIXME: Bad, we potentially leak file descriptors
-  if (pipe(stdout_fd) < 0 || pipe(stderr_fd) < 0 || pipe(stdin_fd) < 0) {
-    throw std::runtime_error("Exec:exec(): pipe failed");
+  if (pipe(stdout_fd) < 0) {
+    throw std::runtime_error(std::format("Exec::exec(): pipe failed: {}", strerror(errno)));
+  }
+
+  if (pipe(stderr_fd) < 0) {
+    int const errnum = errno;
+    close(stdout_fd[0]);
+    close(stdout_fd[1]);
+    throw std::runtime_error(std::format("Exec::exec(): pipe failed: {}", strerror(errnum)));
+  }
+
+  if (pipe(stdin_fd) < 0) {
+    int const errnum = errno;
+    close(stdout_fd[0]);
+    close(stdout_fd[1]);
+    close(stderr_fd[0]);
+    close(stderr_fd[1]);
+    throw std::runtime_error(std::format("Exec::exec(): pipe failed: {}", strerror(errnum)));
   }
 
   pid_t pid = fork();
@@ -157,119 +179,144 @@ Exec::exec()
     }
 
     int child_status = 0;
-    waitpid(pid, &child_status, 0);
+    while (waitpid(pid, &child_status, 0) < 0) {
+      if (errno != EINTR) {
+        throw std::runtime_error(std::format("Exec::exec(): waitpid failed: {}: {}", str(), strerror(errno)));
+      }
+    }
 
-    return WEXITSTATUS(child_status);
+    if (WIFEXITED(child_status)) {
+      return WEXITSTATUS(child_status);
+    } else if (WIFSIGNALED(child_status)) {
+      throw std::runtime_error(std::format("Exec::exec(): {} killed by signal {}", str(), WTERMSIG(child_status)));
+    } else {
+      throw std::runtime_error(std::format("Exec::exec(): {} terminated abnormally", str()));
+    }
   }
 }
+
+namespace {
+
+/** Block SIGPIPE for the current thread, so that a child that exits
+    without reading all of stdin doesn't kill us, write() will return
+    EPIPE instead */
+class SigpipeBlocker
+{
+public:
+  SigpipeBlocker() :
+    m_mask(),
+    m_old_mask()
+  {
+    sigemptyset(&m_mask);
+    sigaddset(&m_mask, SIGPIPE);
+    pthread_sigmask(SIG_BLOCK, &m_mask, &m_old_mask);
+  }
+
+  ~SigpipeBlocker()
+  {
+    if (!sigismember(&m_old_mask, SIGPIPE)) {
+      // discard a SIGPIPE raised while blocked
+      struct timespec const zero{0, 0};
+      while (sigtimedwait(&m_mask, nullptr, &zero) > 0) {}
+    }
+    pthread_sigmask(SIG_SETMASK, &m_old_mask, nullptr);
+  }
+
+  SigpipeBlocker(SigpipeBlocker const&) = delete;
+  SigpipeBlocker& operator=(SigpipeBlocker const&) = delete;
+
+private:
+  sigset_t m_mask;
+  sigset_t m_old_mask;
+};
+
+} // namespace
 
 void
 Exec::process_io(int stdin_fd, int stdout_fd, int stderr_fd)
 {
-  char buffer[4096];
+  SigpipeBlocker const sigpipe_blocker;
 
-  // write data to stdin
-  if (!m_stdin_data.empty())
-  {
-    if (write(stdin_fd, m_stdin_data.data(), m_stdin_data.size()) < 0)
-    {
-      close(stdin_fd);
-      close(stdout_fd);
-      close(stderr_fd);
+  auto close_fd = [](int& fd) {
+    if (fd >= 0) {
+      close(fd);
+      fd = -1;
+    }
+  };
 
-      std::ostringstream out;
-      out << "Exec::process_io(): stdin write failure: " << str() << ": " << strerror(errno);
-      throw std::runtime_error(out.str());
+  auto fail = [&](std::string_view what) {
+    int const errnum = errno;
+    close_fd(stdin_fd);
+    close_fd(stdout_fd);
+    close_fd(stderr_fd);
+    throw std::runtime_error(std::format("Exec::process_io(): {} failure: {}: {}", what, str(), strerror(errnum)));
+  };
+
+  size_t stdin_pos = 0;
+  if (m_stdin_data.empty()) {
+    close_fd(stdin_fd);
+  } else {
+    // stdin is written while stdout/stderr are read, as the child
+    // might block on writing output before it has consumed all input
+    int const flags = fcntl(stdin_fd, F_GETFL);
+    if (flags < 0 || fcntl(stdin_fd, F_SETFL, flags | O_NONBLOCK) < 0) {
+      fail("fcntl()");
     }
   }
-  close(stdin_fd);
 
-  // start reading from stdout/stderr
-  bool stdout_eof = false;
-  bool stderr_eof = false;
-  while(!(stdout_eof && stderr_eof))
+  auto read_fd = [&](int& fd, std::vector<char>& out, std::string_view name) {
+    char buffer[4096];
+    ssize_t const len = read(fd, buffer, sizeof(buffer));
+    if (len < 0) {
+      if (errno != EINTR && errno != EAGAIN) {
+        fail(name);
+      }
+    } else if (len == 0) {
+      close_fd(fd);
+    } else {
+      out.insert(out.end(), buffer, buffer + len);
+    }
+  };
+
+  while (stdin_fd >= 0 || stdout_fd >= 0 || stderr_fd >= 0)
   {
-    fd_set rfds;
-    FD_ZERO(&rfds); // NOLINT
+    // a negative fd is ignored by poll()
+    std::array<pollfd, 3> fds{{
+        { stdin_fd, POLLOUT, 0 },
+        { stdout_fd, POLLIN, 0 },
+        { stderr_fd, POLLIN, 0 }
+      }};
 
-    int nfds = 0;
-
-    if (!stdout_eof)
-    {
-      FD_SET(stdout_fd, &rfds);
-      nfds = std::max(nfds, stdout_fd);
+    if (poll(fds.data(), fds.size(), -1) < 0) {
+      if (errno == EINTR) {
+        continue;
+      }
+      fail("poll()");
     }
 
-    if (!stderr_eof)
-    {
-      FD_SET(stderr_fd, &rfds);
-      nfds = std::max(nfds, stderr_fd);
-    }
-
-    int retval = select(nfds+1, &rfds, nullptr, nullptr, nullptr);
-
-    if (retval < 0)
-    {
-      close(stdout_fd);
-      close(stderr_fd);
-
-      std::ostringstream out;
-      out << "Exec::process_io(): select() failure: " << str() << ": " << strerror(errno);
-      throw std::runtime_error(out.str());
-    }
-    else if (retval == 0)
-    {
-      log_error("select() returned without results, this shouldn't happen");
-    }
-    else // retval > 0
-    {
-      if (!stdout_eof && FD_ISSET(stdout_fd, &rfds))
-      {
-        ssize_t len = read(stdout_fd, buffer, sizeof(buffer));
-
-        if (len < 0) // error
-        {
-          close(stdout_fd);
-          close(stderr_fd);
-
-          std::ostringstream out;
-          out << "Exec::process_io(): stdout read failure: " << str() << ": " << strerror(errno);
-          throw std::runtime_error(out.str());
+    if (stdin_fd >= 0 && fds[0].revents != 0) {
+      ssize_t const len = write(stdin_fd, m_stdin_data.data() + stdin_pos, m_stdin_data.size() - stdin_pos);
+      if (len < 0) {
+        if (errno == EPIPE) {
+          // child closed stdin, discard the remaining data
+          close_fd(stdin_fd);
+        } else if (errno != EINTR && errno != EAGAIN) {
+          fail("stdin write");
         }
-        else if (len > 0) // ok
-        {
-          m_stdout_vec.insert(m_stdout_vec.end(), buffer, buffer+len);
-        }
-        else if (len == 0) // eof
-        {
-          close(stdout_fd);
-          stdout_eof = true;
+      } else {
+        stdin_pos += static_cast<size_t>(len);
+        if (stdin_pos == m_stdin_data.size()) {
+          close_fd(stdin_fd);
         }
       }
+    }
 
-      if (!stderr_eof && FD_ISSET(stderr_fd, &rfds))
-      {
-        ssize_t len = read(stderr_fd, buffer, sizeof(buffer));
+    if (stdout_fd >= 0 && fds[1].revents != 0) {
+      read_fd(stdout_fd, m_stdout_vec, "stdout read");
+    }
 
-        if (len < 0) // error
-        {
-          close(stdout_fd);
-          close(stderr_fd);
-
-          std::ostringstream out;
-          out << "Exec::process_io(): stderr read failure: " << str() << ": " << strerror(errno);
-          throw std::runtime_error(out.str());
-        }
-        else if (len > 0) // ok
-        {
-          m_stderr_vec.insert(m_stderr_vec.end(), buffer, buffer+len);
-        }
-        else if (len == 0) // eof
-        {
-          close(stderr_fd);
-          stderr_eof = true;
-        }
-      }
+    if (stderr_fd >= 0 && fds[2].revents != 0) {
+      read_fd(stderr_fd, m_stderr_vec, "stderr read");
     }
   }
 }

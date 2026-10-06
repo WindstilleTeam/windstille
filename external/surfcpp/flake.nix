@@ -50,6 +50,10 @@
             logmich = logmich.packages.${pkgs.stdenv.hostPlatform.system}.default;
             inherit version;
           };
+
+          surfcpp-stb = surfcpp.override {
+            withStb = true;
+          };
         };
       }
     );

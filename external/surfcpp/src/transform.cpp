@@ -17,6 +17,7 @@
 #include "transform.hpp"
 
 #include <format>
+#include <stdexcept>
 
 namespace surf {
 

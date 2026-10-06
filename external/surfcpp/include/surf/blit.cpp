@@ -1,4 +1,0 @@
-#include "blit.hpp"
-
-
-/* EOF */

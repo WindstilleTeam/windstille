@@ -18,9 +18,12 @@
 #define HEADER_SURF_SOFTWARE_SURFACE_FACTORY_HPP
 
 #include <filesystem>
-#include <span>
 #include <map>
+#include <memory>
+#include <span>
 #include <string>
+#include <string_view>
+#include <vector>
 
 #include "pixel_data.hpp"
 
@@ -67,9 +70,9 @@ private:
   MimeTypeMap  m_mime_type_map;
   MagicMap m_magic_map;
 
-private:
-  SoftwareSurfaceFactory(const SoftwareSurfaceFactory&);
-  SoftwareSurfaceFactory& operator=(const SoftwareSurfaceFactory&);
+public:
+  SoftwareSurfaceFactory(const SoftwareSurfaceFactory&) = delete;
+  SoftwareSurfaceFactory& operator=(const SoftwareSurfaceFactory&) = delete;
 };
 
 } // namespace surf
