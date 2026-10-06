@@ -101,7 +101,6 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
-pkg_search_module(SIGCXX REQUIRED sigc++-3.0 IMPORTED_TARGET)
 
 find_package(sexp REQUIRED)
 find_package(babyxml REQUIRED)
@@ -136,7 +135,6 @@ target_link_libraries(wstgui PUBLIC
   wstinput::wstinput
   geom::geom
   prio::prio
-  PkgConfig::SIGCXX
   PkgConfig::SDL2
   wstdisplay::wstdisplay
   )

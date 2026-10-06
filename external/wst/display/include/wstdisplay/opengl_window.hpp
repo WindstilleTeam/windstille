@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include <sigc++/signal.h>
+#include <wstsystem/signal.hpp>
 #include <SDL.h>
 
 #include <geom/size.hpp>
@@ -81,7 +81,7 @@ public:
   void handle_event(SDL_WindowEvent const& ev);
 
 public:
-  sigc::signal<void(geom::isize const&)> sig_resized;
+  wstsystem::Signal<void(geom::isize const&)> sig_resized;
 
 private:
   bool create(Params const& params, Api api);

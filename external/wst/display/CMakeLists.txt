@@ -111,7 +111,6 @@ find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
-pkg_search_module(SIGCXX REQUIRED sigc++-3.0 IMPORTED_TARGET)
 
 find_package(babyxml REQUIRED)
 find_package(geom REQUIRED)
@@ -145,7 +144,6 @@ target_link_libraries(wstdisplay PUBLIC
   logmich::logmich
   OpenGL::GL
   PkgConfig::SDL2
-  PkgConfig::SIGCXX
   Threads::Threads)
 # FreeType is not part of the public headers
 target_link_libraries(wstdisplay PRIVATE
@@ -158,7 +156,7 @@ if(BUILD_TESTS)
     test/*_test.cpp)
   add_executable(test_wstdisplay ${TEST_SOURCES})
   target_compile_options(test_wstdisplay PRIVATE ${WSTDISPLAY_WARNINGS_CXX_FLAGS})
-  target_include_directories(test_wstdisplay PRIVATE src/ include/wstdisplay)
+  target_include_directories(test_wstdisplay PRIVATE src/ include/wstdisplay include/wstsystem)
   target_link_libraries(test_wstdisplay PRIVATE wstdisplay GTest::gtest GTest::gtest_main)
   gtest_discover_tests(test_wstdisplay)
 endif()

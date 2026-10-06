@@ -9,7 +9,6 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
-pkg_search_module(SIGCXX REQUIRED sigc++-3.0 IMPORTED_TARGET)
 
 find_dependency(sexp REQUIRED)
 find_dependency(babyxml REQUIRED)

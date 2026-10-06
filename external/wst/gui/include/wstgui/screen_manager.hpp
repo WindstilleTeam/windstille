@@ -10,7 +10,7 @@
 #include <vector>
 
 #include <SDL.h>
-#include <sigc++/signal.h>
+#include <wstsystem/signal.hpp>
 #include <surf/color.hpp>
 
 #include <wstdisplay/fwd.hpp>
@@ -58,9 +58,9 @@ public:
   /** Color the screen is cleared to before drawing */
   void set_clear_color(surf::Color const& color) { m_clear_color = color; }
 
-  sigc::signal<void (float)>& sig_update() { return m_sig_update; };
-  sigc::signal<void (wstdisplay::Canvas&)>& sig_draw_begin() { return m_sig_draw_begin; };
-  sigc::signal<void (wstdisplay::Canvas&)>& sig_draw_end() { return m_sig_draw_end; };
+  wstsystem::Signal<void (float)>& sig_update() { return m_sig_update; };
+  wstsystem::Signal<void (wstdisplay::Canvas&)>& sig_draw_begin() { return m_sig_draw_begin; };
+  wstsystem::Signal<void (wstdisplay::Canvas&)>& sig_draw_end() { return m_sig_draw_end; };
 
 private:
   void apply_pending_actions();
@@ -91,9 +91,9 @@ private:
   std::unordered_map<SDL_Keycode, std::function<void()>> m_key_bindings;
   std::vector<Screen*> m_huds;
 
-  sigc::signal<void (float)> m_sig_update;
-  sigc::signal<void (wstdisplay::Canvas&)> m_sig_draw_begin;
-  sigc::signal<void (wstdisplay::Canvas&)> m_sig_draw_end;
+  wstsystem::Signal<void (float)> m_sig_update;
+  wstsystem::Signal<void (wstdisplay::Canvas&)> m_sig_draw_begin;
+  wstsystem::Signal<void (wstdisplay::Canvas&)> m_sig_draw_end;
 
   std::unique_ptr<wstdisplay::Canvas> m_canvas;
   surf::Color m_clear_color;
