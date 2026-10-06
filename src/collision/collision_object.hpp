@@ -20,7 +20,7 @@
 #ifndef HEADER_WINDSTILLE_COLLISION_COLLISION_OBJECT_HPP
 #define HEADER_WINDSTILLE_COLLISION_COLLISION_OBJECT_HPP
 
-#include <sigc++/signal.h>
+#include <wstsystem/signal.hpp>
 
 #include <geom/geom.hpp>
 #include <wstdisplay/fwd.hpp>
@@ -55,7 +55,7 @@ private:
 
   GameObject* game_object;
 
-  sigc::signal<void (const CollisionData &)> collision;
+  wstsystem::Signal<void (const CollisionData &)> collision;
 
   geom::frect primitive;
   TileMap* tilemap;
@@ -129,7 +129,7 @@ public:
   unsigned int get_check_domains() const;
   void         set_check_domains(unsigned int d);
 
-  sigc::signal<void (const CollisionData &)>& sig_collision() { return collision; }
+  wstsystem::Signal<void (const CollisionData &)>& sig_collision() { return collision; }
 
   friend class CollisionEngine;
 

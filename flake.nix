@@ -197,11 +197,11 @@
           cmakeFlags = [ "-DWST_DEMOS=OFF" ];
           buildInputs = [
             babyxml geomcpp surfcpp logmich prio sexpcpp
-            pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx30 pkgs.glm
+            pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.glm
           ];
           propagatedBuildInputs = [
             babyxml geomcpp surfcpp logmich prio sexpcpp
-            pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx30 pkgs.glm
+            pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.glm
           ];
         };
 
@@ -233,7 +233,6 @@
           pkgs.glm
           pkgs.libGL
           pkgs.SDL2
-          pkgs.libsigcxx30
           pkgs.sysprof
           pkgs.openal
           pkgs.libopus

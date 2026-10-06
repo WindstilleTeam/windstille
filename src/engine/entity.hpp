@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_ENTITY_HPP
 #define HEADER_WINDSTILLE_ENGINE_ENTITY_HPP
 
-#include <sigc++/signal.h>
+#include <wstsystem/signal.hpp>
 
 #include "properties/properties.hpp"
 #include "engine/game_object.hpp"
@@ -32,7 +32,7 @@ namespace windstille {
 class Entity : public GameObject
 {
 private:
-  sigc::signal<void ()> done;
+  wstsystem::Signal<void ()> done;
 
 protected:
   friend class Physics;
@@ -67,7 +67,7 @@ public:
 
   void set_parent(Entity* parent_);
 
-  sigc::signal<void ()>& sig_done() { return done; }
+  wstsystem::Signal<void ()>& sig_done() { return done; }
 
   virtual Properties get_properties();
 

@@ -64,18 +64,6 @@ find_package(Squirrel REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 
-# R36S / Android-style polyfill: header-only sigc++ subset when sysroot has none.
-if(DEFINED WINDSTILLE_SIGC_POLYFILL_DIR AND NOT TARGET PkgConfig::SIGCXX)
-  add_library(PkgConfig::SIGCXX INTERFACE IMPORTED)
-  set_target_properties(PkgConfig::SIGCXX PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${WINDSTILLE_SIGC_POLYFILL_DIR}")
-  set(SIGCXX_FOUND TRUE)
-  message(STATUS "sigc++: using WINDSTILLE_SIGC_POLYFILL_DIR=${WINDSTILLE_SIGC_POLYFILL_DIR}")
-endif()
-if(NOT TARGET PkgConfig::SIGCXX)
-  pkg_search_module(SIGCXX REQUIRED sigc++-3.0 IMPORTED_TARGET)
-endif()
-
 if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-3.0 IMPORTED_TARGET)
 endif()
@@ -201,7 +189,6 @@ target_link_libraries(libwindstille PUBLIC
   surf::surf
   Squirrel::Squirrel
   PkgConfig::SDL2
-  PkgConfig::SIGCXX
   Threads::Threads)
 if(TARGET JPEG::JPEG)
   target_link_libraries(libwindstille PUBLIC JPEG::JPEG)
