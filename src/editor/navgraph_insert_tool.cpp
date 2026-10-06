@@ -18,6 +18,8 @@
 
 #include "editor/navgraph_insert_tool.hpp"
 
+#include <iostream>
+
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 

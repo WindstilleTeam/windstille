@@ -20,6 +20,7 @@
 #include "editor/windstille_widget.hpp"
 
 #include <cmath>
+#include <iostream>
 
 #include <gtkmm.h>
 

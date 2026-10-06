@@ -22,6 +22,7 @@
 #include <functional>
 #include <iostream>
 
+#include <logmich/log.hpp>
 #include <wstdisplay/canvas.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstgui/group_component.hpp>

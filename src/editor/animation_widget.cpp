@@ -18,6 +18,8 @@
 
 #include "editor/animation_widget.hpp"
 
+#include <iostream>
+
 #include <glibmm/main.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
