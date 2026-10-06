@@ -168,6 +168,6 @@ Ports (see [PORTS.md](PORTS.md) for details):
 | WebAssembly | `nix build .#windstille-wasm` / `nix run .#windstille-wasm` |
 | Android APK | `nix build .#windstille-android` |
 | R36S / PortMaster | `nix build .#windstille-r36s` / `.#windstille-r36s-portmaster-zip` |
-| Windows (MinGW, WIP) | `nix build .#windstille-win64` |
+| Windows (MinGW) | `nix build .#windstille-win64` / `nix run .#windstille-win64` |
 
 Editor is disabled on all port targets (`BUILD_EDITOR=OFF`).

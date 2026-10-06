@@ -527,9 +527,15 @@
             windstille
             windstille-editor
             windstille-gles2;
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-wasm) {
+          inherit (linuxPorts) windstille-wasm;
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-android) {
+          # APK compile (SDK license accepted in androidPkgs)
+          inherit (linuxPorts) windstille-android;
+        } // lib.optionalAttrs (windstille-win64 != null) {
+          inherit windstille-win64;
         };
-        # wasm / android / win64 / r36s omitted from checks until they are
-        # ported to external/wst.
+        # r36s is omitted, its ArkOS sysroot tarball isn't published.
 
         apps = {
           windstille = {

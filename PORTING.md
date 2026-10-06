@@ -34,10 +34,9 @@ consumer of `surf`.
 **Problem.** Ports need OpenGL ES 2.0 / WebGL; the engine historically used
 desktop OpenGL + GLEW.
 
-**Solution.** `WINDSTILLE_USE_GLES` / `WSTDISPLAY_USE_GLES`, `gl_compat.hpp`,
-and a separate `windstille-gles2` package that does **not** inject a prebuilt
-desktop `wstdisplay` (which would pull libGL). Fixed-function calls still need
-ongoing audit for pure GLES2.
+**Solution.** wst targets GLES 2.0 as its baseline and selects GL 3.3 core
+or GLES 2.0 at runtime, so the same code runs everywhere. The
+`windstille-gles2` package only makes the game request a GLES context.
 
 ### Controller input: GameController first
 
@@ -245,8 +244,8 @@ indices; lifecycle stays on `SDLActivity` singleTask.
 package.
 
 **Solution.** Cross game package: `platforms = [ "x86_64-windows" ]`. Flat
-`runCommand` packaging on Linux keeps Linux platforms. Win64 remains WIP
-for a full external graph and is omitted from **checks**.
+`runCommand` packaging on Linux keeps Linux platforms. See the Windows
+section below for the build itself.
 
 ### surf CMake package deps
 
@@ -260,10 +259,33 @@ at export time (see above).
 
 ## Windows (MinGW)
 
-**Status.** Packaging hook and flat `exe` + DLL layout exist; linking the
-full `external/*` tree under `pkgsCross.mingwW64` is still WIP. Prefer
+**Status.** Builds with `nix/win64.nix` and runs under Wine. Prefer
 grumnix prebuilt MinGW SDL2 / OpenAL / modplug packages over pulling
 ffmpeg-heavy openal from nixpkgs cross. See [PORTS.md](PORTS.md).
+
+### glm and `<endian.h>`
+
+**Problem.** nixpkgs patches glm's `gtc/packing.inl` to include
+`<endian.h>`, which MinGW doesn't have.
+
+**Solution.** The Windows build uses the unpatched upstream headers from
+`pkgs.glm.src`.
+
+### GLAD loader and libdl
+
+**Problem.** GLAD generated with `--loader` calls `dlopen`, which needs
+`-ldl` on the ArkOS glibc 2.30.
+
+**Solution.** wst loads GL through `SDL_GL_GetProcAddress`, so GLAD is
+generated without the loader.
+
+### Header name clashes in flat include paths
+
+**Problem.** ndk-build puts all include directories on one flat path, so
+`#include "blend.hpp"` in wst found surf's `blend.hpp`.
+
+**Solution.** wst sources include their public headers by module path
+(`<wstdisplay/blend.hpp>`).
 
 ---
 
@@ -274,10 +296,11 @@ ffmpeg-heavy openal from nixpkgs cross. See [PORTS.md](PORTS.md).
 | stb_image / codec policy | `external/surfcpp/CMakeLists.txt`, `surf-config.cmake.in`, `flake.nix` |
 | R36S toolchain + sysroot | `nix/r36s.nix`, `mk/r36s/` |
 | R36S runtime guards | `WINDSTILLE_R36S` in main / display code; `RelWithDebInfo` |
-| GL attributes | `external/wstdisplay/src/opengl_window.cpp` |
-| GameController / menu | `external/wstinput/`, `data/controller/{gamepad,r36s}.scm`, `windstille_main.cpp` |
+| GL attributes | `external/wst/display/src/opengl_window.cpp` |
+| GameController / menu | `external/wst/input/`, `data/controller/{gamepad,r36s}.scm`, `windstille_main.cpp` |
 | wasm link / flags | `mk/wasm/scripts/build-app.sh`, `nix/wasm.nix` |
 | Android NDK / APK | `nix/android.nix`, `mk/android/` |
+| Windows | `nix/win64.nix` |
 | Flake check surface | `flake.nix` `packages` / `checks` / `linuxPorts` |
 
 ---
