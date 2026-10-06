@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "anchor_layoutable.hpp"
+#include <wstgui/anchor_layoutable.hpp>
 
 #include <logmich/log.hpp>
 #include <geom/io.hpp>

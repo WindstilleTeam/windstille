@@ -121,7 +121,7 @@ target_compile_options(wstinput PRIVATE ${WSTINPUT_WARNINGS_CXX_FLAGS})
 target_include_directories(wstinput PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_include_directories(wstinput PRIVATE src/ include/wstinput/)
+target_include_directories(wstinput PRIVATE src/)
 target_link_libraries(wstinput PUBLIC
   prio::prio
   logmich::logmich

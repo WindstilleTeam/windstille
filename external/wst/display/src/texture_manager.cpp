@@ -1,14 +1,14 @@
 // SPDX-FileCopyrightText: 2002-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "texture_manager.hpp"
+#include <wstdisplay/texture_manager.hpp>
 
 #include <exception>
 
 #include <logmich/log.hpp>
 #include <surf/software_surface.hpp>
 
-#include "texture.hpp"
+#include <wstdisplay/texture.hpp>
 
 namespace wstdisplay {
 

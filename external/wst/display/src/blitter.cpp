@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2002-2020 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "blitter.hpp"
+#include <wstdisplay/blitter.hpp>
 
 #include <assert.h>
 #include <stdint.h>

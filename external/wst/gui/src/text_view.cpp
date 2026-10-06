@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2005 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "text_view.hpp"
+#include <wstgui/text_view.hpp>
 
 #include <wstinput/controller.hpp>
 
-#include "controller_def.hpp"
-#include "slider.hpp"
+#include <wstgui/controller_def.hpp>
+#include <wstgui/slider.hpp>
 
 namespace wstgui {
 

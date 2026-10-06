@@ -6,15 +6,15 @@
 
 // Internal header, shared by Device and Renderer
 
-#include "caps.hpp"
-#include "device.hpp"
-#include "framebuffer.hpp"
-#include "material.hpp"
-#include "mesh.hpp"
-#include "resource_pool.hpp"
-#include "shader_program.hpp"
-#include "static_batch.hpp"
-#include "texture.hpp"
+#include <wstdisplay/caps.hpp>
+#include <wstdisplay/device.hpp>
+#include <wstdisplay/framebuffer.hpp>
+#include <wstdisplay/material.hpp>
+#include <wstdisplay/mesh.hpp>
+#include <wstdisplay/resource_pool.hpp>
+#include <wstdisplay/shader_program.hpp>
+#include <wstdisplay/static_batch.hpp>
+#include <wstdisplay/texture.hpp>
 
 namespace wstdisplay {
 

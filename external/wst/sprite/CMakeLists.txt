@@ -41,7 +41,7 @@ add_library(wstsprite STATIC ${WSTSPRITE_SOURCES})
 target_include_directories(wstsprite PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_include_directories(wstsprite PRIVATE src/ include/wstsprite/)
+target_include_directories(wstsprite PRIVATE src/)
 target_compile_options(wstsprite PRIVATE ${WSTSPRITE_WARNINGS_CXX_FLAGS})
 target_link_libraries(wstsprite PUBLIC
   wstdisplay::wstdisplay

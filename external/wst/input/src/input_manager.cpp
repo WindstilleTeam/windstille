@@ -7,7 +7,7 @@
 #include <logmich/log.hpp>
 #include <prio/reader.hpp>
 
-#include "input_manager.hpp"
+#include <wstinput/input_manager.hpp>
 #ifdef HAVE_CWIID
 #  include "wiimote.hpp"
 #endif

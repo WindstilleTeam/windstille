@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2005 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "gui_manager.hpp"
+#include <wstgui/gui_manager.hpp>
 
 #include <logmich/log.hpp>
 
-#include "root_component.hpp"
+#include <wstgui/root_component.hpp>
 
 namespace wstgui {
 

@@ -12,8 +12,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "font/font.hpp"
-#include "font/font_effect.hpp"
+#include <wstdisplay/font/font.hpp>
+#include <wstdisplay/font/font_effect.hpp>
 
 namespace wstdisplay {
 

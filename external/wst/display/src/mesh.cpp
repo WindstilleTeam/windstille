@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "mesh.hpp"
+#include <wstdisplay/mesh.hpp>
 
 #include <cstddef>
 
 #include "gl.hpp"
-#include "shader_program.hpp"
+#include <wstdisplay/shader_program.hpp>
 
 namespace wstdisplay {
 

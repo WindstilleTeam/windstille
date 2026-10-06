@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "font/bitmap_font.hpp"
+#include <wstdisplay/font/bitmap_font.hpp>
 
 #include <vector>
 
-#include "texture.hpp"
+#include <wstdisplay/texture.hpp>
 
 namespace wstdisplay {
 

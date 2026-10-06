@@ -139,10 +139,7 @@ target_include_directories(wstgui PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
   )
-target_include_directories(wstgui PRIVATE
-  src/
-  include/wstgui/
-  )
+target_include_directories(wstgui PRIVATE src/)
 target_link_libraries(wstgui PUBLIC
   wstinput::wstinput
   geom::geom

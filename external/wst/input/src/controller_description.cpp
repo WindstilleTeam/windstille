@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-#include "controller_description.hpp"
+#include <wstinput/controller_description.hpp>
 
 namespace wstinput {
 

@@ -6,7 +6,7 @@
 #include <logmich/log.hpp>
 #include <wstinput/controller.hpp>
 
-#include "root_component.hpp"
+#include <wstgui/root_component.hpp>
 
 namespace wstgui {
 

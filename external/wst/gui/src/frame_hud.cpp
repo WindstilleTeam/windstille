@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2018 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "frame_hud.hpp"
+#include <wstgui/frame_hud.hpp>
 
 #include <cmath>
 #include <sstream>

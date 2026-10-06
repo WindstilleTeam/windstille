@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2002-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "compositor.hpp"
+#include <wstdisplay/compositor.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -9,10 +9,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "framebuffer.hpp"
-#include "renderer.hpp"
-#include "vertex.hpp"
-#include "view.hpp"
+#include <wstdisplay/framebuffer.hpp>
+#include <wstdisplay/renderer.hpp>
+#include <wstdisplay/vertex.hpp>
+#include <wstdisplay/view.hpp>
 
 namespace wstdisplay {
 

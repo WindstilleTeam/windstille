@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2005 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "label.hpp"
+#include <wstgui/label.hpp>
 
 #include <surf/color.hpp>
 
-#include "style.hpp"
+#include <wstgui/style.hpp>
 
 namespace wstgui {
 

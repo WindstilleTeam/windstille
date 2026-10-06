@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "sprite_manager.hpp"
+#include <wstsprite/sprite_manager.hpp>
 
 #include <stdexcept>
 

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2005-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "font/text_area.hpp"
+#include <wstdisplay/font/text_area.hpp>
 
 #include <cmath>
 #include <vector>
@@ -9,8 +9,8 @@
 #include <babyxml.hpp>
 #include <surf/color.hpp>
 
-#include "canvas.hpp"
-#include "font/font.hpp"
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/font/font.hpp>
 
 namespace wstdisplay {
 

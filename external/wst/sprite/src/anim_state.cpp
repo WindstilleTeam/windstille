@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "anim_state.hpp"
+#include <wstsprite/anim_state.hpp>
 
 #include <algorithm>
 

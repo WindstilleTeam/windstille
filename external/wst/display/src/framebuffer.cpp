@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: 2002-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "framebuffer.hpp"
+#include <wstdisplay/framebuffer.hpp>
 
 #include <stdexcept>
 #include <string>
 
 #include "gl.hpp"
-#include "texture.hpp"
+#include <wstdisplay/texture.hpp>
 
 namespace wstdisplay {
 

@@ -1,14 +1,14 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "material.hpp"
+#include <wstdisplay/material.hpp>
 
 #include <algorithm>
 #include <stdexcept>
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "device.hpp"
+#include <wstdisplay/device.hpp>
 
 namespace wstdisplay {
 

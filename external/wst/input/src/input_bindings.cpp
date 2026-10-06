@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2005-2020 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "input_bindings.hpp"
+#include <wstinput/input_bindings.hpp>
 
 #include <algorithm>
 #include <cstdlib>
@@ -9,8 +9,8 @@
 #include <logmich/log.hpp>
 #include <prio/reader.hpp>
 
-#include "controller_description.hpp"
-#include "input_manager.hpp"
+#include <wstinput/controller_description.hpp>
+#include <wstinput/input_manager.hpp>
 
 using namespace prio;
 

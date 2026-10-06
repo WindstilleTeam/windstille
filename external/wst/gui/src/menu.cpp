@@ -3,13 +3,13 @@
 
 #include <functional>
 
-#include "group_component.hpp"
-#include "gui_manager.hpp"
-#include "menu.hpp"
-#include "menu_component.hpp"
-#include "menu_item.hpp"
-#include "root_component.hpp"
-#include "screen_manager.hpp"
+#include <wstgui/group_component.hpp>
+#include <wstgui/gui_manager.hpp>
+#include <wstgui/menu.hpp>
+#include <wstgui/menu_component.hpp>
+#include <wstgui/menu_item.hpp>
+#include <wstgui/root_component.hpp>
+#include <wstgui/screen_manager.hpp>
 
 namespace wstgui {
 

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2005 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "screen_manager.hpp"
+#include <wstgui/screen_manager.hpp>
 
 #ifdef __EMSCRIPTEN__
 #  include <emscripten.h>

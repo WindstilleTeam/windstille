@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "renderer.hpp"
+#include <wstdisplay/renderer.hpp>
 
 #include <algorithm>
 #include <array>
@@ -14,11 +14,11 @@
 #include <logmich/log.hpp>
 #include <surf/palette.hpp>
 
-#include "batch.hpp"
-#include "canvas.hpp"
+#include <wstdisplay/batch.hpp>
+#include <wstdisplay/canvas.hpp>
 #include "device_impl.hpp"
 #include "gl.hpp"
-#include "view.hpp"
+#include <wstdisplay/view.hpp>
 
 namespace wstdisplay {
 

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2018 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "style.hpp"
+#include <wstgui/style.hpp>
 
 namespace wstgui {
 
