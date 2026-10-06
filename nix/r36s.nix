@@ -481,8 +481,9 @@ EOF
         "-DCMAKE_CXX_COMPILER=${wrappers.cxx}"
         "-DCMAKE_C_COMPILER_WORKS=1"
         "-DCMAKE_CXX_COMPILER_WORKS=1"
-        "-DCMAKE_C_COMPILER_FORCED=TRUE"
-        "-DCMAKE_CXX_COMPILER_FORCED=TRUE"
+        # Compiler checks only compile, so CMake still detects the compiler
+        # features (target_compile_features) without linking to the sysroot
+        "-DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY"
         # Device binary must use ArkOS libs at runtime, not nix store paths.
         # Skipping RPATH rewrite also avoids cmake_install.cmake failing when
         # the linked RUNPATH does not contain the sysroot's /usr/lib/... path.
