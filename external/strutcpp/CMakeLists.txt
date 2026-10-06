@@ -14,13 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 project(strut VERSION 0.0.0)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 option(BUILD_TESTS "Build tests" OFF)
+option(STRUT_INSTALL "Generate install and export rules, off by default when strut is a subdirectory" ${PROJECT_IS_TOP_LEVEL})
 option(WARNINGS "Enable extra compiler warnings" OFF)
 option(WERROR "Treat warnings as errors" OFF)
 option(CLANG_TIDY "Enable clang-tidy" OFF)
@@ -153,8 +154,7 @@ if(BUILD_TESTS)
     COMMAND test_strut)
 endif()
 
-# Packaging only when built as a standalone top-level project.
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+if(STRUT_INSTALL)
   install(TARGETS strut
     EXPORT strut
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -184,7 +184,6 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     ${CMAKE_CURRENT_BINARY_DIR}/strut-config.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/strut-config-version.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/strut)
-
 endif()
 
 # EOF #
