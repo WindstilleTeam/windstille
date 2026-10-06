@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: 2002-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "surface_manager.hpp"
+#include <wstdisplay/surface_manager.hpp>
 
 #include <algorithm>
 
 #include <logmich/log.hpp>
 
-#include "surface.hpp"
+#include <wstdisplay/surface.hpp>
 
 namespace wstdisplay {
 

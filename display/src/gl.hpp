@@ -8,7 +8,7 @@
 
 #include <glad/gl.h>
 
-#include "caps.hpp"
+#include <wstdisplay/caps.hpp>
 
 namespace wstdisplay::detail {
 

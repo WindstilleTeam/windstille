@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2002-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "shader_program.hpp"
+#include <wstdisplay/shader_program.hpp>
 
 #include <stdexcept>
 #include <string>

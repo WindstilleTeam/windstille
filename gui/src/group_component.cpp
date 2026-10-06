@@ -3,8 +3,8 @@
 
 #include <wstdisplay/canvas.hpp>
 
-#include "group_component.hpp"
-#include "style.hpp"
+#include <wstgui/group_component.hpp>
+#include <wstgui/style.hpp>
 
 namespace wstgui {
 

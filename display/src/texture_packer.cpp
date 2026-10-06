@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2002-2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "texture_packer.hpp"
+#include <wstdisplay/texture_packer.hpp>
 
 #include <cstring>
 #include <stdexcept>
@@ -9,9 +9,9 @@
 #include <surf/palette.hpp>
 #include <surf/save.hpp>
 
-#include "blitter.hpp"
-#include "surface.hpp"
-#include "texture.hpp"
+#include <wstdisplay/blitter.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/texture.hpp>
 
 namespace wstdisplay {
 

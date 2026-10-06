@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2021 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "layout_builder.hpp"
+#include <wstgui/layout_builder.hpp>
 
 #include <logmich/log.hpp>
 
-#include "cut_layoutable.hpp"
+#include <wstgui/cut_layoutable.hpp>
 
 namespace wstgui {
 

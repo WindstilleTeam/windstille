@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "device.hpp"
+#include <wstdisplay/device.hpp>
 
 #include <fstream>
 #include <sstream>

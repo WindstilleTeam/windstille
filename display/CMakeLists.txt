@@ -136,8 +136,6 @@ file(GLOB WSTDISPLAY_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 add_library(wstdisplay STATIC ${WSTDISPLAY_SOURCES})
 target_include_directories(wstdisplay PRIVATE
   src/
-  include/wstdisplay
-  include/wstsystem/
   external/glad/include
   )
 target_include_directories(wstdisplay PUBLIC

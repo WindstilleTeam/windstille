@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2005 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "grid_component.hpp"
+#include <wstgui/grid_component.hpp>
 
 #include <iostream>
 
@@ -10,7 +10,7 @@
 #include <wstdisplay/canvas.hpp>
 #include <wstinput/controller.hpp>
 
-#include "controller_def.hpp"
+#include <wstgui/controller_def.hpp>
 
 namespace wstgui {
 

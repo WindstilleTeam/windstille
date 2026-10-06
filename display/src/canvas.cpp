@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "canvas.hpp"
+#include <wstdisplay/canvas.hpp>
 
 #include <algorithm>
 #include <array>
@@ -13,8 +13,8 @@
 #include <geom/offset.hpp>
 #include <geom/quad.hpp>
 
-#include "font/font.hpp"
-#include "surface.hpp"
+#include <wstdisplay/font/font.hpp>
+#include <wstdisplay/surface.hpp>
 
 namespace wstdisplay {
 

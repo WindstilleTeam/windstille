@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2018 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "ilayoutable.hpp"
+#include <wstgui/ilayoutable.hpp>
 
-#include "component.hpp"
+#include <wstgui/component.hpp>
 
 namespace wstgui {
 

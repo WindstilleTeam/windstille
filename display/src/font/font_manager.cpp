@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "font/font_manager.hpp"
+#include <wstdisplay/font/font_manager.hpp>
 
 #include <map>
 #include <stdexcept>
@@ -9,7 +9,7 @@
 #include <tuple>
 
 #include "font/ttf_font.hpp"
-#include "resource_pool.hpp"
+#include <wstdisplay/resource_pool.hpp>
 
 namespace wstdisplay {
 

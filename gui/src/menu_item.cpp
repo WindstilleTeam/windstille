@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2005 Ingo Ruhnke <grumbel@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "menu_item.hpp"
+#include <wstgui/menu_item.hpp>
 
 #include <wstdisplay/canvas.hpp>
 
-#include "menu_component.hpp"
-#include "style.hpp"
+#include <wstgui/menu_component.hpp>
+#include <wstgui/style.hpp>
 
 namespace wstgui {
 

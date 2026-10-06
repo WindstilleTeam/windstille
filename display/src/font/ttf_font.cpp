@@ -15,10 +15,10 @@
 #include <surf/palette.hpp>
 #include <surf/software_surface.hpp>
 
-#include "blitter.hpp"
-#include "device.hpp"
-#include "rect_packer.hpp"
-#include "texture.hpp"
+#include <wstdisplay/blitter.hpp>
+#include <wstdisplay/device.hpp>
+#include <wstdisplay/rect_packer.hpp>
+#include <wstdisplay/texture.hpp>
 
 namespace wstdisplay {
 
