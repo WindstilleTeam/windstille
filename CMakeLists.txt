@@ -68,29 +68,43 @@ if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-3.0 IMPORTED_TARGET)
 endif()
 
+# Use the installed PACKAGE (desktop flake) or build external/DIR as a
+# subdirectory (ports)
+function(windstille_dependency package target dir)
+  if(NOT TARGET ${target})
+    find_package(${package} QUIET)
+    if(NOT ${package}_FOUND)
+      add_subdirectory(external/${dir} EXCLUDE_FROM_ALL)
+    endif()
+  endif()
+endfunction()
+
 # Build dependencies
 function(build_dependencies)
   set(BUILD_TESTS OFF)
   set(BUILD_EXTRA OFF)
 
-  tinycmmc_find_dependency(argpp)
-  tinycmmc_find_dependency(babyxml)
-  tinycmmc_find_dependency(geomcpp)
-  tinycmmc_find_dependency(logmich)
-  tinycmmc_find_dependency(biiocpp)
-  tinycmmc_find_dependency(prio)
-  tinycmmc_find_dependency(surfcpp)
-  tinycmmc_find_dependency(wstsound)
+  set(PRIO_USE_JSONCPP OFF)
+  set(WST_DEMOS OFF)
 
-  # external/wst, as a package of its own (desktop flake) or built here
-  # from the subtree (ports)
+  # Ordered so that each library comes after its dependencies
+  windstille_dependency(argpp argpp::argpp argpp)
+  windstille_dependency(logmich logmich::logmich logmich)
+  windstille_dependency(sexp sexp::sexp sexpcpp)
+  windstille_dependency(geom geom::geom geomcpp)
+  windstille_dependency(babyxml babyxml::babyxml babyxml)
+  windstille_dependency(biio biio::biio biiocpp)
+  windstille_dependency(prio prio::prio prio)
+  windstille_dependency(surf surf::surf surfcpp)
+  windstille_dependency(wstsound wstsound::wstsound wstsound)
+
+  # wst installs one package per module
   find_package(wstdisplay QUIET)
   if(wstdisplay_FOUND)
     find_package(wstinput REQUIRED)
     find_package(wstgui REQUIRED)
     find_package(wstsprite REQUIRED)
   else()
-    set(WST_DEMOS OFF)
     add_subdirectory(external/wst EXCLUDE_FROM_ALL)
   endif()
 

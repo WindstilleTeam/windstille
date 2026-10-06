@@ -635,7 +635,7 @@ EOF
     let
       shell = mkWasmShell { inherit versionFull gitRev sourceUrl; };
       # glm always; when sound is on, also expose static libmodplug so
-      # in-tree external/wstsound (via tinycmmc_find_dependency) can find it.
+      # external/wstsound, built as a subdirectory, can find it.
       # wstsound itself is built from external/ as a subdirectory — not the
       # isolated wstsound-wasm package — so OpenAL comes from the emscripten
       # sysroot (-lopenal) and codec flags follow EMSCRIPTEN defaults in
