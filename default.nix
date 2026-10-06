@@ -20,13 +20,20 @@
 , flake-utils
 }:
 let
-  # Read version number from VERSION and append the current git commit if available
+  # Read version number from VERSION file (source of truth).
+  # Development builds (VERSION contains -dev) append .revCount+g<shortRev>
+  # e.g. 0.2.0-dev.1615+gf1fb306 or 0.2.0-dev.1615+gf1fb306-dirty.
+  # Release builds (no -dev) use the VERSION content as-is.
   versionFromVERSION = self:
     let
       versionBase = nixpkgs.lib.strings.removeSuffix "\n" (builtins.readFile "${self.outPath}/VERSION");
       gitRev = "${self.shortRev or self.dirtyShortRev or "dirty"}";
+      isDev = nixpkgs.lib.strings.hasInfix "-dev" versionBase;
     in
-      "${versionBase}+g${gitRev}";
+      if isDev then
+        "${versionBase}.${toString (self.revCount or 0)}+g${gitRev}"
+      else
+        versionBase;
 
   versionFromFileOr = project: fallback-version:
     let
@@ -41,8 +48,12 @@ let
 
   versionFromFile = project: versionFromFileOr project "unknown";
 
+  # nixpkgs 26.11 dropped x86_64-darwin
   eachSystem  = (func:
-    flake-utils.lib.eachSystem (flake-utils.lib.defaultSystems ++ [ "x86_64-windows" "i686-windows" ]) func
+    flake-utils.lib.eachSystem
+      (builtins.filter (s: s != "x86_64-darwin")
+        (flake-utils.lib.defaultSystems ++ [ "x86_64-windows" "i686-windows" ]))
+      func
   );
 
   eachWin32System  = (func:

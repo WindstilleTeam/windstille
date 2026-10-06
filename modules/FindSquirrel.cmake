@@ -16,38 +16,43 @@
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
 
-pkg_search_module(SQUIRREL squirrel3 IMPORTED_TARGET)
-if(NOT SQUIRREL_FOUND)
-  find_library(SQUIRREL_LIBRARIES NAMES "squirrel" "squirrel3" REQUIRED)
-  find_library(SQSTDLIB_LIBRARIES NAMES "sqstdlib" "sqstdlib3" REQUIRED)
-  find_path(SQUIRREL_INCLUDE_DIRS NAMES "squirrel.h" PATH_SUFFIXES "/" "squirrel/" "squirrel3/")
-  if (NOT SQUIRREL_INCLUDE_DIRS)
-    message(FATAL_ERROR "squirrel not found")
-  endif()
+# Finds squirrel and sqstdlib and provides Squirrel::Squirrel.
+#
+# The search can be skipped by setting SQUIRREL_LIBRARY, SQSTDLIB_LIBRARY
+# and SQUIRREL_INCLUDE_DIR, e.g. for cross builds.
 
-  # merge sqstdlib and squirrel, since pkg-config doesn't tell them appart
-  set(SQUIRREL_LIBRARIES ${SQUIRREL_LIBRARIES} ${SQSTDLIB_LIBRARIES})
-
-  add_library(PkgConfig::SQUIRREL INTERFACE IMPORTED)
-  target_link_libraries(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_LIBRARIES})
-  target_include_directories(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_INCLUDE_DIRS})
-  message(STATUS "Found Squirrel: ${SQUIRREL_LIBRARIES} ${SQUIRREL_INCLUDE_DIRS}")
+find_package(PkgConfig QUIET)
+if(PKG_CONFIG_FOUND)
+  pkg_search_module(PC_SQUIRREL QUIET squirrel3)
 endif()
 
-# CMake can't do aliases on imported target, so some hackery
-# add_library(Squirrel::Squirrel ALIAS PkgConfig::SQUIRREL)
-add_library(Squirrel::Squirrel INTERFACE IMPORTED)
-foreach(name
-    INTERFACE_LINK_LIBRARIES
-    INTERFACE_INCLUDE_DIRECTORIES
-    INTERFACE_COMPILE_DEFINITIONS
-    INTERFACE_COMPILE_OPTIONS)
-  get_property(value TARGET PkgConfig::SQUIRREL PROPERTY ${name} )
-  set_property(TARGET Squirrel::Squirrel PROPERTY ${name} ${value})
-endforeach()
+find_library(SQUIRREL_LIBRARY
+  NAMES squirrel squirrel3 squirrel_static
+  HINTS ${PC_SQUIRREL_LIBRARY_DIRS})
+find_library(SQSTDLIB_LIBRARY
+  NAMES sqstdlib sqstdlib3 sqstdlib_static
+  HINTS ${PC_SQUIRREL_LIBRARY_DIRS})
+find_path(SQUIRREL_INCLUDE_DIR
+  NAMES squirrel.h
+  PATH_SUFFIXES squirrel squirrel3
+  HINTS ${PC_SQUIRREL_INCLUDE_DIRS})
 
+include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Squirrel
-  REQUIRED_VARS SQUIRREL_LIBRARIES SQUIRREL_INCLUDE_DIRS
-  VERSION_VAR SQUIRREL_VERSION)
+  REQUIRED_VARS SQUIRREL_LIBRARY SQSTDLIB_LIBRARY SQUIRREL_INCLUDE_DIR
+  VERSION_VAR PC_SQUIRREL_VERSION)
+
+if(Squirrel_FOUND)
+  set(SQUIRREL_LIBRARIES ${SQUIRREL_LIBRARY} ${SQSTDLIB_LIBRARY})
+  set(SQUIRREL_INCLUDE_DIRS ${SQUIRREL_INCLUDE_DIR})
+
+  if(NOT TARGET Squirrel::Squirrel)
+    add_library(Squirrel::Squirrel INTERFACE IMPORTED)
+    target_link_libraries(Squirrel::Squirrel INTERFACE ${SQUIRREL_LIBRARIES})
+    target_include_directories(Squirrel::Squirrel INTERFACE ${SQUIRREL_INCLUDE_DIRS})
+  endif()
+endif()
+
+mark_as_advanced(SQUIRREL_LIBRARY SQSTDLIB_LIBRARY SQUIRREL_INCLUDE_DIR)
 
 # EOF #
