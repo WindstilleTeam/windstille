@@ -82,11 +82,17 @@ function(build_dependencies)
   tinycmmc_find_dependency(surfcpp)
   tinycmmc_find_dependency(wstsound)
 
-  # external/wst, built as a package of its own
-  find_package(wstdisplay REQUIRED)
-  find_package(wstinput REQUIRED)
-  find_package(wstgui REQUIRED)
-  find_package(wstsprite REQUIRED)
+  # external/wst, as a package of its own (desktop flake) or built here
+  # from the subtree (ports)
+  find_package(wstdisplay QUIET)
+  if(wstdisplay_FOUND)
+    find_package(wstinput REQUIRED)
+    find_package(wstgui REQUIRED)
+    find_package(wstsprite REQUIRED)
+  else()
+    set(WST_DEMOS OFF)
+    add_subdirectory(external/wst EXCLUDE_FROM_ALL)
+  endif()
 
   find_program(MINISWIG miniswig)
   # Under Emscripten / cross, never build miniswig (needs host bison/flex).
