@@ -18,6 +18,7 @@
 
 #include "objects/decal.hpp"
 
+#include <glm/trigonometric.hpp>
 #include <wstdisplay/canvas.hpp>
 #include <wstdisplay/surface_manager.hpp>
 
@@ -63,7 +64,7 @@ Decal::Decal(ReaderMapping const& reader) :
   m_params
     .set_pos(pos)
     .set_anchor(geom::origin::CENTER)
-    .set_angle(angle)
+    .set_angle(glm::degrees(angle))
     .set_hflip(hflip)
     .set_vflip(vflip)
     .set_scale(scale);
