@@ -20,26 +20,21 @@
 
 #include <iostream>
 
-#include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/device.hpp>
 #include "slideshow/slide_parser.hpp"
 
 using namespace wstdisplay;
 
-SlideShow::SlideShow(TextureManager& texture_manager,
-                     SurfaceManager& surface_manager) :
-  m_texture_manager(texture_manager),
-  m_surface_manager(surface_manager),
+SlideShow::SlideShow(Device& device) :
+  m_device(device),
   m_objects(),
   m_length(0.0f)
 {
 }
 
 void
-SlideShow::draw(wstdisplay::GraphicsContext& gc, float time, bool verbose)
+SlideShow::draw(wstdisplay::Canvas& canvas, float time, bool verbose)
 {
-  bool cleanup = false;
-
   for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
   {
     SlideObjectPtr& obj = *i;
@@ -57,21 +52,12 @@ SlideShow::draw(wstdisplay::GraphicsContext& gc, float time, bool verbose)
         std::cout << obj->get_filename() << std::endl;
       }
 
-      obj->draw(gc, relative_time);
+      obj->draw(canvas, relative_time);
     }
     else if (time < obj->begin()-60.0f || obj->end()+60.0f < time)
     { // unload anything that 60 seconds away from the current time pos
-      if (obj->unload())
-      {
-        cleanup = true;
-      }
+      obj->unload();
     }
-  }
-
-  if (cleanup)
-  {
-    m_surface_manager.cleanup();
-    m_texture_manager.cleanup();
   }
 }
 
@@ -104,7 +90,7 @@ SlideShow::clear()
 void
 SlideShow::load(std::string const& filename, geom::fsize const& aspect)
 {
-  SlideParser slide_parser(*this, aspect, m_surface_manager);
+  SlideParser slide_parser(*this, aspect, m_device);
   slide_parser.load_from_file(filename);
 }
 

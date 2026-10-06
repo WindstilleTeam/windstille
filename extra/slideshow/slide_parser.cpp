@@ -159,7 +159,7 @@ NodeZoom::get(geom::fsize const& scr, geom::fsize const& img) const
 }
 
 SlideParser::SlideParser(SlideShow& slideshow, geom::fsize const& screen_size,
-                         wstdisplay::SurfaceManager& surface_manager) :
+                         wstdisplay::Device& device) :
   m_slideshow(slideshow),
   m_screen_size(screen_size),
   m_context(),
@@ -174,7 +174,7 @@ SlideParser::SlideParser(SlideShow& slideshow, geom::fsize const& screen_size,
   //m_path_node(),
   m_node(),
   m_variables(),
-  m_surface_manager(surface_manager)
+  m_device(device)
 {
 }
 
@@ -336,7 +336,7 @@ SlideParser::handle_image(std::vector<std::string> const& args)
 
     std::cout << ";; time = " << m_time << std::endl;
     std::cout << "(image \"" << args[1] << "\")" << std::endl;
-    m_image = SlideObjectPtr(new SlideObject(args[1], m_surface_manager));
+    m_image = SlideObjectPtr(new SlideObject(args[1], m_device));
 
     if (m_slideshow.size() != 0)
     {

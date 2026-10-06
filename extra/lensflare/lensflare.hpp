@@ -23,18 +23,19 @@
 
 #include <glm/glm.hpp>
 #include <geom/geom.hpp>
-
-#include <wstdisplay/surface.hpp>
 #include <surf/color.hpp>
+#include <surf/software_surface.hpp>
+#include <wstdisplay/fwd.hpp>
+#include <wstdisplay/surface.hpp>
 
 struct Flair
 {
-  wstdisplay::SurfacePtr m_surface;
+  wstdisplay::Surface m_surface;
   float      m_distance;
   float      m_scale;
   surf::Color      m_color;
 
-  Flair(wstdisplay::SurfacePtr surface,
+  Flair(wstdisplay::Surface const& surface,
         float distance,
         float scale,
         surf::Color color) :
@@ -48,18 +49,24 @@ struct Flair
 class Lensflare
 {
 private:
+  /** The coordinate system everything is placed in, scaled to the window */
   geom::isize m_aspect_ratio;
   geom::isize m_window_size;
   bool m_fullscreen;
   bool m_loop;
 
-  wstdisplay::SurfacePtr m_light;
-  wstdisplay::SurfacePtr m_lightquery;
-  wstdisplay::SurfacePtr m_superlight;
-  wstdisplay::SurfacePtr m_flair1;
-  wstdisplay::SurfacePtr m_flair2;
-  wstdisplay::SurfacePtr m_cover;
-  wstdisplay::SurfacePtr m_halo;
+  wstdisplay::Surface m_light;
+  wstdisplay::Surface m_lightquery;
+  wstdisplay::Surface m_superlight;
+  wstdisplay::Surface m_flair1;
+  wstdisplay::Surface m_flair2;
+  wstdisplay::Surface m_cover;
+  wstdisplay::Surface m_halo;
+
+  /** For computing how much of the light the cover hides */
+  surf::SoftwareSurface m_lightquery_image;
+  surf::SoftwareSurface m_cover_image;
+  glm::vec2 m_cover_pos;
 
   typedef std::vector<Flair> Flairs;
   Flairs m_flairs;
@@ -70,9 +77,12 @@ public:
   Lensflare();
 
   int run();
-
   void process_input();
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw(wstdisplay::Canvas& canvas);
+
+private:
+  /** Fraction of the light that isn't hidden by the cover, in [0, 1] */
+  float get_visibility() const;
 
 private:
   Lensflare(const Lensflare&);

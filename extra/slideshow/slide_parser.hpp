@@ -164,11 +164,11 @@ private:
   typedef std::map<std::string, std::string> Variables;
   Variables m_variables;
 
-  wstdisplay::SurfaceManager& m_surface_manager;
+  wstdisplay::Device& m_device;
 
 public:
   SlideParser(SlideShow& slideshow, const geom::fsize& screen_size,
-              wstdisplay::SurfaceManager& surface_manager);
+              wstdisplay::Device& device);
 
   void load_from_file(const std::string& filename);
   void load_from_stream(std::istream& stream);

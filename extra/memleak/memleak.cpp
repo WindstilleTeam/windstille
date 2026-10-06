@@ -17,40 +17,41 @@
 */
 
 #include <cstdlib>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
 #include <SDL.h>
 
-#include <argpp/argpp.hpp>
-
-#include <wstdisplay/assert_gl.hpp>
+#include <surf/software_surface.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/device.hpp>
 #include <wstdisplay/opengl_window.hpp>
-#include <wstdisplay/framebuffer.hpp>
-#include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/renderer.hpp>
 #include <wstdisplay/surface.hpp>
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/texture_manager.hpp>
 #include <wstsystem/system.hpp>
-
-#include "util/system.hpp"
 
 using namespace wstdisplay;
 
 namespace {
 
+/** Loads the image given on the command line into a new texture on
+    every frame and drops it again, the number of live textures
+    printed every 100 frames must stay constant. */
 int memleak_main(int argc, char* argv[])
 {
-  wstsys::System system;
+  if (argc != 2) {
+    std::cerr << "Usage: " << argv[0] << " IMAGE" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  wstsystem::System system;
   auto window = system.create_window("Memleak", geom::isize(800, 600));
-  GraphicsContext& gc = window->get_gc();
+  Device& device = window->get_device();
+  Renderer& renderer = window->get_renderer();
+  Canvas canvas;
 
-  TextureManager    texture_manager;
-  SurfaceManager    surface_manager;
-
-  wstdisplay::SurfacePtr surface;
-
+  int frame = 0;
   bool loop = true;
   while(loop)
   {
@@ -63,32 +64,32 @@ int memleak_main(int argc, char* argv[])
           loop = false;
           break;
 
-        case SDL_KEYUP:
-          break;
-
         case SDL_KEYDOWN:
-          switch (event.key.keysym.sym)
-          {
-            case SDLK_ESCAPE:
-              loop = false;
-              break;
-
-            default:
-              break;
+          if (event.key.keysym.sym == SDLK_ESCAPE) {
+            loop = false;
           }
           break;
       }
     }
 
-    surface = surface_manager.get(argv[1]);
+    surf::SoftwareSurface const image = surf::SoftwareSurface::from_file(argv[1]);
+    Unique<Texture> texture = device.create_texture(image);
 
-    surface->draw(gc, glm::vec2(0.0f, 0.0f));
+    canvas.clear();
+    canvas.draw(Surface(texture, image.get_size()), geom::fpoint(0.0f, 0.0f));
+
+    renderer.begin_frame(window->get_drawable_size());
+    renderer.render(canvas, RenderPass{.clear = surf::Color(0.0f, 0.0f, 0.0f)});
+    texture.reset();
+    renderer.end_frame();
     window->swap_buffers();
-    SDL_Delay(10);
 
-    surface.reset();
-    surface_manager.cleanup();
-    texture_manager.cleanup();
+    if (frame % 100 == 0) {
+      std::cout << "frame " << frame << ": " << device.count<Texture>() << " textures" << std::endl;
+    }
+    frame += 1;
+
+    SDL_Delay(10);
   }
 
   return 0;

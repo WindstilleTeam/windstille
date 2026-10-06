@@ -5,31 +5,31 @@
 #include <glm/glm.hpp>
 
 #include <geom/geom.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/draw_params.hpp>
 #include <wstdisplay/opengl_window.hpp>
-#include <wstdisplay/framebuffer.hpp>
-#include <wstdisplay/surface.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/renderer.hpp>
 #include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
 #include <wstsystem/system.hpp>
 
 using namespace wstdisplay;
 
 int main(int argc, char** argv)
 {
-  wstsys::System system;
+  wstsystem::System system;
 
   geom::isize window_size(854, 480);
   auto window = system.create_window("2D Shadow", window_size);
 
-  GraphicsContext& gc = window->get_gc();
+  Renderer& renderer = window->get_renderer();
+  Canvas canvas;
 
-  SurfaceManager surface_manager;
+  SurfaceManager surface_manager(window->get_device());
 
-  wstdisplay::SurfacePtr darkness = surface_manager.get("darkness.png");
-  wstdisplay::SurfacePtr light = surface_manager.get("light.png");
-  wstdisplay::SurfacePtr objects = surface_manager.get("objects.png");
-  wstdisplay::SurfacePtr shadow  = surface_manager.get("objects_shadow.png");
+  Surface const darkness = surface_manager.get("darkness.png");
+  Surface const light = surface_manager.get("light.png");
+  Surface const objects = surface_manager.get("objects.png");
+  Surface const shadow  = surface_manager.get("objects_shadow.png");
 
   bool quit = false;
   glm::vec2 object_pos(100, 0);
@@ -63,8 +63,7 @@ int main(int argc, char** argv)
       }
     }
 
-    glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    canvas.clear();
 
     int samples = 64;
     for(int i = 0; i < samples; ++i)
@@ -73,32 +72,34 @@ int main(int argc, char** argv)
       float alpha = static_cast<float>(samples-i) / static_cast<float>(samples);
       alpha = alpha * alpha * alpha * alpha * alpha * alpha;
 
-      //float width  = shadow->get_width() * scale;
-      //float height = shadow->get_height() * scale;
+      //float width  = shadow.get_width() * scale;
+      //float height = shadow.get_height() * scale;
 
       glm::vec2 rel_pos = mouse_pos - object_pos;
 
       glm::vec2 pos = mouse_pos;
 
-      // pos.x -= shadow->get_width()/2 * scale;
-      // pos.y -= shadow->get_height()/2 * scale;
+      // pos.x -= shadow.get_width()/2 * scale;
+      // pos.y -= shadow.get_height()/2 * scale;
 
       pos.x -= rel_pos.x * scale;
       pos.y -= rel_pos.y * scale;
 
-      shadow->draw(gc,
-                   SurfaceDrawingParameters()
-                   .set_pos(pos)
-                   .set_scale(glm::vec2(scale, scale))
-                   .set_color(surf::Color(1.0f, 1.0f, 1.0f, alpha)));
+      canvas.draw(shadow,
+                  DrawParams()
+                  .set_pos(pos)
+                  .set_scale(glm::vec2(scale, scale))
+                  .set_color(surf::Color(1.0f, 1.0f, 1.0f, alpha)));
     }
-    objects->draw(gc, object_pos);
-    light->draw(gc,
-                SurfaceDrawingParameters()
-                .set_pos(mouse_pos - glm::vec2(light->get_width()/2, light->get_height()/2))
-                .set_blend_func(GL_SRC_ALPHA, GL_ONE));
-    darkness->draw(gc, SurfaceDrawingParameters()
-                   .set_pos(mouse_pos - glm::vec2(darkness->get_width()/2, darkness->get_height()/2)));
+    canvas.draw(objects, object_pos);
+    canvas.set_blend(Blend::Add);
+    canvas.draw(light, DrawParams().set_pos(mouse_pos).set_anchor(geom::origin::CENTER));
+    canvas.set_blend(Blend::Alpha);
+    canvas.draw(darkness, DrawParams().set_pos(mouse_pos).set_anchor(geom::origin::CENTER));
+
+    renderer.begin_frame(window->get_drawable_size());
+    renderer.render(canvas, RenderPass{.clear = surf::Color(0.0f, 0.0f, 0.5f)});
+    renderer.end_frame();
     window->swap_buffers();
   }
 

@@ -24,14 +24,13 @@
 #include <SDL.h>
 #include <glm/glm.hpp>
 
-#include <glm/glm.hpp>
-
-#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/device.hpp>
+#include <wstdisplay/draw_params.hpp>
 #include <wstdisplay/framebuffer.hpp>
-#include <wstdisplay/surface.hpp>
-#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/renderer.hpp>
 #include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
 #include <wstsystem/system.hpp>
 
 using namespace wstdisplay;
@@ -46,19 +45,22 @@ int app_main(int argc, char** argv)
     return -1;
   }
 
-  wstsys::System system;
+  wstsystem::System system;
   geom::isize window_size(1024, 576);
   auto window = system.create_window("Image Blur", window_size);
-  GraphicsContext& gc = window->get_gc();
+  Renderer& renderer = window->get_renderer();
+  Canvas canvas;
 
   SDL_ShowCursor(SDL_DISABLE);
 
-  SurfaceManager surface_manager;
+  SurfaceManager surface_manager(window->get_device());
 
-  FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size);
+  // the old version used a floating point buffer for the accumulation,
+  // wstdisplay only offers RGBA8
+  Unique<Framebuffer> framebuffer = window->get_device().create_framebuffer(window_size);
 
-  wstdisplay::SurfacePtr surface   = surface_manager.get(argv[1]);
-  wstdisplay::SurfacePtr surface_2 = surface_manager.get(argv[2]);
+  Surface const surface   = surface_manager.get(argv[1]);
+  Surface const surface_2 = surface_manager.get(argv[2]);
 
   float ray_length = 3.0f;
   glm::vec2 pos{};
@@ -118,10 +120,8 @@ int app_main(int argc, char** argv)
     buffer[buffer_pos % buffer.size()] = pos;
     buffer_pos += 1;
 
-    gc.push_framebuffer(framebuffer);
-
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    canvas.clear();
+    canvas.set_blend(Blend::Add);
 
     if ((true))
     {
@@ -143,12 +143,11 @@ int app_main(int argc, char** argv)
             n = 1.0f / n;
           }
 
-          surface->draw(gc,
-                        SurfaceDrawingParameters()
-                        .set_scale(1.0f)
-                        .set_pos(pos - glm::vec2(surface->get_width()/2, surface->get_height()/2))
-                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(surf::Color(1.0f, 1.0f, 1.0f, n)));
+          canvas.draw(surface,
+                      DrawParams()
+                      .set_scale(1.0f)
+                      .set_pos(pos - glm::vec2(surface.get_width()/2, surface.get_height()/2))
+                      .set_color(surf::Color(1.0f, 1.0f, 1.0f, n)));
         }
       }
       else
@@ -156,14 +155,13 @@ int app_main(int argc, char** argv)
         int n = 32;
         for(int i = 0; i < n; ++i)
         {
-          surface->draw(gc,
-                        SurfaceDrawingParameters()
-                        .set_scale(1.0f)
-                        .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos
-                                 + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
-                                 - glm::vec2(surface->get_width()/2, surface->get_height()/2))
-                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(surf::Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
+          canvas.draw(surface,
+                      DrawParams()
+                      .set_scale(1.0f)
+                      .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos
+                               + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
+                               - glm::vec2(surface.get_width()/2, surface.get_height()/2))
+                      .set_color(surf::Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
         }
       }
     }
@@ -174,44 +172,45 @@ int app_main(int argc, char** argv)
       {
         float scale = 1.0f + static_cast<float>(i) / static_cast<float>(n) * ray_length;
         if ((true))
-          surface->draw(gc,
-                        SurfaceDrawingParameters()
-                        .set_scale(scale)
-                        .set_pos(glm::vec2(512, 288) - glm::vec2(surface->get_width()/2 * scale,
-                                                                 surface->get_height()/2 * scale)
-                                 + (glm::vec2(512, 288) - pos) * scale * 3.0f)
-                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(surf::Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
+          canvas.draw(surface,
+                      DrawParams()
+                      .set_scale(scale)
+                      .set_pos(glm::vec2(512, 288) - glm::vec2(surface.get_width()/2 * scale,
+                                                               surface.get_height()/2 * scale)
+                               + (glm::vec2(512, 288) - pos) * scale * 3.0f)
+                      .set_color(surf::Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
 
         if ((false) && i == 1) // NOLINT
         {
           scale = 1.0f;
           //std::cout << "Black: " << pos << std::endl;
-          surface_2->draw(gc,
-                          SurfaceDrawingParameters()
-                          .set_scale(scale)
-                          .set_pos(glm::vec2(512, 288) - glm::vec2(surface_2->get_width()/2 * scale,
-                                                                   surface_2->get_height()/2 * scale)
-                                   + (glm::vec2(512, 288) - pos) * scale * 3.0f)
-                          .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                          .set_color(surf::Color(1.0f, 1.0f, 1.0f, 1.0f)));
+          canvas.set_blend(Blend::Alpha);
+          canvas.draw(surface_2,
+                      DrawParams()
+                      .set_scale(scale)
+                      .set_pos(glm::vec2(512, 288) - glm::vec2(surface_2.get_width()/2 * scale,
+                                                               surface_2.get_height()/2 * scale)
+                               + (glm::vec2(512, 288) - pos) * scale * 3.0f)
+                      .set_color(surf::Color(1.0f, 1.0f, 1.0f, 1.0f)));
+          canvas.set_blend(Blend::Add);
         }
       }
     }
-    gc.pop_framebuffer();
+    renderer.begin_frame(window->get_drawable_size());
+    renderer.render(canvas, RenderPass{.target = framebuffer, .clear = surf::Color(0.0f, 0.0f, 0.0f)});
 
-    if ((true))
-    {
-      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer->get_handle());
-      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
-
-      glBlitFramebufferEXT(0, 0, framebuffer->get_width(), framebuffer->get_height(),
-                           0, 0, framebuffer->get_width(), framebuffer->get_height(),
-                           GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
-
-      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0);
-      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
-    }
+    // show the framebuffer, row 0 of its texture is the top
+    canvas.clear();
+    canvas.set_space(Space::Clip);
+    Vertex const quad[] = {
+      {-1.0f,  1.0f, 0.0f, 0.0f},
+      { 1.0f,  1.0f, 1.0f, 0.0f},
+      { 1.0f, -1.0f, 1.0f, 1.0f},
+      {-1.0f, -1.0f, 0.0f, 1.0f},
+    };
+    canvas.draw_quads(framebuffer->get_texture(), quad);
+    renderer.render(canvas);
+    renderer.end_frame();
 
     window->swap_buffers();
     SDL_Delay(20);

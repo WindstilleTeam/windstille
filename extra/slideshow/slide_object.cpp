@@ -22,16 +22,18 @@
 #include <math.h>
 
 #include "plugins/jpeg.hpp"
-#include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <surf/software_surface.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/draw_params.hpp>
 
 using namespace wstdisplay;
 
 SlideObject::SlideObject(std::filesystem::path const& filename,
-                         wstdisplay::SurfaceManager& surface_manager) :
+                         wstdisplay::Device& device) :
   m_filename(filename),
-  m_surface_manager(surface_manager),
+  m_device(device),
   m_size(0.0f, 0.0f),
+  m_texture(),
   m_surface(),
   m_begin(0.0f),
   m_path(),
@@ -54,11 +56,13 @@ SlideObject::set_fade_out(float f)
 }
 
 void
-SlideObject::draw(GraphicsContext& gc, float relative_time)
+SlideObject::draw(Canvas& canvas, float relative_time)
 {
-  if (!m_surface)
+  if (!m_texture)
   {
-    m_surface = m_surface_manager.get(m_filename);
+    surf::SoftwareSurface const image = surf::SoftwareSurface::from_file(m_filename);
+    m_texture = m_device.create_texture(image);
+    m_surface = Surface(m_texture, image.get_size());
   }
 
   SlidePathNode node = m_path.get(relative_time);
@@ -79,16 +83,14 @@ SlideObject::draw(GraphicsContext& gc, float relative_time)
   // zoom needs to grow exponentially to be linear
   float scale = node.zoom;
 
-  // recalc pos so that we are draw the image centered
-  pos.x -= m_surface->get_width() /2.0f * scale;
-  pos.y -= m_surface->get_height()/2.0f * scale;
-
-  m_surface->draw(gc,
-                  SurfaceDrawingParameters()
-                  .set_color(color)
-                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                  .set_pos(pos)
-                  .set_scale(scale));
+  Canvas::Scope scope(canvas);
+  canvas.set_blend(Blend::Add);
+  canvas.draw(m_surface,
+              DrawParams()
+              .set_color(color)
+              .set_pos(pos)
+              .set_anchor(geom::origin::CENTER)
+              .set_scale(scale));
 }
 
 float
@@ -136,9 +138,10 @@ SlideObject::get_filename() const
 bool
 SlideObject::unload()
 {
-  if (m_surface)
+  if (m_texture)
   {
-    m_surface.reset();
+    m_texture.reset();
+    m_surface = {};
     std::cout << "Unloading: " << m_filename << std::endl;
     return true;
   }

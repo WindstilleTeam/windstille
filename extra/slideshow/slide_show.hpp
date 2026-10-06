@@ -28,17 +28,15 @@
 class SlideShow
 {
 private:
-  wstdisplay::TextureManager& m_texture_manager;
-  wstdisplay::SurfaceManager& m_surface_manager;
+  wstdisplay::Device& m_device;
 
   std::vector<SlideObjectPtr> m_objects;
   float m_length;
 
 public:
-  SlideShow(wstdisplay::TextureManager& texture_manager,
-            wstdisplay::SurfaceManager& surface_manager);
+  explicit SlideShow(wstdisplay::Device& device);
 
-  void draw(wstdisplay::GraphicsContext& gc, float time, bool verbose);
+  void draw(wstdisplay::Canvas& canvas, float time, bool verbose);
 
   bool done(float time) const;
 

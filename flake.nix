@@ -296,8 +296,7 @@
           src = ./.;
           cmakeFlags = [
             "-DBUILD_EDITOR=OFF"
-            # extra/ isn't ported to external/wst yet
-            "-DBUILD_EXTRA=OFF"
+            "-DBUILD_EXTRA=ON"
           ] ++ lib.optionals pkgs.stdenv.hostPlatform.isWindows [
             "-DBUILD_EDITOR=OFF"
           ] ++ commonCmakeFlags;

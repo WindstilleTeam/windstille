@@ -26,14 +26,12 @@
 #include <argpp/argpp.hpp>
 
 #include <surf/save.hpp>
-#include <wstdisplay/assert_gl.hpp>
-#include <wstdisplay/opengl_window.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/device.hpp>
 #include <wstdisplay/framebuffer.hpp>
-#include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
-#include <wstdisplay/surface.hpp>
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/renderer.hpp>
 #include <wstsystem/system.hpp>
 
 #include "util/system.hpp"
@@ -152,7 +150,7 @@ App::run(int argc, char* argv[])
 {
   parse_args(argc, argv);
 
-  wstsys::System system;
+  wstsystem::System system;
 
   //std::cout << "OpenGLWindow" << std::endl;
   auto window = system.create_window({
@@ -160,23 +158,28 @@ App::run(int argc, char* argv[])
       .icon = {},
       .size = m_window_size,
       //m_aspect_ratio,
-      .mode = m_fullscreen ? OpenGLWindow::Mode::Fullscreen : OpenGLWindow::Mode::Window,
-      .anti_aliasing = 4
+      .mode = m_fullscreen ? OpenGLWindow::Mode::Fullscreen : OpenGLWindow::Mode::Window
     });
-  GraphicsContext& gc = window->get_gc();
+  Renderer& renderer = window->get_renderer();
+  Canvas canvas;
 
-  TextureManager    texture_manager;
-  SurfaceManager    surface_manager;
-
-  SlideShow slide_show(texture_manager, surface_manager);
+  SlideShow slide_show(window->get_device());
 
   for(std::vector<std::string>::iterator i = m_files.begin(); i != m_files.end(); ++i)
   {
     slide_show.load(*i, geom::fsize(m_aspect_ratio));
   }
 
-  FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size, 8);
-  FramebufferPtr framebuffer = Framebuffer::create(m_window_size);
+  // target of the offline rendering into m_output_dir
+  Unique<Framebuffer> framebuffer = window->get_device().create_framebuffer(m_window_size);
+
+  // the slides are placed in m_aspect_ratio coordinates
+  auto aspect_matrix = [this](geom::isize const& size) {
+    return glm::scale(glm::mat4(1.0f),
+                      glm::vec3(static_cast<float>(size.width()) / static_cast<float>(m_aspect_ratio.width()),
+                                static_cast<float>(size.height()) / static_cast<float>(m_aspect_ratio.height()),
+                                1.0f));
+  };
 
   bool loop = true;
   bool pause = false;
@@ -299,11 +302,13 @@ App::run(int argc, char* argv[])
       }
       last_ticks = ticks;
 
-      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      canvas.clear();
+      slide_show.draw(canvas, time, m_edit_mode);
 
-      slide_show.draw(gc, time, m_edit_mode);
-
+      geom::isize const size = window->get_drawable_size();
+      renderer.begin_frame(size);
+      renderer.render(canvas, RenderPass{.clear = surf::Color(0.0f, 0.0f, 0.0f), .world_matrix = aspect_matrix(size)});
+      renderer.end_frame();
       window->swap_buffers();
 
       SDL_Delay(30);
@@ -313,33 +318,22 @@ App::run(int argc, char* argv[])
       time += 1.0f/m_fps;
 
       // rendering to output dir
-      gc.push_framebuffer(framebuffer_multisample);
-      assert_gl();
-      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      assert_gl();
-      slide_show.draw(gc, time, m_edit_mode);
-      assert_gl();
-      //SDL_GL_SwapBuffers();
-      gc.pop_framebuffer();
+      canvas.clear();
+      slide_show.draw(canvas, time, m_edit_mode);
 
-      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer_multisample->get_handle());
-      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, framebuffer->get_handle());
+      renderer.begin_frame(window->get_drawable_size());
+      renderer.render(canvas, RenderPass{
+          .target = framebuffer,
+          .clear = surf::Color(0.0f, 0.0f, 0.0f),
+          .world_matrix = aspect_matrix(m_window_size)
+        });
+      surf::SoftwareSurface const frame = renderer.read_pixels(framebuffer);
+      renderer.end_frame();
 
-      glBlitFramebufferEXT(0, 0, framebuffer_multisample->get_width(), framebuffer_multisample->get_height(),
-                           0, 0, framebuffer->get_width(), framebuffer->get_height(),
-                           GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
-
-      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0);
-      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
-
-      gc.push_framebuffer(framebuffer);
       char out[1024];
-      sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
-      surf::save(window->screenshot(), out);
-      //std::cout << "Wrote: " << out << std::endl;
+      snprintf(out, sizeof(out), "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
+      surf::save(frame, out);
       frame_number += 1;
-      gc.pop_framebuffer();
 
       int percent = static_cast<int>(time / slide_show.length() * 100.0f);
       if (percent != last_percent_complete)

@@ -20,15 +20,16 @@
 
 #include <iostream>
 
-#include <wstdisplay/opengl_state.hpp>
-#include <wstdisplay/opengl_window.hpp>
-#include <wstdisplay/shader_program.hpp>
-#include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/texture_manager.hpp>
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
-#include <wstsystem/system.hpp>
+#include <SDL.h>
 
-#include "math/random.hpp"
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/device.hpp>
+#include <wstdisplay/material.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/renderer.hpp>
+#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/texture_params.hpp>
+#include <wstsystem/system.hpp>
 
 using namespace wstdisplay;
 
@@ -47,23 +48,26 @@ App::run(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  wstsys::System system;
+  wstsystem::System system;
   auto window = system.create_window("Shader Test", m_window_size);
-                                     //m_aspect_ratio, // aspect ratio
-                                     //m_fullscreen, // fullscreen
-                                     //4); // anti-alias
-  TextureManager texture_manager;
-  SurfaceManager surface_manager;
+  Device& device = window->get_device();
+  Renderer& renderer = window->get_renderer();
+  Canvas canvas;
 
-  wstdisplay::SurfacePtr image_surface = surface_manager.get(argv[1]);
-  wstdisplay::SurfacePtr displace_surface = surface_manager.get(argv[2]);
-  wstdisplay::SurfacePtr color_surface = surface_manager.get(argv[3]);
+  TextureManager texture_manager(device);
+  TextureParams const repeat{
+    .filter = TextureFilter::Linear,
+    .wrap_x = TextureWrap::Repeat,
+    .wrap_y = TextureWrap::Repeat
+  };
+  TextureId const image_texture = texture_manager.get(argv[1], repeat).get_texture();
+  TextureId const displace_texture = texture_manager.get(argv[2], repeat).get_texture();
+  TextureId const color_texture = texture_manager.get(argv[3], repeat).get_texture();
 
-  ShaderProgramPtr prog = ShaderProgram::create();
-
-  prog->attach(ShaderObject::from_file(GL_VERTEX_SHADER, argv[4]));
-  prog->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, argv[5]));
-  prog->link();
+  Unique<ShaderProgram> program = device.load_program(argv[4], argv[5]);
+  Unique<Material> material = device.create_material(program);
+  material->set_texture(1, displace_texture);
+  material->set_texture(2, color_texture);
 
   glm::vec2 displacement(0.0f, 0.0f);
 
@@ -80,14 +84,8 @@ App::run(int argc, char* argv[])
           break;
 
         case SDL_KEYDOWN:
-          switch (event.key.keysym.sym)
-          {
-            case SDLK_ESCAPE:
-              loop = false;
-              break;
-
-            default:
-              break;
+          if (event.key.keysym.sym == SDLK_ESCAPE) {
+            loop = false;
           }
           break;
 
@@ -101,74 +99,23 @@ App::run(int argc, char* argv[])
       }
     }
 
-    {
-      glBindTexture(GL_TEXTURE_2D, image_surface->get_texture()->get_handle());
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    material->set_uniform("rand_offset", glm::vec2(displacement.y, 0.0f));
+    material->set_uniform("damp", displacement.x);
 
-      glBindTexture(GL_TEXTURE_2D, displace_surface->get_texture()->get_handle());
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    Vertex const quad[] = {
+      {0.0f, 0.0f, 0.0f, 0.0f},
+      {1280.0f, 0.0f, 1.0f, 0.0f},
+      {1280.0f, 800.0f, 1.0f, 1.0f},
+      {0.0f, 800.0f, 0.0f, 1.0f},
+    };
 
-      glBindTexture(GL_TEXTURE_2D, color_surface->get_texture()->get_handle());
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-    }
+    canvas.clear();
+    canvas.set_material(material);
+    canvas.draw_quads(image_texture, quad);
 
-    {
-      glUseProgram(prog->get_handle());
-
-      // uniforms are optimized away when not used, thus giving error
-      prog->set_uniform1i("image_tex", 0);
-      prog->set_uniform1i("displace_tex", 1);
-      //prog->set_uniform1i("color_tex", 2);
-      prog->set_uniform2f("rand_offset", displacement.y, 0.0f);
-      prog->set_uniform1f("damp", displacement.x);
-    }
-
-
-    glClearColor(0.5f,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    //glAlphaFunc(GL_GREATER, 0.2f);
-    //glEnable(GL_ALPHA_TEST);
-
-    {
-      VertexArrayDrawable va;
-
-      va.set_texture(0, image_surface->get_texture());
-      va.set_texture(1, displace_surface->get_texture());
-      va.set_texture(2, color_surface->get_texture());
-
-      va.set_mode(GL_TRIANGLE_FAN);
-
-      va.color(surf::Color(1.0f, 1.0f, 1.0f));
-      va.texcoord(0.0f, 0.0f);
-      va.vertex(0.0f, 0.0f);
-
-      va.color(surf::Color(1.0f, 1.0f, 1.0f));
-      va.texcoord(1.0f, 0.0f);
-      va.vertex(1280.0f, 0.0f);
-
-      va.color(surf::Color(1.0f, 1.0f, 1.0f));
-      va.texcoord(1.0f, 1.0f);
-      va.vertex(1280.0f, 800.0f);
-
-      va.color(surf::Color(1.0f, 1.0f, 1.0f));
-      va.texcoord(0.0f, 1.0f);
-      va.vertex(0.0f, 800.0f);
-
-      va.render(window->get_gc());
-    }
+    renderer.begin_frame(window->get_drawable_size());
+    renderer.render(canvas, RenderPass{.clear = surf::Color(0.5f, 0.0f, 0.0f, 0.0f)});
+    renderer.end_frame();
 
     window->swap_buffers();
     system.delay(30);

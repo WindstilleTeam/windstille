@@ -22,18 +22,15 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <wstdisplay/assert_gl.hpp>
-#include <wstdisplay/opengl_state.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <SDL.h>
+
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/draw_params.hpp>
 #include <wstdisplay/opengl_window.hpp>
-#include <wstdisplay/shader_program.hpp>
+#include <wstdisplay/renderer.hpp>
 #include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
-#include <wstdisplay/texture_manager.hpp>
 #include <wstsystem/system.hpp>
-
-#include "math/random.hpp"
-
-#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 using namespace wstdisplay;
 
@@ -51,14 +48,45 @@ Lensflare::Lensflare() :
   m_cover(),
   m_halo(),
 
+  m_lightquery_image(),
+  m_cover_image(),
+  m_cover_pos(600, 400),
+
   m_flairs(),
 
   m_mouse()
 {
 }
 
+float
+Lensflare::get_visibility() const
+{
+  // replaces an occlusion query: the pixels of the light query image
+  // that aren't covered by an opaque pixel of the cover
+  glm::vec2 const origin = m_mouse - glm::vec2(m_lightquery.get_width() / 2, m_lightquery.get_height() / 2);
+  int total = 0;
+  int visible = 0;
+  for (int y = 0; y < m_lightquery_image.get_height(); y += 2) {
+    for (int x = 0; x < m_lightquery_image.get_width(); x += 2) {
+      if (m_lightquery_image.get_pixel(geom::ipoint(x, y)).a < 0.5f) {
+        continue;
+      }
+      total += 1;
+
+      glm::ivec2 const c(glm::floor(origin + glm::vec2(x, y) - m_cover_pos));
+      bool const covered = (c.x >= 0 && c.y >= 0 &&
+                            c.x < m_cover_image.get_width() && c.y < m_cover_image.get_height() &&
+                            m_cover_image.get_pixel(geom::ipoint(c.x, c.y)).a >= 0.5f);
+      if (!covered) {
+        visible += 1;
+      }
+    }
+  }
+  return total > 0 ? static_cast<float>(visible) / static_cast<float>(total) : 0.0f;
+}
+
 void
-Lensflare::draw(GraphicsContext& gc)
+Lensflare::draw(Canvas& canvas)
 {
   glm::vec2 screen_center(static_cast<float>(m_aspect_ratio.width())  / 2.0f,
                           static_cast<float>(m_aspect_ratio.height()) / 2.0f);
@@ -66,129 +94,55 @@ Lensflare::draw(GraphicsContext& gc)
 
   float factor = 0.3f - (dist / static_cast<float>(m_aspect_ratio.width() + m_aspect_ratio.height()));
   factor *= 3.3f;
-  std::cout << factor << std::endl;
 
-  glEnable(GL_DEPTH_TEST);
-  glDepthMask(GL_TRUE);
-  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+  canvas.draw(m_cover,
+              DrawParams()
+              .set_pos(m_cover_pos)
+              .set_color(surf::Color(0.15f, 0.15f, 0.15f, 1.0f)));
 
-  // FIXME: this needs to be moved to a shader
-  //glAlphaFunc ( GL_GREATER, 0.5f );
-  //glEnable(GL_ALPHA_TEST);
+  float const visibility = get_visibility();
+  factor *= visibility;
 
-  assert_gl();
+  canvas.set_blend(Blend::Add);
 
-  m_cover->draw(gc,
-                SurfaceDrawingParameters()
-                .set_depth_test(true)
-                .set_pos(glm::vec2(600, 400))
-                .set_color(surf::Color(0.15f, 0.15f, 0.15f, 1.0f)));
+  // the halo and the light are partly behind the cover
+  canvas.draw(m_halo,
+              DrawParams()
+              .set_color(surf::Color(1, 1, 1, visibility))
+              .set_pos(m_mouse)
+              .set_anchor(geom::origin::CENTER));
 
-  if ((true))
+  canvas.draw(m_light,
+              DrawParams()
+              .set_scale(visibility)
+              .set_pos(m_mouse)
+              .set_anchor(geom::origin::CENTER));
+
+  canvas.draw(m_halo,
+              DrawParams()
+              .set_color(surf::Color(1, 1, 1, visibility))
+              .set_scale(2.0f + factor * 5.0f)
+              .set_pos(m_mouse)
+              .set_anchor(geom::origin::CENTER));
+
+  canvas.draw(m_superlight,
+              DrawParams()
+              .set_color(surf::Color(1.0f, 1.0f, 1.0f, factor))
+              .set_scale(factor)
+              .set_pos(m_mouse)
+              .set_anchor(geom::origin::CENTER));
+
+  for(Flairs::iterator i = m_flairs.begin(); i != m_flairs.end(); ++i)
   {
-
-    GLint samples = 0;
-    GLint total_samples = 0;
-
-    GLuint query_id;
-    GLuint total_query_id;
-    glGenQueries(1, &query_id);
-    glGenQueries(1, &total_query_id);
-
-    assert_gl();
-
-    // disable all buffer writing
-    glDepthMask(GL_FALSE);
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-
-    // query the number of visible samples
-    glBeginQuery(GL_SAMPLES_PASSED, query_id);
-    m_lightquery->draw(gc,
-                       SurfaceDrawingParameters()
-                       .set_depth_test(true)
-                       .set_pos(glm::vec2(m_mouse.x - m_lightquery->get_width()/2,
-                                          m_mouse.y - m_lightquery->get_height()/2)));
-    glEndQuery(GL_SAMPLES_PASSED);
-
-    glGetQueryObjectiv(query_id, GL_QUERY_RESULT, &samples);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
-
-    // reference query, to get the total amount of samples
-    glBeginQuery(GL_SAMPLES_PASSED, total_query_id);
-    m_lightquery->draw(gc,
-                       SurfaceDrawingParameters()
-                       .set_pos(glm::vec2(m_mouse.x - m_lightquery->get_width()/2,
-                                          m_mouse.y - m_lightquery->get_height()/2)));
-    glEndQuery(GL_SAMPLES_PASSED);
-
-    glGetQueryObjectiv(total_query_id, GL_QUERY_RESULT, &total_samples);
-
-    glDepthMask(GL_TRUE);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-
-    std::cout << "samples: " << samples << " -/- " << total_samples << std::endl;
-
-    glDeleteQueries(1, &query_id);
-    glDeleteQueries(1, &total_query_id);
-
-    float visibility = static_cast<float>(samples) / static_cast<float>(total_samples);
-    factor *= visibility;
-
-    glDepthMask(GL_FALSE);
-    m_halo->draw(gc,
-                 SurfaceDrawingParameters()
-                 .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                 .set_color(surf::Color(1,1,1,visibility))
-                 .set_scale(1.0f)
-                 .set_pos(glm::vec2(m_mouse.x,
-                                    m_mouse.y)
-                          - glm::vec2(m_halo->get_width()/2 * (1.0f),
-                                      m_halo->get_height()/2 * (1.0f))));
-
-    glDisable(GL_DEPTH_TEST);
-    m_light->draw(gc,
-                  SurfaceDrawingParameters()
-                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                  .set_color(surf::Color(1,1,1,1))
-                  .set_scale(visibility)
-                  .set_pos(glm::vec2(m_mouse.x - m_light->get_width()/2 * visibility,
-                                     m_mouse.y - m_light->get_height()/2 * visibility)));
-
-    glDepthMask(GL_TRUE);
-
-    m_halo->draw(gc,
-                 SurfaceDrawingParameters()
-                 .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                 .set_color(surf::Color(1,1,1,visibility))
-                 .set_scale(2.0f + factor*5.0f)
-                 .set_pos(glm::vec2(m_mouse.x,
-                                    m_mouse.y)
-                          - glm::vec2(m_halo->get_width()/2 * (2.0f + factor*5.0f),
-                                      m_halo->get_height()/2 * (2.0f +  factor*5.0f))));
-
-
-    m_superlight->draw(gc,
-                       SurfaceDrawingParameters()
-                       .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                       .set_color(surf::Color(1.0f, 1.0f, 1.0f, factor))
-                       .set_scale(factor)
-                       .set_pos(glm::vec2(m_mouse.x - m_superlight->get_width()/2 * factor,
-                                          m_mouse.y - m_superlight->get_height()/2  * factor)));
-
-    for(Flairs::iterator i = m_flairs.begin(); i != m_flairs.end(); ++i)
-    {
-      i->m_surface->draw(gc,
-                         SurfaceDrawingParameters()
-                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                         .set_scale(i->m_scale)
-                         .set_color(surf::Color(i->m_color.r, i->m_color.g, i->m_color.b, i->m_color.a * visibility))
-                         .set_pos(screen_center + (m_mouse - screen_center) * i->m_distance
-                                  - glm::vec2(i->m_surface->get_width() /2 * i->m_scale,
-                                              i->m_surface->get_height()/2 * i->m_scale)));
-    }
+    canvas.draw(i->m_surface,
+                DrawParams()
+                .set_scale(i->m_scale)
+                .set_color(surf::Color(i->m_color.r, i->m_color.g, i->m_color.b, i->m_color.a * visibility))
+                .set_pos(screen_center + (m_mouse - screen_center) * i->m_distance)
+                .set_anchor(geom::origin::CENTER));
   }
+
+  canvas.set_blend(Blend::Alpha);
 }
 
 void
@@ -229,14 +183,11 @@ Lensflare::process_input()
 int
 Lensflare::run()
 {
-  wstsys::System system;
-  auto window = system.create_window("Shader Test", m_window_size);
-                                     //m_aspect_ratio, // aspect ratio
-                                     //mode = m_fullscreen, // fullscreen
-                                     //anti_aliasing = 4}); // anti-alias
-  GraphicsContext& gc = window->get_gc();
-  TextureManager texture_manager;
-  SurfaceManager surface_manager;
+  wstsystem::System system;
+  auto window = system.create_window("Lensflare", m_window_size);
+  Renderer& renderer = window->get_renderer();
+  Canvas canvas;
+  SurfaceManager surface_manager(window->get_device());
 
   m_light  = surface_manager.get("light.png");
   m_lightquery  = surface_manager.get("lightquery.png");
@@ -245,6 +196,9 @@ Lensflare::run()
   m_flair2 = surface_manager.get("flair2.png");
   m_cover = surface_manager.get("cover.png");
   m_halo = surface_manager.get("halo.png");
+
+  m_lightquery_image = surf::SoftwareSurface::from_file("lightquery.png");
+  m_cover_image = surf::SoftwareSurface::from_file("cover.png");
 
   float pos[] = { 0.1f, 0.2f, 0.4f, 0.8f, 1.6f, 3.2f };
 
@@ -260,21 +214,23 @@ Lensflare::run()
     m_flairs.push_back(Flair(m_flair1, -pos[i] * 0.1f, 1.0f * pos[i] * 0.1f, surf::Color(1,1,1,0.1f)));
   }
 
-  GLint query_counter_bits = 0;
-  glGetQueryiv(GL_SAMPLES_PASSED, GL_QUERY_COUNTER_BITS, &query_counter_bits);
-  if (query_counter_bits == 0)
-  {
-    std::cout << "Occlusion query not supported" << std::endl;
-  }
-
   m_loop = true;
   while(m_loop)
   {
-    glClearColor(0,0,0,1);
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
     process_input();
-    draw(gc);
+
+    canvas.clear();
+    draw(canvas);
+
+    // everything is placed in m_aspect_ratio coordinates
+    geom::isize const size = window->get_drawable_size();
+    glm::mat4 const scale = glm::scale(glm::mat4(1.0f),
+                                       glm::vec3(static_cast<float>(size.width()) / static_cast<float>(m_aspect_ratio.width()),
+                                                 static_cast<float>(size.height()) / static_cast<float>(m_aspect_ratio.height()),
+                                                 1.0f));
+    renderer.begin_frame(size);
+    renderer.render(canvas, RenderPass{.clear = surf::Color(0.0f, 0.0f, 0.0f), .world_matrix = scale});
+    renderer.end_frame();
     window->swap_buffers();
   }
 

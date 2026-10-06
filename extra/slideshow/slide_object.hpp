@@ -21,8 +21,9 @@
 
 #include <memory>
 
+#include <wstdisplay/device.hpp>
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
-#include <wstdisplay/surface_manager.hpp>
 
 #include "slideshow/slide_path.hpp"
 
@@ -30,9 +31,11 @@ class SlideObject
 {
 private:
   std::filesystem::path m_filename;
-  wstdisplay::SurfaceManager& m_surface_manager;
+  wstdisplay::Device& m_device;
   geom::fsize m_size;
-  wstdisplay::SurfacePtr m_surface;
+  /** The image, loaded on demand, slides are too large for atlas pages */
+  wstdisplay::Unique<wstdisplay::Texture> m_texture;
+  wstdisplay::Surface m_surface;
   float m_begin;
   SlidePath m_path;
 
@@ -41,9 +44,9 @@ private:
 
 public:
   SlideObject(const std::filesystem::path& filename,
-              wstdisplay::SurfaceManager& surface_manager);
+              wstdisplay::Device& device);
 
-  void draw(wstdisplay::GraphicsContext& gc, float relative_time);
+  void draw(wstdisplay::Canvas& canvas, float relative_time);
 
   float length() const;
   float begin() const;
