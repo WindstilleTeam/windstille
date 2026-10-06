@@ -35,6 +35,7 @@ std::string outputhpp_include;
 void usage()
 {
     std::cout << "Usage: miniswig --input FILE --output-cpp FILE --output-hpp FILE [--module NAME] [--select-namespace NAME]\n";
+    std::cout << "       miniswig --version\n";
     std::cout << "\n";
 }
 
@@ -100,6 +101,12 @@ int main(int argc, char** argv)
             return 1;
           }
           output_doc = argv[++i];
+        } else if(strcmp(argv[i], "--version") == 0) {
+            std::cout << "miniswig " << MINISWIG_VERSION << "\n";
+            return 0;
+        } else if(strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            usage();
+            return 0;
         } else if(argv[i][0] == '-') {
             std::cerr << "Unknown option '" << argv[i] << "'.\n";
             usage();

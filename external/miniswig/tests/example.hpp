@@ -61,6 +61,8 @@ void do_suspend() __suspend;
  */
 SQInteger do_custom(HSQUIRRELVM vm) __custom(".isi");
 
+SQInteger do_stacktrace(HSQUIRRELVM vm) __custom(".");
+
 } // namespace example
 
 #endif

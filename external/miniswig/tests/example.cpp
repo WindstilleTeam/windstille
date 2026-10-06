@@ -17,6 +17,7 @@
 #include "example.hpp"
 
 #include <iostream>
+#include <sqstdaux.h>
 
 #include "util.hpp"
 #include "example_wrap.hpp"
@@ -161,6 +162,24 @@ SQInteger do_custom(HSQUIRRELVM vm)
   std::cout << "  )\n";
 
   sq_pushinteger(vm, nargs); // push the number of arguments as return value
+  return 1;
+}
+
+SQInteger do_stacktrace(HSQUIRRELVM vm)
+{
+  /*
+  SQInteger const level = 5;
+
+  SQInteger const top = sq_gettop();
+
+  for (int i = 1; i < top; ++i)
+  {
+    SQStackInfos stackinfo;
+    SQInteger result = sq_stackinfos(vm, level, stackinfo);
+  }
+  */
+
+  sqstd_printcallstack(vm);
   return 1;
 }
 

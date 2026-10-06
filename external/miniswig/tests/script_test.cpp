@@ -171,7 +171,7 @@ int main(int argc, char** argv)
     std::cout << "-- executing script\n";
     sq_pushroottable(vm);
 
-    if (SQ_FAILED(sq_call(vm, 1, SQTrue, SQTrue))) {
+    if (SQ_FAILED(sq_call(vm, 1 /* params */, SQTrue /* retval */, SQTrue /* raiseerror */))) {
       throw SquirrelError(vm, "Problem while executing script");
     }
 
@@ -206,8 +206,10 @@ int main(int argc, char** argv)
 
     print_squirrel_stack(vm);
 
-    // compiled script, roottable
+    // compiled script, return value
     assert(sq_gettop(vm) == 2);
+    sq_pop(vm, 2);
+    print_squirrel_stack(vm);
 
     std::cout << "-- closing\n";
     sq_close(vm);
