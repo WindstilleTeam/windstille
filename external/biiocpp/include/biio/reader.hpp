@@ -17,8 +17,8 @@
 #ifndef HEADER_BIIO_READER_HPP
 #define HEADER_BIIO_READER_HPP
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include <bit>
 #include <filesystem>
 #include <istream>

@@ -18,7 +18,10 @@
 
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #include <string.h>
+#include <string>
+#include <utility>
 
 namespace biio {
 
