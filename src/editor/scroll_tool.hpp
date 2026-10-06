@@ -19,7 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_SCROLL_TOOL_HPP
 #define HEADER_WINDSTILLE_EDITOR_SCROLL_TOOL_HPP
 
-#include <wstdisplay/graphic_context_state.hpp>
+#include <glm/glm.hpp>
+#include <wstdisplay/view.hpp>
 #include "editor/tool.hpp"
 
 namespace windstille {
@@ -28,7 +29,7 @@ namespace windstille {
 class ScrollTool : public Tool
 {
 private:
-  wstdisplay::GraphicContextState orig_state;
+  wstdisplay::View orig_state;
   glm::vec2 orig_click;
   enum { SCROLLING, NO_MODE } mode;
 

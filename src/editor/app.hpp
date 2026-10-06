@@ -27,6 +27,7 @@ namespace sprite3d {
 class Manager;
 } // namespace sprite3d;
 
+class GLDevice;
 class SpriteManager;
 
 class App
@@ -35,12 +36,16 @@ class App
 public:
   App();
 
+  GLDevice& gl_device() const;
+  wstdisplay::Device& device() const;
   wstdisplay::TextureManager& texture() const;
   wstdisplay::SurfaceManager& surface() const;
   SpriteManager& sprite() const;
   sprite3d::Manager& sprite3d() const;
 
 private:
+  GLDevice* m_gl_device;
+  wstdisplay::Device* m_device;
   wstdisplay::TextureManager* m_texture_manager;
   wstdisplay::SurfaceManager* m_surface_manager;
   SpriteManager* m_sprite_manager;

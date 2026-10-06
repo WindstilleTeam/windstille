@@ -20,9 +20,9 @@
 
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/sector_model.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
-#include <wstdisplay/scenegraph/drawable_group.hpp>
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/canvas.hpp>
+
+#include "display/scene_context.hpp"
 
 namespace windstille {
 
@@ -30,8 +30,7 @@ NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObj
                                                  std::shared_ptr<NavGraphNodeObjectModel> rhs) :
   ObjectModel("NavGraphEdgeObjectModel", glm::vec2()),
   m_lhs(lhs),
-  m_rhs(rhs),
-  m_drawable()
+  m_rhs(rhs)
 {
   if (m_lhs == m_rhs)
   {
@@ -50,27 +49,9 @@ NavGraphEdgeObjectModel::~NavGraphEdgeObjectModel()
 }
 
 void
-NavGraphEdgeObjectModel::update(float delta)
+NavGraphEdgeObjectModel::draw_content(SceneContext& sc)
 {
-  if (m_drawable)
-  {
-    m_drawable->clear();
-    m_drawable->set_mode(GL_LINES);
-
-    m_drawable->color(surf::Color(0.0f, 1.0f, 1.0f));
-    m_drawable->vertex(m_lhs->get_world_pos());
-
-    m_drawable->color(surf::Color(0.0f, 1.0f, 1.0f));
-    m_drawable->vertex(m_rhs->get_world_pos());
-  }
-}
-
-void
-NavGraphEdgeObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
-{
-  m_drawable.reset(new wstdisplay::VertexArrayDrawable);
-  update(0.0f);
-  sg.add_drawable(m_drawable);
+  sc.color().draw_line(m_lhs->get_world_pos(), m_rhs->get_world_pos(), surf::Color(0.0f, 1.0f, 1.0f));
 }
 
 geom::frect

@@ -17,20 +17,19 @@
 */
 
 
-#include "display/scene_context.hpp"
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include "editor/windstille_widget.hpp"
+
+#include <cmath>
+
 #include <gtkmm.h>
 
-
-#include <wstdisplay/assert_gl.hpp>
-#include <wstdisplay/compositor.hpp>
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/opengl_state.hpp>
-#include <wstdisplay/surface.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/texture_params.hpp>
+
+#include "display/scene_context.hpp"
 #include "editor/app.hpp"
+#include "editor/gl_device.hpp"
 #include "editor/document.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/functor_command.hpp"
@@ -38,31 +37,19 @@
 #include "editor/scroll_tool.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/sprite_object_model.hpp"
-#include "editor/windstille_widget.hpp"
-#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
 
 namespace windstille {
 
-namespace {
-
-bool lib_init = false;
-
-} // namespace
-
-
-
 WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   m_editor(editor_),
-  m_gc(),
   m_document(new Document),
-  m_scene_graph(new wstdisplay::SceneGraph()),
-  m_rebuild_scene_graph(true),
   filename(),
-  state(),
-  compositor(),
-  sc(),
+  m_renderer(),
+  m_view(),
+  sc(std::make_unique<SceneContext>()),
+  m_overlay(),
   map_type(DecalObjectModel::COLORMAP),
   background_pattern(),
   select_mask(1),
@@ -70,15 +57,13 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   draw_only_active_layers(true),
   grid_enabled(false)
 {
-  // OpenGL setup
-  //get_context().set_debug_enabled(true);
+  // the context comes from GLDevice, see on_create_context()
   set_auto_render(true);
-  //set_forward_compatible(true);
-  set_required_version(3, 3);
   set_has_depth_buffer();
   set_has_stencil_buffer();
-  set_has_alpha();
-  set_use_es (true);
+
+  // the editor shows the scene unlit
+  sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
 
   {
     Glib::RefPtr<Gtk::UIManager>   ui_manager   = m_editor.get_ui_manager();
@@ -139,73 +124,61 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
 
 WindstilleWidget::~WindstilleWidget()
 {
+  if (m_renderer) {
+    g_app.gl_device().get_context()->make_current();
+    m_renderer.reset();
+  }
 }
 
 Glib::RefPtr<Gdk::GLContext>
 WindstilleWidget::on_create_context()
 {
-  std::cout << "WindstilleWidget::on_create_context():" << std::endl;
-  auto ctx = Gtk::GLArea::on_create_context();
-  ctx->set_debug_enabled();
-  ctx->make_current();
-
-  int major, minor;
-  ctx->get_version(major, minor);
-  std::cout << major << "." << minor << std::endl;
-  std::cout << "ES:" << ctx->get_use_es() << std::endl;
-  return ctx;
+  // all documents share one context, so that they share the
+  // textures, sprites and fonts of the Device
+  return g_app.gl_device().get_context();
 }
 
 void
 WindstilleWidget::on_realize()
 {
   Gtk::GLArea::on_realize();
+  make_current();
+  throw_if_error();
 
-  if (!lib_init)
-  {
-    lib_init = true;
+  m_renderer = std::make_unique<wstdisplay::Renderer>(g_app.device());
 
-    if (auto ctx = Gdk::GLContext::get_current()) {
-      int major, minor;
-      ctx->get_version(major, minor);
-      std::cout << "OpenGL Version: " << major << "." << minor << std::endl;
-      std::cout << "OpenGLES:" << ctx->get_use_es() << std::endl;
-    }
-
-    GLenum err = glewInit();
-    if(err != GLEW_OK) {
-      std::ostringstream msg;
-      msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-      throw std::runtime_error(msg.str());
-    }
-    assert_gl();
-  }
-
-  wstdisplay::OpenGLState::init();
-  m_gc = std::make_unique<wstdisplay::GraphicsContext>();
-  sc = std::make_unique<SceneContext>();
-
-  background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
-  background_pattern->set_wrap(GL_REPEAT);
+  background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"),
+                                           wstdisplay::TextureParams{
+                                             .wrap_x = wstdisplay::TextureWrap::Repeat,
+                                             .wrap_y = wstdisplay::TextureWrap::Repeat
+                                           });
 }
 
 void
 WindstilleWidget::on_unrealize()
 {
+  make_current();
+  m_renderer.reset();
   Gtk::GLArea::on_unrealize();
 }
 
 bool
-WindstilleWidget::on_render(Glib::RefPtr<Gdk::GLContext> const& context)
+WindstilleWidget::on_render(Glib::RefPtr<Gdk::GLContext> const& /*context*/)
 {
-  Gtk::GLArea::on_render(context);
   throw_if_error();
+  if (!m_renderer) {
+    return false;
+  }
 
-  glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  draw(*m_gc);
+  m_renderer->begin_frame(m_view.get_size());
+  m_renderer->clear(surf::Color(0.5f, 0.0f, 0.0f));
+  draw();
+  sc->render(*m_renderer, m_view);
+  m_renderer->render(m_overlay);
+  m_overlay.clear();
+  m_renderer->end_frame();
 
-  return false;
+  return true;
 }
 
 void
@@ -213,24 +186,34 @@ WindstilleWidget::on_resize(int width, int height)
 {
   GLArea::on_resize(width, height);
 
-  if (!compositor || compositor->get_framebuffer_size() != geom::isize(width, height)) {
-    assert_gl();
-
-    compositor = std::make_unique<wstdisplay::Compositor>(geom::isize(width, height),
-                                              geom::isize(width, height));
-    sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
-
-    throw_if_error();
-  }
-
-  glViewport(0, 0, width, height);
-  //m_gc->set_aspect_size({width, height});
-  state.set_size(width, height);
-  m_gc->set_ortho({width, height});
-
+  // the size of the framebuffer, larger than the widget on high-DPI
+  // screens. The world point in the top left corner stays in place, at
+  // the start that is the origin.
+  geom::fpoint const top_left = m_view.screen_to_world(geom::fpoint(0.0f, 0.0f));
+  m_view.set_size(geom::isize(width, height));
+  m_view.set_pos(top_left + geom::foffset(static_cast<float>(width) / 2.0f / m_view.get_zoom(),
+                                          static_cast<float>(height) / 2.0f / m_view.get_zoom()));
   queue_draw();
+}
 
-  throw_if_error();
+glm::vec2
+WindstilleWidget::screen_to_world(double x, double y) const
+{
+  return screen_to_world(m_view, x, y);
+}
+
+glm::vec2
+WindstilleWidget::screen_to_world(wstdisplay::View const& view, double x, double y) const
+{
+  float const scale = static_cast<float>(get_scale_factor());
+  return view.screen_to_world(geom::fpoint(static_cast<float>(x) * scale,
+                                           static_cast<float>(y) * scale)).as_vec();
+}
+
+float
+WindstilleWidget::get_zoom() const
+{
+  return m_view.get_zoom() / static_cast<float>(get_scale_factor());
 }
 
 void
@@ -242,25 +225,28 @@ WindstilleWidget::update(float delta)
 }
 
 void
-WindstilleWidget::draw(wstdisplay::GraphicsContext& gc)
+WindstilleWidget::draw()
 {
-  if (!sc) { return; }
-
-  if ((true)) { // FIXME: always rebuild for now, optimize later
-    m_rebuild_scene_graph = false;
-    m_document->get_sector_model().rebuild_scene_graph(*m_scene_graph->get_root());
-  }
-
-  state.push(*sc);
+  geom::fsize const size(m_view.get_size());
 
   sc->light().fill_screen(m_document->get_sector_model().get_ambient_color());
 
-  if (draw_background_pattern) {
-    sc->color().fill_pattern(background_pattern,
-                             state.get_offset() * state.get_zoom());
-  } else {
-    sc->color().fill_screen(surf::Color());
+  {
+    wstdisplay::Canvas& color = sc->color();
+    wstdisplay::Canvas::Scope scope(color);
+    color.set_z(-1000.0f);
+    color.set_space(wstdisplay::Space::Screen);
+    if (draw_background_pattern) {
+      // moves with the world but isn't scaled
+      geom::fpoint const origin = m_view.world_to_screen(geom::fpoint(0.0f, 0.0f));
+      color.fill_pattern(background_pattern, geom::frect(geom::fpoint(0.0f, 0.0f), size),
+                         geom::foffset(origin.x(), origin.y()));
+    } else {
+      color.fill_screen(surf::Color(0.0f, 0.0f, 0.0f));
+    }
   }
+
+  m_document->get_sector_model().draw_content(*sc);
 
   if (draw_only_active_layers) {
     m_document->get_sector_model().draw(*sc, SelectMask());
@@ -272,26 +258,29 @@ WindstilleWidget::draw(wstdisplay::GraphicsContext& gc)
     for(auto it = m_document->get_selection()->begin(); it != m_document->get_selection()->end(); ++it) {
       (*it)->draw_select(*sc, it == m_document->get_selection()->begin());
     }
-    //sc->control().draw_rect(selection->get_bounding_box(), surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
 
   for(auto it = m_document->get_control_points().begin();
       it != m_document->get_control_points().end(); ++it) {
-    (*it)->draw(*sc);
+    (*it)->draw(m_overlay, m_view);
   }
 
   if (m_editor.get_current_tool()) {
     m_editor.get_current_tool()->draw(*sc);
   }
 
-  compositor->render(gc, *sc, m_scene_graph.get(), state);
-
-  state.pop(*sc);
-
   if (grid_enabled) {
-    gc.draw_grid(state.get_offset().as_vec() * state.get_zoom(),
-                 geom::fsize(128.0f * state.get_zoom(), 128.0f * state.get_zoom()),
-                 surf::Color(1,1,1,0.75f));
+    float const step = 128.0f * m_view.get_zoom();
+    if (step >= 4.0f) {
+      geom::fpoint const origin = m_view.world_to_screen(geom::fpoint(0.0f, 0.0f));
+      surf::Color const grid_color(1.0f, 1.0f, 1.0f, 0.75f);
+      for (float x = std::fmod(origin.x(), step); x < size.width(); x += step) {
+        m_overlay.draw_line(geom::fpoint(x, 0.0f), geom::fpoint(x, size.height()), grid_color);
+      }
+      for (float y = std::fmod(origin.y(), step); y < size.height(); y += step) {
+        m_overlay.draw_line(geom::fpoint(0.0f, y), geom::fpoint(size.width(), y), grid_color);
+      }
+    }
   }
 }
 
@@ -371,8 +360,6 @@ WindstilleWidget::mouse_up(GdkEventButton* ev)
 bool
 WindstilleWidget::key_press(GdkEventKey* ev)
 {
-  //std::cout << ev->keyval << " keypress " << state.get_pos() << std::endl;
-
   switch(ev->keyval)
   {
     case GDK_KEY_1:
@@ -414,12 +401,7 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       break;
 
     case GDK_KEY_s:
-      g_app.surface().save_all_as_png();
-      break;
-
-    case GDK_KEY_F5: // force a rebuild of the scenegraph
-      m_rebuild_scene_graph = true;
-      queue_draw();
+      g_app.surface().get_packer().save_all_as_png(".");
       break;
 
     case GDK_KEY_Delete:
@@ -427,21 +409,21 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       break;
 
     case GDK_KEY_Left:
-      state.set_pos(state.get_pos().as_vec() + glm::vec2(-100.0f, 0.0f));
+      m_view.set_pos(m_view.get_pos() + geom::foffset(-100.0f, 0.0f));
       break;
 
     case GDK_KEY_Right:
-      state.set_pos(state.get_pos().as_vec() + glm::vec2(100.0f, 0.0f));
+      m_view.set_pos(m_view.get_pos() + geom::foffset(100.0f, 0.0f));
       queue_draw();
       break;
 
     case GDK_KEY_Up:
-      state.set_pos(state.get_pos().as_vec() + glm::vec2(0.0f, -100.0f));
+      m_view.set_pos(m_view.get_pos() + geom::foffset(0.0f, -100.0f));
       queue_draw();
       break;
 
     case GDK_KEY_Down:
-      state.set_pos(state.get_pos().as_vec() + glm::vec2(0.0f, 100.0f));
+      m_view.set_pos(m_view.get_pos() + geom::foffset(0.0f, 100.0f));
       queue_draw();
       break;
   }
@@ -473,7 +455,7 @@ WindstilleWidget::on_drag_data_received(Glib::RefPtr<Gdk::DragContext> const& /*
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
-                                                      state.screen_to_world(glm::vec2(static_cast<float>(x), static_cast<float>(y))).as_vec(),
+                                                      screen_to_world(x, y),
                                                       data.get_data_as_string(),
                                                       map_type);
 
@@ -509,23 +491,25 @@ WindstilleWidget::on_drag_end(Glib::RefPtr<Gdk::DragContext> const& context)
 void
 WindstilleWidget::on_zoom_in()
 {
-  state.set_zoom(glm::vec2(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * 1.25f);
+  geom::fsize const size(m_view.get_size());
+  m_view.set_zoom(geom::fpoint(size.width() / 2.0f, size.height() / 2.0f), m_view.get_zoom() * 1.25f);
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_out()
 {
-  state.set_zoom(glm::vec2(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * (1.0f/1.25f));
+  geom::fsize const size(m_view.get_size());
+  m_view.set_zoom(geom::fpoint(size.width() / 2.0f, size.height() / 2.0f), m_view.get_zoom() / 1.25f);
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_100()
 {
-  state.set_zoom(glm::vec2(static_cast<float>(get_width())  / 2.0f,
-                          static_cast<float>(get_height()) / 2.0f),
-                 1.0f);
+  // one world pixel per widget pixel
+  geom::fsize const size(m_view.get_size());
+  m_view.set_zoom(geom::fpoint(size.width() / 2.0f, size.height() / 2.0f), static_cast<float>(get_scale_factor()));
   queue_draw();
 }
 
@@ -568,7 +552,6 @@ WindstilleWidget::get_current_layer_path()
 void
 WindstilleWidget::on_document_change()
 {
-  m_rebuild_scene_graph = true;
   m_editor.update_undo_state();
   queue_draw();
 }

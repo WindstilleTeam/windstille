@@ -33,15 +33,13 @@ class NavGraphEdgeObjectModel : public ObjectModel
 private:
   std::shared_ptr<NavGraphNodeObjectModel> m_lhs;
   std::shared_ptr<NavGraphNodeObjectModel> m_rhs;
-  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_drawable;
 
 public:
   NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
                           std::shared_ptr<NavGraphNodeObjectModel> rhs);
   ~NavGraphEdgeObjectModel() override;
 
-  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
-  void update(float delta) override;
+  void draw_content(SceneContext& sc) override;
 
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;

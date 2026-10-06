@@ -19,23 +19,20 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
-#include <iostream>
 #include <memory>
-#include <vector>
-
-#include <GL/gl.h>
-#include <vector>
-#include <iostream>
+#include <string>
 
 #include <gtkmm/treemodel.h>
 #include <gtkmm/glarea.h>
 #include <gdkmm/dragcontext.h>
 #include <glm/glm.hpp>
 
-#include <wstdisplay/graphic_context_state.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/renderer.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/view.hpp>
+
 #include "display/scene_context.hpp"
-#include <wstdisplay/texture.hpp>
-#include <wstdisplay/graphics_context.hpp>
 #include "editor/control_point.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/selection.hpp"
@@ -60,19 +57,24 @@ class WindstilleWidget final : public Gtk::GLArea
 {
 private:
   EditorWindow& m_editor;
-  std::unique_ptr<wstdisplay::GraphicsContext> m_gc;
 
   std::unique_ptr<Document>   m_document;
-  std::unique_ptr<wstdisplay::SceneGraph> m_scene_graph;
-  bool m_rebuild_scene_graph;
 
   std::string filename;
 
-  wstdisplay::GraphicContextState   state;
-  std::unique_ptr<wstdisplay::Compositor> compositor;
+  /** Renders onto the framebuffer of the GLArea with the editor's
+      shared GL context, exists while the widget is realized */
+  std::unique_ptr<wstdisplay::Renderer> m_renderer;
+
+  /** The camera, in pixels of the framebuffer */
+  wstdisplay::View m_view;
   std::unique_ptr<SceneContext> sc;
+
+  /** Control points and the grid, in framebuffer pixels */
+  wstdisplay::Canvas m_overlay;
+
   DecalObjectModel::MapType map_type;
-  wstdisplay::TexturePtr background_pattern;
+  wstdisplay::Surface background_pattern;
   SelectMask select_mask;
   bool draw_background_pattern;
   bool draw_only_active_layers;
@@ -82,7 +84,16 @@ public:
   WindstilleWidget(EditorWindow& editor);
   ~WindstilleWidget() override;
 
-  wstdisplay::GraphicContextState& get_state() { return state; }
+  wstdisplay::View& get_view() { return m_view; }
+
+  /** World position of the widget position \a x, \a y, e.g. of a
+      mouse event, with the current or another camera */
+  glm::vec2 screen_to_world(double x, double y) const;
+  glm::vec2 screen_to_world(wstdisplay::View const& view, double x, double y) const;
+
+  /** Size of a world pixel in widget coordinates */
+  float get_zoom() const;
+
   Glib::RefPtr<Gdk::GLContext> on_create_context() override;
   void on_realize() override;
   void on_unrealize() override;
@@ -107,7 +118,7 @@ public:
   void on_zoom_out();
   void on_zoom_100();
 
-  void draw(wstdisplay::GraphicsContext& gc);
+  void draw();
   void update(float delta);
 
   Document&    get_document() const { return *m_document; }

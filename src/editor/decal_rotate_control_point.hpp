@@ -42,7 +42,7 @@ public:
   void on_move_update(GdkEventMotion* event, glm::vec2 const& offset_) override;
   void on_move_end(GdkEventButton* event, glm::vec2 const& offset_) override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::Canvas& overlay, wstdisplay::View const& view) override;
 
 private:
   DecalRotateControlPoint (DecalRotateControlPoint const&);

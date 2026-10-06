@@ -18,6 +18,9 @@
 
 #include "editor/navgraph_insert_tool.hpp"
 
+#include <glm/gtc/constants.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+
 #include "display/scene_context.hpp"
 
 #include "editor/sector_model.hpp"
@@ -46,7 +49,7 @@ NavgraphInsertTool::NavgraphInsertTool() :
 void
 NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
-  mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  mouse_pos = wst.screen_to_world(event->x, event->y);
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
 
   // FIXME: Radius should scale with zoom
@@ -139,7 +142,7 @@ void
 NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
-  mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  mouse_pos = wst.screen_to_world(event->x, event->y);
 
   {
     // FIXME: Radius should scale with zoom
@@ -189,7 +192,7 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  mouse_pos = wst.screen_to_world(event->x, event->y);
 
   switch(mode)
   {

@@ -41,7 +41,7 @@ public:
 
 private:
   std::string path;
-  wstdisplay::SurfacePtr surface;
+  wstdisplay::Surface surface;
   surf::SoftwareSurface software_surface;
   MapType type;
 
@@ -53,7 +53,6 @@ private:
   bool hflip;
   bool vflip;
 
-  std::shared_ptr<wstdisplay::SurfaceDrawable> m_drawable;
 
 public:
   DecalObjectModel(ReaderMapping const& reader);
@@ -89,8 +88,7 @@ public:
 
   void add_control_points(std::vector<ControlPointHandle>& control_points) override;
 
-  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
-  void sync() override;
+  void draw_content(SceneContext& sc) override;
 
   void set_world_pos(glm::vec2 const& p) override;
   void set_rel_pos(glm::vec2 const& rel_pos_) override;

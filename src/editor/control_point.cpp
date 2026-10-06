@@ -21,6 +21,9 @@
 #include <glm/gtx/io.hpp>
 
 #include "display/scene_context.hpp"
+#include <glm/trigonometric.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/draw_params.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/control_point.hpp"
@@ -35,7 +38,7 @@ ControlPoint::create(glm::vec2 const& pos)
 }
 
 
-ControlPoint::ControlPoint(wstdisplay::SurfacePtr surface_, glm::vec2 const& pos_) :
+ControlPoint::ControlPoint(wstdisplay::Surface const& surface_, glm::vec2 const& pos_) :
   surface(surface_),
   pos(pos_),
   offset()
@@ -72,15 +75,19 @@ ControlPoint::get_bounding_box() const
 }
 
 void
-ControlPoint::draw(SceneContext& sc)
+ControlPoint::draw(wstdisplay::Canvas& overlay, wstdisplay::View const& view)
 {
-  geom::frect rect = get_bounding_box();
+  draw_handle(overlay, view, 0.0f);
+}
 
-  rect += offset;
-
-  //sc.control().fill_rect(rect.grow(4.0f), surf::Color(0.0f, 0.0f, 0.0f));
-  //sc.control().fill_rect(rect, surf::Color(1.0f, 0.0f, 0.0f));
-  sc.control().draw_control(surface, pos, 0.0f);
+void
+ControlPoint::draw_handle(wstdisplay::Canvas& overlay, wstdisplay::View const& view, float angle) const
+{
+  overlay.draw(surface,
+               wstdisplay::DrawParams()
+               .set_pos(view.world_to_screen(geom::fpoint(pos)))
+               .set_anchor(geom::origin::CENTER)
+               .set_angle(glm::degrees(angle)));
 }
 
 

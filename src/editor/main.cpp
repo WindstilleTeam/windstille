@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <GL/gl.h>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <sstream>
 
@@ -33,6 +33,7 @@
 #include <wstdisplay/texture_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/editor_window.hpp"
+#include "editor/gl_device.hpp"
 #include "editor/main.hpp"
 #include "sprite2d/manager.hpp"
 #include "sprite3d/manager.hpp"
@@ -86,15 +87,6 @@ WindstilleEditor::main(int argc, char** argv)
 
     Gtk::Main kit(&argc, &argv);
 
-    wstdisplay::TextureManager texture_manager;
-    wstdisplay::SurfaceManager surface_manager;
-    SpriteManager  sprite_manager(surface_manager);
-    sprite3d::Manager sprite3d_manager;
-
-    g_app.m_texture_manager = &texture_manager;
-    g_app.m_surface_manager = &surface_manager;
-    g_app.m_sprite_manager = &sprite_manager;
-    g_app.m_sprite3d_manager = &sprite3d_manager;
 
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
     icon_theme->append_search_path(Pathname("editor", Pathname::kDataPath).get_sys_path());
@@ -106,8 +98,30 @@ WindstilleEditor::main(int argc, char** argv)
     Glib::RefPtr<Gdk::Screen> screen = Gdk::Screen::get_default();
     style_context->add_provider_for_screen(screen, css_provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+    // declared before the window, so that its widgets go away first,
+    // then the resources and last the GL context they live in
+    std::unique_ptr<GLDevice> gl_device;
+    std::unique_ptr<wstdisplay::TextureManager> texture_manager;
+    std::unique_ptr<wstdisplay::SurfaceManager> surface_manager;
+    std::unique_ptr<SpriteManager> sprite_manager;
+    std::unique_ptr<sprite3d::Manager> sprite3d_manager;
+
     EditorWindow window;
     window.show_all();
+
+    // all documents are drawn with the resources of one shared context
+    gl_device = std::make_unique<GLDevice>(window);
+    texture_manager = std::make_unique<wstdisplay::TextureManager>(gl_device->get_device());
+    surface_manager = std::make_unique<wstdisplay::SurfaceManager>(gl_device->get_device());
+    sprite_manager = std::make_unique<SpriteManager>(*surface_manager);
+    sprite3d_manager = std::make_unique<sprite3d::Manager>();
+
+    g_app.m_gl_device = gl_device.get();
+    g_app.m_device = &gl_device->get_device();
+    g_app.m_texture_manager = texture_manager.get();
+    g_app.m_surface_manager = surface_manager.get();
+    g_app.m_sprite_manager = sprite_manager.get();
+    g_app.m_sprite3d_manager = sprite3d_manager.get();
     window.show_minimap(false);
 
     if (rest_args.empty())

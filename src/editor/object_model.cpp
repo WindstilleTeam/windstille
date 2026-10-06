@@ -22,7 +22,7 @@
 #include <sstream>
 
 #include "display/scene_context.hpp"
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/canvas.hpp>
 #include "editor/constants.hpp"
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"

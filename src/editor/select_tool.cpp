@@ -46,7 +46,7 @@ void
 SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   start_time = event->time;
-  click_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  click_pos = wst.screen_to_world(event->x, event->y);
 
   ctrl_point = wst.get_document().get_control_point(click_pos);
   if (ctrl_point)
@@ -143,7 +143,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
 void
 SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  glm::vec2 pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  glm::vec2 pos = wst.screen_to_world(event->x, event->y);
 
   if (mode == CONTROL_DRAG_MODE)
   {
@@ -190,7 +190,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  glm::vec2 pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  glm::vec2 pos = wst.screen_to_world(event->x, event->y);
 
   // Select objects
   if (mode == CONTROL_DRAG_MODE)

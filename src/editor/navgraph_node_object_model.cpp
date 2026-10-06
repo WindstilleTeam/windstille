@@ -19,22 +19,21 @@
 #include "editor/navgraph_node_object_model.hpp"
 
 #include "editor/sector_model.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
-#include <wstdisplay/scenegraph/drawable_group.hpp>
+#include <wstdisplay/canvas.hpp>
+
+#include "display/scene_context.hpp"
 #include "navigation/node.hpp"
 #include "editor/constants.hpp"
 
 namespace windstille {
 
 NavGraphNodeObjectModel::NavGraphNodeObjectModel(ReaderMapping const& reader) :
-  ObjectModel(reader),
-  m_drawable()
+  ObjectModel(reader)
 {
 }
 
 NavGraphNodeObjectModel::NavGraphNodeObjectModel(glm::vec2 const& pos) :
-  ObjectModel("NavGraphNodeObjectModel", pos),
-  m_drawable()
+  ObjectModel("NavGraphNodeObjectModel", pos)
 {
 }
 
@@ -43,36 +42,10 @@ NavGraphNodeObjectModel::~NavGraphNodeObjectModel()
 }
 
 void
-NavGraphNodeObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
+NavGraphNodeObjectModel::draw_content(SceneContext& sc)
 {
-  if (!m_drawable)
-    m_drawable.reset(new wstdisplay::VertexArrayDrawable);
-
-  sync_drawable();
-  sg.add_drawable(m_drawable);
-}
-
-void
-NavGraphNodeObjectModel::sync_drawable()
-{
-  if (m_drawable)
-  {
-    m_drawable->clear();
-
-    m_drawable->set_mode(GL_TRIANGLE_FAN);
-
-    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, -10.0f));
-
-    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, -10.0f));
-
-    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, 10.0f));
-
-    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, 10.0f));
-  }
+  sc.color().fill_rect(geom::frect(get_world_pos() - glm::vec2(10.0f, 10.0f), geom::fsize(20.0f, 20.0f)),
+                       surf::Color(1.0f, 0.0f, 0.0f));
 }
 
 void

@@ -285,8 +285,8 @@ ObjectSelector::on_drag_begin(Glib::RefPtr<Gdk::DragContext> const& context)
     Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath.get_sys_path());
     if (WindstilleWidget* wst = m_editor.get_windstille_widget())
     {
-      pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
-                                    std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
+      pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_zoom())),
+                                    std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_zoom())),
                                     Gdk::INTERP_TILES);
     }
     context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);

@@ -23,7 +23,7 @@
 
 #include "armature/armature.hpp"
 #include <wstdisplay/canvas.hpp>
-#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/device.hpp>
 #include <wstdisplay/texture_manager.hpp>
 
 #include "app/app.hpp"
@@ -192,7 +192,7 @@ Mesh::draw(wstdisplay::Canvas& canvas, glm::mat4 const& transform)
 {
   if (!m_mesh)
   {
-    m_mesh = g_app.window().get_device().create_mesh();
+    m_mesh = g_app.device().create_mesh();
     m_mesh->set_indices(triangles);
     m_mesh->set_texture(texture);
     m_mesh->set_blend(m_blend);

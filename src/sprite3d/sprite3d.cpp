@@ -25,7 +25,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <wstdisplay/canvas.hpp>
 #include <wstdisplay/mesh.hpp>
-#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/device.hpp>
 
 #include "app/app.hpp"
 #include "sprite3d/manager.hpp"
@@ -345,7 +345,7 @@ static inline float interpolate(float v1, float v2, float t)
 void
 Sprite3D::draw(wstdisplay::Canvas& canvas, glm::vec2 const& pos, float z_pos, glm::mat4 const& model)
 {
-  wstdisplay::Device& device = g_app.window().get_device();
+  wstdisplay::Device& device = g_app.device();
   while (m_meshes.size() < data->meshs.size()) {
     m_meshes.push_back(device.create_mesh());
   }

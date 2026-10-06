@@ -25,7 +25,7 @@
 #include <wstdisplay/canvas.hpp>
 #include <surf/software_surface.hpp>
 #include <wstdisplay/draw_params.hpp>
-#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/device.hpp>
 #include <wstdisplay/texture_params.hpp>
 
 #include "app/app.hpp"
@@ -68,7 +68,7 @@ Automap::Automap(Component* parent_) :
       }
     }
 
-  m_texture = g_app.window().get_device().create_texture(
+  m_texture = g_app.device().create_texture(
     image, wstdisplay::TextureParams{.filter = wstdisplay::TextureFilter::Nearest});
   surface = wstdisplay::Surface(m_texture, image.get_size());
 }

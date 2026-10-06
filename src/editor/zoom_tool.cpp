@@ -37,7 +37,7 @@ ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == NO_MODE)
   {
-    mouse_pos = click_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+    mouse_pos = click_pos = wst.screen_to_world(event->x, event->y);
 
     mode = RECT_MODE;
 
@@ -50,7 +50,7 @@ ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
   {
-    mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+    mouse_pos = wst.screen_to_world(event->x, event->y);
     wst.queue_draw();
   }
 }
@@ -62,7 +62,7 @@ ZoomTool::mouse_up(GdkEventButton* /*event*/, WindstilleWidget& wst)
   {
     geom::frect rect(click_pos, mouse_pos);
     rect = geom::normalize(rect);
-    wst.get_state().zoom_to(rect);
+    wst.get_view().zoom_to(rect);
 
     mode = NO_MODE;
 

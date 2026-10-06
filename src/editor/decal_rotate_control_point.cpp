@@ -17,6 +17,9 @@
 */
 
 #include "display/scene_context.hpp"
+
+#include <glm/gtc/constants.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/decal_rotate_control_point.hpp"
@@ -69,11 +72,9 @@ DecalRotateControlPoint::on_move_end(GdkEventButton* event, glm::vec2 const& off
 }
 
 void
-DecalRotateControlPoint::draw(SceneContext& sc)
+DecalRotateControlPoint::draw(wstdisplay::Canvas& overlay, wstdisplay::View const& view)
 {
-  geom::frect rect = get_bounding_box();
-  rect += geom::foffset(offset);
-  sc.control().draw_control(surface, pos, ctrl_angle);
+  draw_handle(overlay, view, ctrl_angle);
 }
 
 

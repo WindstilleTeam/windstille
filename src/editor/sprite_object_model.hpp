@@ -44,7 +44,6 @@ public:
   ObjectModelHandle clone() const override;
   void write(FileWriter& writer) const override;
 
-  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override {}
 };
 
 

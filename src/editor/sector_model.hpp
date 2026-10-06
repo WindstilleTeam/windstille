@@ -105,7 +105,8 @@ public:
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
-  void rebuild_scene_graph(wstdisplay::DrawableGroup& sg);
+  /** Draw the objects of the visible layers as they look in the game */
+  void draw_content(SceneContext& sc);
 
 private:
   void register_callbacks();

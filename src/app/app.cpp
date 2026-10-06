@@ -30,6 +30,7 @@ App::App() :
   m_input_manager(nullptr),
   m_sound_manager(nullptr),
   m_window(nullptr),
+  m_device(nullptr),
   m_texture_manager(nullptr),
   m_surface_manager(nullptr),
   m_sprite_manager(nullptr),
@@ -59,6 +60,13 @@ App::window() const
 {
   assert(m_window != nullptr);
   return *m_window;
+}
+
+wstdisplay::Device&
+App::device() const
+{
+  assert(m_device != nullptr);
+  return *m_device;
 }
 
 wstdisplay::TextureManager&

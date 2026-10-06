@@ -36,7 +36,6 @@
 #include "editor/timeline.hpp"
 #include "editor/windstille_widget.hpp"
 #include "navigation/node.hpp"
-#include <wstdisplay/scenegraph/drawable_group.hpp>
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
@@ -442,34 +441,23 @@ SectorModel::set_all_locked(bool v)
 }
 
 void
-SectorModel::rebuild_scene_graph(wstdisplay::DrawableGroup& sg)
+SectorModel::draw_content(SceneContext& sc)
 {
-  // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
-  sg.clear();
-
   Layers const& layers = get_layers();
   for(Layers::const_iterator layer = layers.begin(); layer != layers.end(); ++layer)
   {
-    if (*layer)
+    if (*layer && (*layer)->is_visible())
     {
-      std::shared_ptr<wstdisplay::DrawableGroup> group(new wstdisplay::DrawableGroup);
-
       for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
       {
-        if ((*layer)->is_visible())
-        {
-          (*obj)->add_to_scenegraph(*group);
-        }
+        (*obj)->draw_content(sc);
       }
-
-      sg.add_drawable(group);
     }
   }
 
-  //std::cout << "rebuild_scene_graph: " << nav_graph->get_nodes().size() << std::endl;
   for(NavigationGraphModel::Nodes::const_iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
   {
-    (*i)->add_to_scenegraph(sg);
+    (*i)->draw_content(sc);
   }
 }
 

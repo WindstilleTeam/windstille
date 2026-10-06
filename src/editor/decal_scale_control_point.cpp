@@ -18,6 +18,9 @@
 
 #include "editor/decal_scale_control_point.hpp"
 
+#include <glm/gtc/constants.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+
 #include "display/scene_context.hpp"
 #include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
@@ -75,11 +78,9 @@ DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, glm::vec2 const& 
 }
 
 void
-DecalScaleControlPoint::draw(SceneContext& sc)
+DecalScaleControlPoint::draw(wstdisplay::Canvas& overlay, wstdisplay::View const& view)
 {
-  geom::frect rect = get_bounding_box();
-  rect += offset;
-  sc.control().draw_control(surface, pos, ctrl_angle);
+  draw_handle(overlay, view, ctrl_angle);
 }
 
 

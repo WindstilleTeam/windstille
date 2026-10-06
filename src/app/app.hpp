@@ -45,6 +45,9 @@ public:
   wstinput::InputManagerSDL& input() const;
   SoundManager& sound() const;
   wstdisplay::OpenGLWindow& window() const;
+
+  /** The device of the window, or of the editor's GL widget */
+  wstdisplay::Device& device() const;
   wstdisplay::TextureManager& texture() const;
   wstdisplay::SurfaceManager& surface() const;
   SpriteManager& sprite() const;
@@ -57,6 +60,7 @@ private:
   wstinput::InputManagerSDL* m_input_manager;
   SoundManager* m_sound_manager;
   wstdisplay::OpenGLWindow* m_window;
+  wstdisplay::Device* m_device;
   wstdisplay::TextureManager* m_texture_manager;
   wstdisplay::SurfaceManager* m_surface_manager;
   SpriteManager* m_sprite_manager;

@@ -18,19 +18,21 @@
 
 #include "editor/decal_object_model.hpp"
 
+#include <glm/gtc/constants.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+
 #include <iostream>
 
-#include <wstdisplay/drawing_parameters.hpp>
-#include "display/scene_context.hpp"
-#include <wstdisplay/surface.hpp>
-#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <glm/trigonometric.hpp>
+#include <wstdisplay/canvas.hpp>
+#include <wstdisplay/draw_params.hpp>
 #include <wstdisplay/surface_manager.hpp>
+
+#include "display/scene_context.hpp"
 #include "editor/app.hpp"
 #include "editor/decal_rotate_control_point.hpp"
 #include "editor/decal_scale_control_point.hpp"
 #include "editor/sector_model.hpp"
-#include <wstdisplay/scenegraph/drawable_group.hpp>
-#include <wstdisplay/scenegraph/surface_drawable.hpp>
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
@@ -55,8 +57,7 @@ DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   scale(1.0f, 1.0f),
   angle(0.0f),
   hflip(false),
-  vflip(false),
-  m_drawable()
+  vflip(false)
 {
   int map_type = 0;
   reader.read("path", path);
@@ -68,7 +69,7 @@ DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   reader.read("hflip", hflip);
   reader.read("vflip", vflip);
   surface = g_app.surface().get(Pathname(path));
-  software_surface = SoftwareSurface::from_file(Pathname(path));
+  software_surface = surf::SoftwareSurface::from_file(Pathname(path));
 }
 
 DecalObjectModel::DecalObjectModel(std::string const& /*name*/, glm::vec2 const& rel_pos_,
@@ -76,13 +77,12 @@ DecalObjectModel::DecalObjectModel(std::string const& /*name*/, glm::vec2 const&
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
   surface(g_app.surface().get(Pathname(path_))),
-  software_surface(SoftwareSurface::from_file(Pathname(path_))),
+  software_surface(surf::SoftwareSurface::from_file(Pathname(path_))),
   type(type_),
   scale(1.0f, 1.0f),
   angle(0.0f),
   hflip(false),
-  vflip(false),
-  m_drawable()
+  vflip(false)
 {
 }
 
@@ -95,8 +95,7 @@ DecalObjectModel::DecalObjectModel(DecalObjectModel const& rhs) :
   scale(rhs.scale),
   angle(rhs.angle),
   hflip(rhs.hflip),
-  vflip(rhs.vflip),
-  m_drawable()
+  vflip(rhs.vflip)
 {
 }
 
@@ -136,42 +135,15 @@ DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
 }
 
 void
-DecalObjectModel::draw(SceneContext& sc)
+DecalObjectModel::draw(SceneContext& /*sc*/)
 {
-  if ((false))
-  {
-    ObjectModel::draw(sc);
-
-    glm::vec2 wo_pos = get_world_pos();
-    glm::vec2 center_offset(-surface->get_width()/2,
-                           -surface->get_height()/2);
-
-    wstdisplay::DrawingContext* dc = nullptr;
-    wstdisplay::SurfaceDrawingParameters params;
-    switch(type)
-    {
-      case COLORMAP:     dc = &sc.color(); break;
-      case LIGHTMAP:     dc = &sc.light();     params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
-      case HIGHLIGHTMAP: dc = &sc.highlight(); params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
-    }
-
-    center_offset.x *= scale.x;
-    center_offset.y *= scale.y;
-
-    dc->draw(surface, params
-             .set_pos(wo_pos + center_offset)
-             .set_angle(angle)
-             .set_hflip(hflip)
-             .set_vflip(vflip)
-             .set_scale(scale));
-  }
 }
 
 geom::frect
 DecalObjectModel::get_bounding_box() const
 {
-  glm::vec2 center_offset(surface->get_width()/2,
-                         surface->get_height()/2);
+  glm::vec2 center_offset(surface.get_width()/2,
+                         surface.get_height()/2);
 
   center_offset.x *= scale.x;
   center_offset.y *= scale.y;
@@ -221,8 +193,8 @@ DecalObjectModel::is_at(glm::vec2 const& pos) const
   p.x /= scale.x;
   p.y /= scale.y;
 
-  if (fabsf(p.x) < surface->get_width()/2 &&
-      fabsf(p.y) < surface->get_height()/2)
+  if (fabsf(p.x) < surface.get_width()/2 &&
+      fabsf(p.y) < surface.get_height()/2)
   {
     if (hflip)
       p.x = -p.x;
@@ -230,7 +202,7 @@ DecalObjectModel::is_at(glm::vec2 const& pos) const
     if (vflip)
       p.y = -p.y;
 
-    surf::Color color = software_surface.get_pixel({static_cast<int>(p.x + surface->get_width()/2), static_cast<int>(p.y + surface->get_height()/2)});
+    surf::Color color = software_surface.get_pixel({static_cast<int>(p.x + surface.get_width()/2), static_cast<int>(p.y + surface.get_height()/2)});
     return color.a > 0.125f;
   }
   else
@@ -243,8 +215,8 @@ DecalObjectModel::is_at(glm::vec2 const& pos) const
 void
 DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
-  float w = surface->get_width()/2  * scale.x;
-  float h = surface->get_height()/2 * scale.y;
+  float w = surface.get_width()/2  * scale.x;
+  float h = surface.get_height()/2 * scale.y;
 
   geom::frect rect(-w, -h, w, h);
   geom::fquad quad1(rect);
@@ -277,64 +249,22 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
 
 
 void
-DecalObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
+DecalObjectModel::draw_content(SceneContext& sc)
 {
-  if (!m_drawable)
-  {
-    // FIXME: Could recycle the drawable, instead of allocating a new one each time
-    m_drawable.reset(new SurfaceDrawable(surface,
-                                         SurfaceDrawingParameters()
-                                         .set_hflip(hflip)
-                                         .set_vflip(vflip)
-                                         .set_scale(scale)
-                                         .set_angle(angle),
-                                         0.0f, glm::mat4(1.0f)));
+  wstdisplay::Canvas& canvas = (type == LIGHTMAP) ? sc.light() :
+    (type == HIGHLIGHTMAP) ? sc.highlight() : sc.color();
 
-    switch(type)
-    {
-      case COLORMAP:
-        m_drawable->set_render_mask(SceneContext::COLORMAP);
-        break;
-
-      case LIGHTMAP:
-        m_drawable->set_render_mask(SceneContext::LIGHTMAP);
-        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
-        break;
-
-      case HIGHLIGHTMAP:
-        m_drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
-        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
-        break;
-    }
-
-    sync();
-  }
-
-  sg.add_drawable(m_drawable);
+  wstdisplay::Canvas::Scope scope(canvas);
+  canvas.set_blend(type == COLORMAP ? wstdisplay::Blend::Alpha : wstdisplay::Blend::Add);
+  canvas.draw(surface,
+              wstdisplay::DrawParams()
+              .set_pos(get_world_pos())
+              .set_anchor(geom::origin::CENTER)
+              .set_angle(glm::degrees(angle))
+              .set_hflip(hflip)
+              .set_vflip(vflip)
+              .set_scale(scale));
 }
-
-void
-DecalObjectModel::sync()
-{
-  ObjectModel::sync();
-
-  if (m_drawable)
-  {
-    glm::vec2 center_offset(-surface->get_width() /2,
-                           -surface->get_height()/2);
-
-    center_offset.x *= scale.x;
-    center_offset.y *= scale.y;
-
-    m_drawable->get_params()
-      .set_pos(get_world_pos() + center_offset)
-      .set_hflip(hflip)
-      .set_vflip(vflip)
-      .set_scale(scale)
-      .set_angle(angle);
-  }
-}
-
 
 void
 DecalObjectModel::get_property(TimelineProperty property, float& value_out) const

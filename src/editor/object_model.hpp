@@ -105,9 +105,9 @@ public:
   virtual void set_property(TimelineProperty property, float value);
   virtual void set_property(TimelineProperty property, glm::vec2 const& value);
 
-  /** This lets the object add things to the SceneGraph or do other
-      things needed to make it properly visible in the SectorModel */
-  virtual void add_to_scenegraph(wstdisplay::DrawableGroup& sg) =0;
+  /** Draw the object as it looks in the game, called for the objects
+      of all visible layers. draw() adds the editor's annotations. */
+  virtual void draw_content(SceneContext& /*sc*/) {}
 };
 
 

@@ -28,6 +28,7 @@
 
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
+#include <wstdisplay/view.hpp>
 
 namespace windstille {
 
@@ -44,21 +45,27 @@ public:
   static ControlPointHandle create(glm::vec2 const& pos);
 
 protected:
-  wstdisplay::SurfacePtr surface;
+  wstdisplay::Surface surface;
   glm::vec2  pos;
   glm::vec2  offset;
 
 public:
-  ControlPoint(wstdisplay::SurfacePtr surface, glm::vec2 const& pos);
+  ControlPoint(wstdisplay::Surface const& surface, glm::vec2 const& pos);
   virtual ~ControlPoint();
 
-  virtual void draw(SceneContext& sc);
+  /** Draw the handle onto \a overlay, which is in screen
+      coordinates, handles keep their size when zooming */
+  virtual void draw(wstdisplay::Canvas& overlay, wstdisplay::View const& view);
 
   virtual geom::frect get_bounding_box() const;
 
   virtual void on_move_start(GdkEventButton* event);
   virtual void on_move_update(GdkEventMotion* event, glm::vec2 const& offset);
   virtual void on_move_end(GdkEventButton* event, glm::vec2 const& offset);
+
+protected:
+  /** Draw the surface centered on pos, rotated by \a angle radians */
+  void draw_handle(wstdisplay::Canvas& overlay, wstdisplay::View const& view, float angle) const;
 
 private:
   ControlPoint(ControlPoint const&);

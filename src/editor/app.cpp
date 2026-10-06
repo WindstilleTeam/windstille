@@ -25,11 +25,27 @@ namespace windstille {
 App g_app;
 
 App::App() :
+  m_gl_device(nullptr),
+  m_device(nullptr),
   m_texture_manager(nullptr),
   m_surface_manager(nullptr),
   m_sprite_manager(nullptr),
   m_sprite3d_manager(nullptr)
 {
+}
+
+GLDevice&
+App::gl_device() const
+{
+  assert(m_gl_device != nullptr);
+  return *m_gl_device;
+}
+
+wstdisplay::Device&
+App::device() const
+{
+  assert(m_device != nullptr);
+  return *m_device;
 }
 
 wstdisplay::TextureManager&

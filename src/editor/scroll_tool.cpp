@@ -33,8 +33,8 @@ ScrollTool::ScrollTool() :
 void
 ScrollTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
-  orig_state = wst.get_state().clone();
-  orig_click = orig_state.screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
+  orig_state = wst.get_view();
+  orig_click = wst.screen_to_world(orig_state, event->x, event->y);
   mode = SCROLLING;
   wst.queue_draw();
 }
@@ -44,8 +44,8 @@ ScrollTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == SCROLLING)
   {
-    glm::vec2 offset = orig_click - orig_state.screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
-    wst.get_state().set_pos(orig_state.get_pos().as_vec() + offset);
+    glm::vec2 offset = orig_click - wst.screen_to_world(orig_state, event->x, event->y);
+    wst.get_view().set_pos(orig_state.get_pos() + geom::foffset(offset.x, offset.y));
     wst.queue_draw();
   }
 }
@@ -55,8 +55,8 @@ ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == SCROLLING)
   {
-    glm::vec2 offset = orig_click - orig_state.screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
-    wst.get_state().set_pos(orig_state.get_pos().as_vec() + offset);
+    glm::vec2 offset = orig_click - wst.screen_to_world(orig_state, event->x, event->y);
+    wst.get_view().set_pos(orig_state.get_pos() + geom::foffset(offset.x, offset.y));
     mode = NO_MODE;
     wst.queue_draw();
   }

@@ -33,16 +33,14 @@ class FileReader;
 class NavGraphNodeObjectModel : public ObjectModel
 {
 private:
-  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_drawable;
 
 public:
   NavGraphNodeObjectModel(ReaderMapping const& reader);
   NavGraphNodeObjectModel(glm::vec2 const& pos);
   ~NavGraphNodeObjectModel() override;
 
-  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
+  void draw_content(SceneContext& sc) override;
   void set_rel_pos(glm::vec2 const& rel_pos_) override;
-  void sync_drawable();
 
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
