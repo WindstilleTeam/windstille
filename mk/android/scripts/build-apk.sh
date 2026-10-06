@@ -115,7 +115,7 @@ mkdir -p src/jni/external_includes
 # Copy then force owner-writable on the staging tree.
 # Header-only / public includes (layout: include/<ns>/… → external_includes/<ns>/…)
 # dir names in Windstille external/ (prio, not priocpp). optional → warn only.
-for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req              babyxml:req surfcpp:req wstdisplay:req wstinput:req wstsound:req              biiocpp:req wstgui:opt tinygettext:opt; do
+for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req              babyxml:req surfcpp:req wst/display:req wst/input:req wst/gui:req              wst/sprite:req wst/display/external/glad:req wstsound:req biiocpp:req              tinygettext:opt; do
   name="${entry%%:*}"
   mode="${entry##*:}"
   inc="$EXTERNAL_DIR/$name/include"
@@ -154,9 +154,10 @@ rm -f src/jni/external_includes/tinygettext/dirent.h
 # Compile external .cpp into libmain (ndk-build RWILDCARD under jni/src/).
 # Skip tests/benchmarks; skip priocpp JSON (no jsoncpp on Android).
 mkdir -p src/jni/src/deps
+# stage_lib_src NAME [DIR]: stage DIR/src (DIR defaults to NAME) as deps/NAME
 stage_lib_src() {
   local name="$1"
-  local srcdir="$EXTERNAL_DIR/$name/src"
+  local srcdir="$EXTERNAL_DIR/${2:-$name}/src"
   if [ ! -d "$srcdir" ]; then
     echo "warning: no sources for $name ($srcdir)" >&2
     return 0
@@ -183,9 +184,11 @@ if [ -d src/jni/src/deps/prio ]; then
 fi
 stage_lib_src babyxml
 stage_lib_src surfcpp
-stage_lib_src wstdisplay
-stage_lib_src wstinput
-stage_lib_src wstgui
+stage_lib_src wstdisplay wst/display
+stage_lib_src wstinput wst/input
+stage_lib_src wstgui wst/gui
+stage_lib_src wstsprite wst/sprite
+stage_lib_src glad wst/display/external/glad
 stage_lib_src biiocpp
 stage_lib_src tinygettext
 # Drop JSON backends (PRIO_USE_JSONCPP is off).
@@ -304,11 +307,6 @@ else
 fi
 export ENABLE_ANDROID_SOUND
 
-# Minimal sigc++ headers (Windstille Android polyfill — full libsigc++ not required).
-mkdir -p src/jni/external_includes/sigc++
-cp -a "$APP_DIR/jni/sigc++/." src/jni/external_includes/sigc++/
-chmod -R u+rwX src/jni/external_includes/sigc++
-echo "==> staged Android sigc++ polyfill"
 
 # IMG_* shim + headers.
 cp "$APP_DIR/jni/img_stb_min.c" src/jni/src/img_stb_min.c
