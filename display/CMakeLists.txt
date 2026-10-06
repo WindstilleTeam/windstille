@@ -187,41 +187,43 @@ if(BUILD_EXTRA)
   endforeach(SRC)
 endif()
 
-# PUBLIC_HEADER can't handle subdirectories, so do this manually
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/"
-  FILES_MATCHING
-  PATTERN "*.hpp"
-  )
-
-
-# Export and install library (inlined from former tinycmmc)
-install(TARGETS wstdisplay
-  EXPORT wstdisplay
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/wstdisplay")
-
 add_library(wstdisplay::wstdisplay ALIAS wstdisplay)
 
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/wstdisplay-config.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstdisplay")
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config-version.cmake"
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
-export(EXPORT wstdisplay
-  NAMESPACE wstdisplay::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-targets.cmake")
-install(EXPORT wstdisplay
-  FILE wstdisplay-targets.cmake
-  NAMESPACE wstdisplay::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstdisplay")
-install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config-version.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstdisplay")
+# not when built as a subdirectory of a project that installs its own way
+if(NOT DEFINED WST_INSTALL OR WST_INSTALL)
+  # PUBLIC_HEADER can't handle subdirectories, so do this manually
+  install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/"
+    FILES_MATCHING
+    PATTERN "*.hpp"
+    )
+
+  # Export and install library (inlined from former tinycmmc)
+  install(TARGETS wstdisplay
+    EXPORT wstdisplay
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/wstdisplay")
+
+  configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/wstdisplay-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstdisplay")
+  write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config-version.cmake"
+    VERSION "${PROJECT_VERSION}"
+    COMPATIBILITY SameMinorVersion)
+  export(EXPORT wstdisplay
+    NAMESPACE wstdisplay::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-targets.cmake")
+  install(EXPORT wstdisplay
+    FILE wstdisplay-targets.cmake
+    NAMESPACE wstdisplay::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstdisplay")
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config-version.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstdisplay-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstdisplay")
+endif()
 
 # EOF #

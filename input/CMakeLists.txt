@@ -142,33 +142,36 @@ if(BUILD_TESTS)
   gtest_discover_tests(test_wstinput)
 endif()
 
-# Export and install library (inlined from former tinycmmc)
-install(TARGETS wstinput
-  EXPORT wstinput
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/wstinput")
-
 add_library(wstinput::wstinput ALIAS wstinput)
 
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/wstinput-config.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstinput")
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config-version.cmake"
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
-export(EXPORT wstinput
-  NAMESPACE wstinput::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/wstinput-targets.cmake")
-install(EXPORT wstinput
-  FILE wstinput-targets.cmake
-  NAMESPACE wstinput::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstinput")
-install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config-version.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstinput")
+# not when built as a subdirectory of a project that installs its own way
+if(NOT DEFINED WST_INSTALL OR WST_INSTALL)
+  # Export and install library (inlined from former tinycmmc)
+  install(TARGETS wstinput
+    EXPORT wstinput
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/wstinput")
+
+  configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/wstinput-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstinput")
+  write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config-version.cmake"
+    VERSION "${PROJECT_VERSION}"
+    COMPATIBILITY SameMinorVersion)
+  export(EXPORT wstinput
+    NAMESPACE wstinput::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/wstinput-targets.cmake")
+  install(EXPORT wstinput
+    FILE wstinput-targets.cmake
+    NAMESPACE wstinput::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstinput")
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config-version.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstinput-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstinput")
+endif()
 
 # EOF #
