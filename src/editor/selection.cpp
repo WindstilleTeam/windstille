@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+#include <map>
 
 #include <logmich/log.hpp>
 
