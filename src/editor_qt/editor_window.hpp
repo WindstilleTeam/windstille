@@ -63,6 +63,8 @@ private slots:
   void on_toggle_background(bool checked);
   void on_zoom_to_fit();
   void on_zoom_reset();
+  void on_tool_select();
+  void on_tool_navgraph();
   void on_tab_changed(int index);
   void on_tab_close_requested(int index);
 

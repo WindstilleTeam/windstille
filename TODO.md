@@ -46,7 +46,8 @@ Related: [PORTS.md](PORTS.md).
 - [x] Timeline (scrub, play/loop, zoom, keyframe add/drag/delete)
 - [x] Grid overlay, background pattern, zoom-to-fit / 100%
 - [x] Undo for keyframe moves
-- [ ] Full Gtk tool parity (navgraph tools, particle systems UI)
+- [x] Navgraph insert tool (nodes + edges)
+- [ ] Particle systems UI, other Gtk-only tools
 
 
 ### Desktop quality

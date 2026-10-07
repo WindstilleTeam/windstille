@@ -41,6 +41,8 @@
 #include "editor_qt/editor_window.hpp"
 #include "editor_qt/object_selector.hpp"
 #include "editor/decal_object_model.hpp"
+#include "editor/navgraph_node_object_model.hpp"
+#include "editor/navigation_graph_model.hpp"
 #include "editor/layer.hpp"
 #include "editor/selection.hpp"
 #include "editor/snap_data.hpp"
@@ -67,6 +69,8 @@ GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   m_grid_enabled(false),
   m_draw_background(true),
   m_background(),
+  m_tool_mode(ToolMode::Select),
+  m_nav_last_node(),
   m_drag_origins(),
   m_ctrl_point(),
   m_overlay()
@@ -274,6 +278,13 @@ GLWidget::mousePressEvent(QMouseEvent* event)
   m_last_mouse = event->position();
   m_click_world = screen_to_world(event->position());
 
+  if (event->button() == Qt::RightButton && m_tool_mode == ToolMode::NavgraphInsert) {
+    m_nav_last_node.reset();
+    update();
+    event->accept();
+    return;
+  }
+
   if (event->button() == Qt::MiddleButton ||
       (event->button() == Qt::LeftButton && (event->modifiers() & Qt::AltModifier))) {
     m_mode = Mode::Pan;
@@ -283,6 +294,41 @@ GLWidget::mousePressEvent(QMouseEvent* event)
   }
 
   if (event->button() == Qt::LeftButton) {
+    if (m_tool_mode == ToolMode::NavgraphInsert) {
+      NavigationGraphModel& nav = m_document->get_sector_model().get_nav_graph();
+      auto node = nav.find_closest_node(m_click_world, 16.0f);
+      if (m_nav_last_node) {
+        if (node && node != m_nav_last_node) {
+          auto const& layers = m_document->get_sector_model().get_layers();
+          if (!layers.empty()) {
+            m_document->navgraph_edge_add(layers.back(), m_nav_last_node, node);
+          }
+          m_nav_last_node.reset();
+        } else if (!node) {
+          auto neu = std::make_shared<NavGraphNodeObjectModel>(m_click_world);
+          m_document->navgraph_node_add(neu);
+          auto const& layers = m_document->get_sector_model().get_layers();
+          if (!layers.empty()) {
+            m_document->navgraph_edge_add(layers.back(), m_nav_last_node, neu);
+          }
+          m_nav_last_node.reset();
+        } else {
+          m_nav_last_node.reset(); // clicked same node → cancel
+        }
+      } else {
+        if (node) {
+          m_nav_last_node = node;
+        } else {
+          auto neu = std::make_shared<NavGraphNodeObjectModel>(m_click_world);
+          m_document->navgraph_node_add(neu);
+          m_nav_last_node = neu;
+        }
+      }
+      update();
+      event->accept();
+      return;
+    }
+
     // Prefer control-point handles over objects.
     m_ctrl_point = m_document->get_control_point(m_click_world);
     if (m_ctrl_point) {
@@ -565,6 +611,18 @@ GLWidget::zoom_reset()
 {
   m_view.set_zoom(1.0f);
   update();
+}
+
+void
+GLWidget::set_tool_mode(ToolMode mode)
+{
+  m_tool_mode = mode;
+  m_nav_last_node.reset();
+  if (mode == ToolMode::NavgraphInsert) {
+    setCursor(Qt::CrossCursor);
+  } else {
+    unsetCursor();
+  }
 }
 
 void

@@ -179,6 +179,20 @@ EditorWindow::build_menus()
   QAction* act_del = edit_menu->addAction(tr("&Delete"), this, &EditorWindow::on_delete);
   act_del->setShortcut(QKeySequence::Delete);
 
+  QMenu* tools_menu = menuBar()->addMenu(tr("&Tools"));
+  QActionGroup* tool_group = new QActionGroup(this);
+  QAction* act_select = tools_menu->addAction(tr("&Select"));
+  act_select->setCheckable(true);
+  act_select->setChecked(true);
+  act_select->setShortcut(QKeySequence(Qt::Key_S));
+  act_select->setActionGroup(tool_group);
+  connect(act_select, &QAction::triggered, this, &EditorWindow::on_tool_select);
+  QAction* act_nav = tools_menu->addAction(tr("&Navgraph Insert"));
+  act_nav->setCheckable(true);
+  act_nav->setShortcut(QKeySequence(Qt::Key_N));
+  act_nav->setActionGroup(tool_group);
+  connect(act_nav, &QAction::triggered, this, &EditorWindow::on_tool_navgraph);
+
   QMenu* view_menu = menuBar()->addMenu(tr("&View"));
   QAction* act_grid = view_menu->addAction(tr("Show &Grid"));
   act_grid->setCheckable(true);
@@ -397,6 +411,29 @@ EditorWindow::on_zoom_reset()
   if (GLWidget* canvas = gl_widget()) {
     canvas->zoom_reset();
   }
+}
+
+void
+EditorWindow::on_tool_select()
+{
+  for (int i = 0; i < m_tabs->count(); ++i) {
+    if (auto* canvas = qobject_cast<GLWidget*>(m_tabs->widget(i))) {
+      canvas->set_tool_mode(GLWidget::ToolMode::Select);
+    }
+  }
+  statusBar()->showMessage(tr("Tool: Select"), 2000);
+}
+
+void
+EditorWindow::on_tool_navgraph()
+{
+  for (int i = 0; i < m_tabs->count(); ++i) {
+    if (auto* canvas = qobject_cast<GLWidget*>(m_tabs->widget(i))) {
+      canvas->set_tool_mode(GLWidget::ToolMode::NavgraphInsert);
+    }
+  }
+  statusBar()->showMessage(
+    tr("Tool: Navgraph — click to place/select node, second click connects edge"), 5000);
 }
 
 void

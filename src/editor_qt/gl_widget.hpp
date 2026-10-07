@@ -75,6 +75,14 @@ public:
   void zoom_to_fit();
   void zoom_reset();
 
+  enum class ToolMode {
+    Select,
+    NavgraphInsert
+  };
+
+  void set_tool_mode(ToolMode mode);
+  ToolMode tool_mode() const { return m_tool_mode; }
+
   wstdisplay::View& view() { return m_view; }
   wstdisplay::View const& view() const { return m_view; }
 
@@ -121,6 +129,8 @@ private:
   bool m_grid_enabled;
   bool m_draw_background;
   wstdisplay::Surface m_background;
+  ToolMode m_tool_mode;
+  std::shared_ptr<class NavGraphNodeObjectModel> m_nav_last_node;
   /** World positions at drag start for undo. */
   std::vector<std::pair<ObjectModelHandle, glm::vec2>> m_drag_origins;
   ControlPointHandle m_ctrl_point;
