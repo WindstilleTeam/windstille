@@ -600,23 +600,111 @@
         };
 
         # ---------------------------------------------------------------------
-        # Develop shell: out-of-tree CMake + PATH helpers (configure/build/run).
+        # Develop shells: out-of-tree CMake + PATH helpers (configure/build/run).
+        # Named shells match package attrs so `nix develop .#windstille` works.
         # Package wrappers stay separate for `nix build` / `nix run`.
         # ---------------------------------------------------------------------
-        devShells.default = pkgs.mkShell.override { stdenv = pkgs.ccacheStdenv; } (
-          let
-            # Shared preamble for every helper: refuse to run outside the shell.
-            preamble = ''
-              set -euo pipefail
-              if [ -z "''${WINDSTILLE_SOURCE:-}" ]; then
-                echo "$0: WINDSTILLE_SOURCE is not set (enter the shell with: nix develop)" >&2
+        devShells = let
+          # Shared preamble for every helper: refuse to run outside the shell.
+          preamble = ''
+            set -euo pipefail
+            if [ -z "''${WINDSTILLE_SOURCE:-}" ]; then
+              echo "$0: WINDSTILLE_SOURCE is not set (enter the shell with: nix develop)" >&2
+              exit 1
+            fi
+            WINDSTILLE_BUILD_DIR="''${WINDSTILLE_BUILD_DIR:-/tmp/windstille-build}"
+          '';
+          # STB flags must match the package builds (in-tree surfcpp).
+          stbFlags = "-DWITH_STB=ON -DSTB_INCLUDE_DIR=${stbImageIncludeDir}";
+
+          helperScripts = [
+            (pkgs.writeShellScriptBin "windstille-configure" (preamble + ''
+              mkdir -p "$WINDSTILLE_BUILD_DIR"
+              echo "Configuring $WINDSTILLE_SOURCE -> $WINDSTILLE_BUILD_DIR (''${CMAKE_BUILD_TYPE:-Debug})"
+              cmake -S "$WINDSTILLE_SOURCE" -B "$WINDSTILLE_BUILD_DIR" \
+                -G Ninja \
+                -DCMAKE_BUILD_TYPE="''${CMAKE_BUILD_TYPE:-Debug}" \
+                -DBUILD_EDITOR=ON \
+                -DBUILD_EDITOR_QT=ON \
+                -DBUILD_EXTRA=ON \
+                ${stbFlags} \
+                ''${CMAKE_FLAGS:-}
+            ''))
+            (pkgs.writeShellScriptBin "windstille-build" (preamble + ''
+              cache="$WINDSTILLE_BUILD_DIR/CMakeCache.txt"
+              need_configure=0
+              if [ ! -f "$cache" ]; then
+                need_configure=1
+              else
+                cached_home=$(grep -E '^CMAKE_HOME_DIRECTORY:' "$cache" | head -1 | cut -d= -f2- || true)
+                if [ -z "$cached_home" ] || [ ! -d "$cached_home" ]; then
+                  need_configure=1
+                elif [ "$cached_home" != "$WINDSTILLE_SOURCE" ]; then
+                  echo "windstille-build: CMAKE_HOME_DIRECTORY changed ($cached_home -> $WINDSTILLE_SOURCE); reconfiguring" >&2
+                  need_configure=1
+                fi
+              fi
+              if [ "$need_configure" = 1 ]; then
+                windstille-configure
+              fi
+              echo "Building in $WINDSTILLE_BUILD_DIR"
+              cmake --build "$WINDSTILLE_BUILD_DIR" -j"''${NIX_BUILD_CORES:-$(nproc)}" "$@"
+            ''))
+            (pkgs.writeShellScriptBin "windstille-run" (preamble + ''
+              windstille-build
+              bin="$WINDSTILLE_BUILD_DIR/windstille"
+              if [ ! -x "$bin" ]; then
+                echo "windstille-run: missing binary $bin" >&2
                 exit 1
               fi
-              WINDSTILLE_BUILD_DIR="''${WINDSTILLE_BUILD_DIR:-/tmp/windstille-build}"
-            '';
-            # STB flags must match the package builds (in-tree surfcpp).
-            stbFlags = "-DWITH_STB=ON -DSTB_INCLUDE_DIR=${stbImageIncludeDir}";
-          in {
+              exec "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
+            ''))
+            (pkgs.writeShellScriptBin "windstille-run-gdb" (preamble + ''
+              windstille-build
+              bin="$WINDSTILLE_BUILD_DIR/windstille"
+              if [ ! -x "$bin" ]; then
+                echo "windstille-run-gdb: missing binary $bin" >&2
+                exit 1
+              fi
+              exec gdb -q \
+                -ex "set pagination off" \
+                -ex "set confirm off" \
+                -ex "set debuginfod enabled off" \
+                -ex run \
+                -ex 'python
+try:
+  ec = gdb.parse_and_eval("$_exitcode")
+  if int(ec) == 0:
+    gdb.execute("quit")
+except Exception:
+  pass
+' \
+                --args "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
+            ''))
+            (pkgs.writeShellScriptBin "windstille-editor-run" (preamble + ''
+              windstille-build
+              bin="$WINDSTILLE_BUILD_DIR/windstille-editor"
+              if [ ! -x "$bin" ]; then
+                echo "windstille-editor-run: missing binary $bin (was BUILD_EDITOR enabled?)" >&2
+                exit 1
+              fi
+              exec "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
+            ''))
+            (pkgs.writeShellScriptBin "windstille-editor-qt-run" (preamble + ''
+              windstille-build
+              bin="$WINDSTILLE_BUILD_DIR/windstille-editor-qt"
+              if [ ! -x "$bin" ]; then
+                echo "windstille-editor-qt-run: missing binary $bin (was BUILD_EDITOR_QT enabled?)" >&2
+                exit 1
+              fi
+              exec "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
+            ''))
+          ];
+
+          # One full shell shared by every named attr (game + both editors).
+          # Named attrs exist so `nix develop .#windstille` is not the *package*
+          # (which has no PATH helpers).
+          mkDevShell = label: pkgs.mkShell.override { stdenv = pkgs.ccacheStdenv; } {
             inputsFrom = [
               windstille
               windstille-editor
@@ -629,106 +717,29 @@
               pkgs.gdb
               pkgs.ccache
               pkgs.pkg-config
-              (pkgs.writeShellScriptBin "windstille-configure" (preamble + ''
-                mkdir -p "$WINDSTILLE_BUILD_DIR"
-                echo "Configuring $WINDSTILLE_SOURCE -> $WINDSTILLE_BUILD_DIR (''${CMAKE_BUILD_TYPE:-Debug})"
-                cmake -S "$WINDSTILLE_SOURCE" -B "$WINDSTILLE_BUILD_DIR" \
-                  -G Ninja \
-                  -DCMAKE_BUILD_TYPE="''${CMAKE_BUILD_TYPE:-Debug}" \
-                  -DBUILD_EDITOR=ON \
-                  -DBUILD_EDITOR_QT=ON \
-                  -DBUILD_EXTRA=ON \
-                  ${stbFlags} \
-                  ''${CMAKE_FLAGS:-}
-              ''))
-              (pkgs.writeShellScriptBin "windstille-build" (preamble + ''
-                cache="$WINDSTILLE_BUILD_DIR/CMakeCache.txt"
-                need_configure=0
-                if [ ! -f "$cache" ]; then
-                  need_configure=1
-                else
-                  cached_home=$(grep -E '^CMAKE_HOME_DIRECTORY:' "$cache" | head -1 | cut -d= -f2- || true)
-                  if [ -z "$cached_home" ] || [ ! -d "$cached_home" ]; then
-                    need_configure=1
-                  elif [ "$cached_home" != "$WINDSTILLE_SOURCE" ]; then
-                    echo "windstille-build: CMAKE_HOME_DIRECTORY changed ($cached_home -> $WINDSTILLE_SOURCE); reconfiguring" >&2
-                    need_configure=1
-                  fi
-                fi
-                if [ "$need_configure" = 1 ]; then
-                  windstille-configure
-                fi
-                echo "Building in $WINDSTILLE_BUILD_DIR"
-                cmake --build "$WINDSTILLE_BUILD_DIR" -j"''${NIX_BUILD_CORES:-$(nproc)}" "$@"
-              ''))
-              (pkgs.writeShellScriptBin "windstille-run" (preamble + ''
-                windstille-build
-                bin="$WINDSTILLE_BUILD_DIR/windstille"
-                if [ ! -x "$bin" ]; then
-                  echo "windstille-run: missing binary $bin" >&2
-                  exit 1
-                fi
-                exec "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
-              ''))
-              (pkgs.writeShellScriptBin "windstille-run-gdb" (preamble + ''
-                windstille-build
-                bin="$WINDSTILLE_BUILD_DIR/windstille"
-                if [ ! -x "$bin" ]; then
-                  echo "windstille-run-gdb: missing binary $bin" >&2
-                  exit 1
-                fi
-                exec gdb -q \
-                  -ex "set pagination off" \
-                  -ex "set confirm off" \
-                  -ex "set debuginfod enabled off" \
-                  -ex run \
-                  -ex 'python
-try:
-  ec = gdb.parse_and_eval("$_exitcode")
-  if int(ec) == 0:
-    gdb.execute("quit")
-except Exception:
-  pass
-' \
-                  --args "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
-              ''))
-              (pkgs.writeShellScriptBin "windstille-editor-run" (preamble + ''
-                windstille-build
-                bin="$WINDSTILLE_BUILD_DIR/windstille-editor"
-                if [ ! -x "$bin" ]; then
-                  echo "windstille-editor-run: missing binary $bin (was BUILD_EDITOR enabled?)" >&2
-                  exit 1
-                fi
-                exec "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
-              ''))
-              (pkgs.writeShellScriptBin "windstille-editor-qt-run" (preamble + ''
-                windstille-build
-                bin="$WINDSTILLE_BUILD_DIR/windstille-editor-qt"
-                if [ ! -x "$bin" ]; then
-                  echo "windstille-editor-qt-run: missing binary $bin (was BUILD_EDITOR_QT enabled?)" >&2
-                  exit 1
-                fi
-                exec "$bin" --datadir "$WINDSTILLE_SOURCE/data" "$@"
-              ''))
-            ];
+            ] ++ helperScripts;
             CMAKE_BUILD_TYPE = "Debug";
-            # Unwrapped Qt binary needs plugin path (mirrors wrapQtAppsHook).
             QT_PLUGIN_PATH = lib.optionalString pkgs.stdenv.hostPlatform.isLinux
               "${pkgs.qt6.qtbase}/${pkgs.qt6.qtbase.qtPluginPrefix}";
             shellHook = ''
               export WINDSTILLE_SOURCE="$PWD"
               export WINDSTILLE_BUILD_DIR="''${WINDSTILLE_BUILD_DIR:-/tmp/windstille-build}"
-              # Prefer Nix libs over any system LD_LIBRARY_PATH.
               export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH:-}"
-              echo "Windstille develop shell"
+              echo "Windstille develop shell (${label})"
               echo "  source: $WINDSTILLE_SOURCE"
               echo "  build:  $WINDSTILLE_BUILD_DIR  (CMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE)"
               echo "  windstille-configure | windstille-build"
               echo "  windstille-run | windstille-run-gdb"
               echo "  windstille-editor-run | windstille-editor-qt-run"
             '';
-          }
-        );
+          };
+        in {
+          default = mkDevShell "default";
+          # Same helpers; names match packages.* so develop vs package is explicit.
+          windstille = mkDevShell "windstille";
+          windstille-editor = mkDevShell "windstille-editor";
+          windstille-editor-qt = mkDevShell "windstille-editor-qt";
+        };
       }
     );
 }
