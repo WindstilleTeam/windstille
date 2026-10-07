@@ -26,6 +26,7 @@
 namespace windstille {
 
 class GLWidget;
+class LayerPanel;
 
 /** Main window of the Qt-based Windstille level editor. */
 class EditorWindow final : public QMainWindow
@@ -57,6 +58,7 @@ private:
   void update_title();
 
   GLWidget* m_gl_widget;
+  LayerPanel* m_layer_panel;
 
   EditorWindow(EditorWindow const&) = delete;
   EditorWindow& operator=(EditorWindow const&) = delete;

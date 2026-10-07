@@ -41,7 +41,8 @@ Related: [PORTS.md](PORTS.md).
 - [x] Decouple `SectorModel` / `Document` from `Gtk::ListStore` / `TreeModel::Path` / `sigc`
 - [x] Wire level load/save into Qt editor
 - [x] Port select / pan / zoom + selection overlay (basic)
-- [ ] Layer panel (`QTreeView` + model)
+- [x] Undoable object drag + Ctrl grid-snap
+- [x] Layer panel (`QTreeWidget`: name/visible/locked, new/del/reverse)
 - [ ] Object selector + drag-drop onto canvas
 - [ ] Timeline / animation UI
 - [ ] Property dialogs, undo/redo chrome

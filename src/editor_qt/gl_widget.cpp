@@ -19,6 +19,7 @@
 #include "editor_qt/gl_widget.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 
 #include <QKeyEvent>
@@ -227,6 +228,13 @@ GLWidget::mousePressEvent(QMouseEvent* event)
         sel->remove(object);
       }
       m_mode = Mode::DragObject;
+      m_drag_origins.clear();
+      SelectionHandle sel = m_document->get_selection();
+      if (sel) {
+        for (auto it = sel->begin(); it != sel->end(); ++it) {
+          m_drag_origins.emplace_back(*it, (*it)->get_rel_pos());
+        }
+      }
     } else {
       if (!m_shift) {
         m_document->set_selection(Selection::create());
@@ -259,6 +267,22 @@ GLWidget::mouseReleaseEvent(QMouseEvent* event)
     if (m_mode == Mode::SelectBox) {
       update_selection_from_box();
     } else if (m_mode == Mode::DragObject) {
+      // Commit positions as undoable commands (group as one undo step).
+      if (!m_drag_origins.empty()) {
+        m_document->undo_group_begin();
+        for (auto const& pair : m_drag_origins) {
+          ObjectModelHandle obj = pair.first;
+          glm::vec2 const orig = pair.second;
+          glm::vec2 const now = obj->get_rel_pos();
+          if (orig != now) {
+            // Reset to origin so object_set_pos records correct undo.
+            obj->set_rel_pos(orig);
+            m_document->object_set_pos(obj, now);
+          }
+        }
+        m_document->undo_group_end();
+        m_drag_origins.clear();
+      }
       m_document->create_control_points();
     }
     m_mode = Mode::None;
@@ -302,8 +326,14 @@ GLWidget::mouseMoveEvent(QMouseEvent* event)
   }
 
   if (m_mode == Mode::DragObject) {
-    glm::vec2 const delta = world - m_click_world;
+    glm::vec2 delta = world - m_click_world;
     m_click_world = world;
+    // Ctrl: snap delta to 32px grid.
+    if (event->modifiers() & Qt::ControlModifier) {
+      constexpr float grid = 32.0f;
+      delta.x = std::round(delta.x / grid) * grid;
+      delta.y = std::round(delta.y / grid) * grid;
+    }
     SelectionHandle sel = m_document->get_selection();
     if (sel) {
       for (auto it = sel->begin(); it != sel->end(); ++it) {

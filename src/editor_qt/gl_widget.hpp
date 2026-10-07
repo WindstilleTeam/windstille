@@ -21,6 +21,8 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 #include <QOpenGLWidget>
 #include <QPointF>
@@ -101,6 +103,8 @@ private:
   glm::vec2 m_click_world;
   geom::frect m_select_rect;
   bool m_shift;
+  /** World positions at drag start for undo. */
+  std::vector<std::pair<ObjectModelHandle, glm::vec2>> m_drag_origins;
 
   GLWidget(GLWidget const&) = delete;
   GLWidget& operator=(GLWidget const&) = delete;

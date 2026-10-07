@@ -28,23 +28,37 @@
 #include <QToolBar>
 
 #include "editor_qt/gl_widget.hpp"
+#include "editor_qt/layer_panel.hpp"
+
+#include <QSplitter>
 
 namespace windstille {
 
 EditorWindow::EditorWindow(QWidget* parent) :
   QMainWindow(parent),
-  m_gl_widget(nullptr)
+  m_gl_widget(nullptr),
+  m_layer_panel(nullptr)
 {
   setWindowTitle(QStringLiteral("Windstille Editor (Qt)"));
   resize(1280, 800);
 
   m_gl_widget = new GLWidget(this, this);
-  setCentralWidget(m_gl_widget);
+  m_layer_panel = new LayerPanel(this);
+  m_layer_panel->set_gl_widget(m_gl_widget);
+  m_layer_panel->set_document(&m_gl_widget->document());
+
+  auto* splitter = new QSplitter(Qt::Horizontal, this);
+  splitter->addWidget(m_layer_panel);
+  splitter->addWidget(m_gl_widget);
+  splitter->setStretchFactor(0, 0);
+  splitter->setStretchFactor(1, 1);
+  splitter->setSizes({220, 1060});
+  setCentralWidget(splitter);
 
   build_menus();
   build_toolbar();
   statusBar()->showMessage(QStringLiteral(
-    "LMB select/drag · Shift add · MMB/Alt+LMB pan · Wheel zoom · Del delete"));
+    "LMB select/drag · Shift add · Ctrl snap · MMB/Alt+LMB pan · Wheel zoom · Del delete"));
   update_title();
 }
 
@@ -112,6 +126,9 @@ EditorWindow::load_file(std::string const& filename)
   if (m_gl_widget) {
     m_gl_widget->load_file(filename);
   }
+  if (m_layer_panel && m_gl_widget) {
+    m_layer_panel->set_document(&m_gl_widget->document());
+  }
   update_title();
 }
 
@@ -120,6 +137,9 @@ EditorWindow::on_new()
 {
   if (m_gl_widget) {
     m_gl_widget->new_document();
+  }
+  if (m_layer_panel && m_gl_widget) {
+    m_layer_panel->set_document(&m_gl_widget->document());
   }
   update_title();
   statusBar()->showMessage(tr("New sector"), 3000);
@@ -138,6 +158,9 @@ EditorWindow::on_open()
   }
   if (m_gl_widget) {
     m_gl_widget->load_file(path.toStdString());
+  }
+  if (m_layer_panel && m_gl_widget) {
+    m_layer_panel->set_document(&m_gl_widget->document());
   }
   update_title();
   statusBar()->showMessage(tr("Opened %1").arg(path), 5000);
