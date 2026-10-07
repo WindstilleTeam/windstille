@@ -21,6 +21,7 @@
 
 #include <QWidget>
 
+class QCheckBox;
 class QDoubleSpinBox;
 class QLabel;
 class QFormLayout;
@@ -51,6 +52,8 @@ private slots:
   void on_scale_x_changed(double v);
   void on_scale_y_changed(double v);
   void on_angle_changed(double v);
+  void on_hflip_changed(int state);
+  void on_vflip_changed(int state);
 
 private:
   Document* m_document;
@@ -63,6 +66,8 @@ private:
   QDoubleSpinBox* m_scale_x;
   QDoubleSpinBox* m_scale_y;
   QDoubleSpinBox* m_angle;
+  QCheckBox* m_hflip;
+  QCheckBox* m_vflip;
 
   PropertyPanel(PropertyPanel const&) = delete;
   PropertyPanel& operator=(PropertyPanel const&) = delete;

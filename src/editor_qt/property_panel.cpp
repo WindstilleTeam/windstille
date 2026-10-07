@@ -18,6 +18,7 @@
 
 #include "editor_qt/property_panel.hpp"
 
+#include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QLabel>
@@ -53,7 +54,9 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   m_pos_y(make_spin(this, -1e6, 1e6, 1.0)),
   m_scale_x(make_spin(this, 0.01, 100.0, 0.05)),
   m_scale_y(make_spin(this, 0.01, 100.0, 0.05)),
-  m_angle(make_spin(this, -360.0, 360.0, 1.0))
+  m_angle(make_spin(this, -360.0, 360.0, 1.0)),
+  m_hflip(new QCheckBox(tr("Horizontal flip"), this)),
+  m_vflip(new QCheckBox(tr("Vertical flip"), this))
 {
   auto* form = new QFormLayout;
   form->addRow(tr("Object"), m_name_label);
@@ -62,6 +65,8 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   form->addRow(tr("Scale X"), m_scale_x);
   form->addRow(tr("Scale Y"), m_scale_y);
   form->addRow(tr("Angle °"), m_angle);
+  form->addRow(tr(""), m_hflip);
+  form->addRow(tr(""), m_vflip);
 
   auto* layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 4, 4, 4);
@@ -79,6 +84,8 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
           this, &PropertyPanel::on_scale_y_changed);
   connect(m_angle, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
           this, &PropertyPanel::on_angle_changed);
+  connect(m_hflip, &QCheckBox::stateChanged, this, &PropertyPanel::on_hflip_changed);
+  connect(m_vflip, &QCheckBox::stateChanged, this, &PropertyPanel::on_vflip_changed);
 
   setMinimumWidth(180);
   setMaximumWidth(320);
@@ -122,13 +129,19 @@ PropertyPanel::refresh_from_selection()
     m_scale_x->setEnabled(true);
     m_scale_y->setEnabled(true);
     m_angle->setEnabled(true);
+    m_hflip->setEnabled(true);
+    m_vflip->setEnabled(true);
     m_scale_x->setValue(decal->get_scale().x);
     m_scale_y->setValue(decal->get_scale().y);
     m_angle->setValue(decal->get_angle() * 180.0 / 3.14159265358979323846);
+    m_hflip->setChecked(decal->get_hflip());
+    m_vflip->setChecked(decal->get_vflip());
   } else {
     m_scale_x->setEnabled(false);
     m_scale_y->setEnabled(false);
     m_angle->setEnabled(false);
+    m_hflip->setEnabled(false);
+    m_vflip->setEnabled(false);
   }
 
   setEnabled(true);
@@ -204,6 +217,31 @@ PropertyPanel::on_angle_changed(double v)
     m_gl_widget->document().create_control_points();
     m_gl_widget->update();
   }
+}
+
+
+void
+PropertyPanel::on_hflip_changed(int state)
+{
+  if (m_updating || !m_document) return;
+  ObjectModelHandle obj = *m_document->get_selection()->begin();
+  auto* decal = dynamic_cast<DecalObjectModel*>(obj.get());
+  if (!decal) return;
+  decal->set_hflip(state == Qt::Checked);
+  m_document->signal_on_change()();
+  if (m_gl_widget) m_gl_widget->update();
+}
+
+void
+PropertyPanel::on_vflip_changed(int state)
+{
+  if (m_updating || !m_document) return;
+  ObjectModelHandle obj = *m_document->get_selection()->begin();
+  auto* decal = dynamic_cast<DecalObjectModel*>(obj.get());
+  if (!decal) return;
+  decal->set_vflip(state == Qt::Checked);
+  m_document->signal_on_change()();
+  if (m_gl_widget) m_gl_widget->update();
 }
 
 } // namespace windstille

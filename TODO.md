@@ -44,6 +44,8 @@ Related: [PORTS.md](PORTS.md).
 - [x] Undoable object drag + Ctrl grid-snap
 - [x] Layer panel (`QTreeWidget`: name/visible/locked, new/del/reverse)
 - [x] Object selector (list + double-click place at view centre)
+- [x] Multi-document tabs (QTabWidget)
+- [x] Property flip (h/v)
 - [ ] Timeline / animation UI
 - [x] Property panel (pos/scale/angle for selection)
 - [x] Click-to-place from object palette

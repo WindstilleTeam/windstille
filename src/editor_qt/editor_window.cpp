@@ -24,7 +24,9 @@
 #include <QKeySequence>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSplitter>
 #include <QStatusBar>
+#include <QTabWidget>
 #include <QToolBar>
 
 #include "editor_qt/gl_widget.hpp"
@@ -32,29 +34,28 @@
 #include "editor_qt/object_selector.hpp"
 #include "editor_qt/property_panel.hpp"
 
-#include <QSplitter>
-
 namespace windstille {
 
 EditorWindow::EditorWindow(QWidget* parent) :
   QMainWindow(parent),
-  m_gl_widget(nullptr),
+  m_tabs(nullptr),
   m_layer_panel(nullptr),
   m_object_selector(nullptr),
   m_property_panel(nullptr)
 {
   setWindowTitle(QStringLiteral("Windstille Editor (Qt)"));
-  resize(1280, 800);
+  resize(1400, 850);
 
-  m_gl_widget = new GLWidget(this, this);
+  m_tabs = new QTabWidget(this);
+  m_tabs->setTabsClosable(true);
+  m_tabs->setMovable(true);
+  m_tabs->setDocumentMode(true);
+  connect(m_tabs, &QTabWidget::currentChanged, this, &EditorWindow::on_tab_changed);
+  connect(m_tabs, &QTabWidget::tabCloseRequested, this, &EditorWindow::on_tab_close_requested);
+
   m_layer_panel = new LayerPanel(this);
-  m_layer_panel->set_gl_widget(m_gl_widget);
-  m_layer_panel->set_document(&m_gl_widget->document());
   m_object_selector = new ObjectSelector(this);
-  m_object_selector->set_gl_widget(m_gl_widget);
   m_property_panel = new PropertyPanel(this);
-  m_property_panel->set_gl_widget(m_gl_widget);
-  m_property_panel->set_document(&m_gl_widget->document());
 
   auto* left = new QSplitter(Qt::Vertical, this);
   left->addWidget(m_layer_panel);
@@ -64,22 +65,70 @@ EditorWindow::EditorWindow(QWidget* parent) :
 
   auto* splitter = new QSplitter(Qt::Horizontal, this);
   splitter->addWidget(left);
-  splitter->addWidget(m_gl_widget);
+  splitter->addWidget(m_tabs);
   splitter->addWidget(m_property_panel);
   splitter->setStretchFactor(0, 0);
   splitter->setStretchFactor(1, 1);
   splitter->setStretchFactor(2, 0);
-  splitter->setSizes({220, 860, 220});
+  splitter->setSizes({220, 960, 220});
   setCentralWidget(splitter);
 
   build_menus();
   build_toolbar();
   statusBar()->showMessage(QStringLiteral(
-    "Select object then click canvas (or double-click list) · LMB select/drag · Shift add · Ctrl snap · MMB pan · Wheel zoom"));
+    "Select object then click canvas · LMB select/drag · Ctrl snap · MMB pan · Wheel zoom"));
+
+  add_tab();
   update_title();
 }
 
 EditorWindow::~EditorWindow() = default;
+
+GLWidget*
+EditorWindow::gl_widget() const
+{
+  return qobject_cast<GLWidget*>(m_tabs->currentWidget());
+}
+
+QString
+EditorWindow::tab_label_for(GLWidget* widget) const
+{
+  if (!widget || widget->filename().empty()) {
+    return tr("Untitled");
+  }
+  return QFileInfo(QString::fromStdString(widget->filename())).fileName();
+}
+
+GLWidget*
+EditorWindow::add_tab(std::string const& filename)
+{
+  auto* canvas = new GLWidget(this, m_tabs);
+  if (!filename.empty()) {
+    canvas->load_file(filename);
+  }
+  int const idx = m_tabs->addTab(canvas, tab_label_for(canvas));
+  m_tabs->setCurrentIndex(idx);
+  m_object_selector->set_gl_widget(canvas);
+  sync_side_panels();
+  return canvas;
+}
+
+void
+EditorWindow::sync_side_panels()
+{
+  GLWidget* canvas = gl_widget();
+  if (!canvas) {
+    m_layer_panel->set_document(nullptr);
+    m_property_panel->set_document(nullptr);
+    m_object_selector->set_gl_widget(nullptr);
+    return;
+  }
+  m_layer_panel->set_gl_widget(canvas);
+  m_layer_panel->set_document(&canvas->document());
+  m_property_panel->set_gl_widget(canvas);
+  m_property_panel->set_document(&canvas->document());
+  m_object_selector->set_gl_widget(canvas);
+}
 
 void
 EditorWindow::build_menus()
@@ -97,6 +146,10 @@ EditorWindow::build_menus()
 
   QAction* act_save_as = file_menu->addAction(tr("Save &As…"), this, &EditorWindow::on_save_as);
   act_save_as->setShortcut(QKeySequence::SaveAs);
+
+  file_menu->addSeparator();
+  QAction* act_close = file_menu->addAction(tr("&Close Tab"), this, &EditorWindow::on_close_tab);
+  act_close->setShortcut(QKeySequence::Close);
 
   file_menu->addSeparator();
   QAction* act_quit = file_menu->addAction(tr("&Quit"), this, &EditorWindow::on_quit);
@@ -130,40 +183,57 @@ EditorWindow::build_toolbar()
 void
 EditorWindow::update_title()
 {
-  QString name = QStringLiteral("Untitled");
-  if (m_gl_widget && !m_gl_widget->filename().empty()) {
-    name = QFileInfo(QString::fromStdString(m_gl_widget->filename())).fileName();
-  }
+  GLWidget* canvas = gl_widget();
+  QString name = canvas ? tab_label_for(canvas) : tr("Untitled");
   setWindowTitle(tr("%1 — Windstille Editor (Qt)").arg(name));
+  if (canvas) {
+    int const idx = m_tabs->currentIndex();
+    if (idx >= 0) {
+      m_tabs->setTabText(idx, tab_label_for(canvas));
+    }
+  }
 }
 
 void
 EditorWindow::load_file(std::string const& filename)
 {
-  if (m_gl_widget) {
-    m_gl_widget->load_file(filename);
-  }
-  if (m_layer_panel && m_gl_widget) {
-    m_layer_panel->set_document(&m_gl_widget->document());
-  }
-  if (m_property_panel && m_gl_widget) {
-    m_property_panel->set_document(&m_gl_widget->document());
-  }
+  add_tab(filename);
   update_title();
+}
+
+void
+EditorWindow::on_tab_changed(int /*index*/)
+{
+  sync_side_panels();
+  update_title();
+}
+
+void
+EditorWindow::on_tab_close_requested(int index)
+{
+  if (index < 0) {
+    return;
+  }
+  QWidget* w = m_tabs->widget(index);
+  m_tabs->removeTab(index);
+  delete w;
+  if (m_tabs->count() == 0) {
+    add_tab();
+  }
+  sync_side_panels();
+  update_title();
+}
+
+void
+EditorWindow::on_close_tab()
+{
+  on_tab_close_requested(m_tabs->currentIndex());
 }
 
 void
 EditorWindow::on_new()
 {
-  if (m_gl_widget) {
-    m_gl_widget->new_document();
-  }
-  if (m_layer_panel && m_gl_widget) {
-    m_layer_panel->set_document(&m_gl_widget->document());
-  }
-  if (m_property_panel && m_gl_widget) {
-    m_property_panel->set_document(&m_gl_widget->document());
-  }
+  add_tab();
   update_title();
   statusBar()->showMessage(tr("New sector"), 3000);
 }
@@ -179,15 +249,7 @@ EditorWindow::on_open()
   if (path.isEmpty()) {
     return;
   }
-  if (m_gl_widget) {
-    m_gl_widget->load_file(path.toStdString());
-  }
-  if (m_layer_panel && m_gl_widget) {
-    m_layer_panel->set_document(&m_gl_widget->document());
-  }
-  if (m_property_panel && m_gl_widget) {
-    m_property_panel->set_document(&m_gl_widget->document());
-  }
+  add_tab(path.toStdString());
   update_title();
   statusBar()->showMessage(tr("Opened %1").arg(path), 5000);
 }
@@ -195,16 +257,18 @@ EditorWindow::on_open()
 void
 EditorWindow::on_save()
 {
-  if (!m_gl_widget) {
+  GLWidget* canvas = gl_widget();
+  if (!canvas) {
     return;
   }
-  if (m_gl_widget->filename().empty()) {
+  if (canvas->filename().empty()) {
     on_save_as();
     return;
   }
-  if (m_gl_widget->save_file(m_gl_widget->filename())) {
+  if (canvas->save_file(canvas->filename())) {
+    update_title();
     statusBar()->showMessage(tr("Saved %1")
-      .arg(QString::fromStdString(m_gl_widget->filename())), 5000);
+      .arg(QString::fromStdString(canvas->filename())), 5000);
   } else {
     QMessageBox::warning(this, tr("Save failed"),
                          tr("Could not write the sector file."));
@@ -214,18 +278,19 @@ EditorWindow::on_save()
 void
 EditorWindow::on_save_as()
 {
-  if (!m_gl_widget) {
+  GLWidget* canvas = gl_widget();
+  if (!canvas) {
     return;
   }
   QString const path = QFileDialog::getSaveFileName(
     this,
     tr("Save Sector"),
-    QString::fromStdString(m_gl_widget->filename()),
+    QString::fromStdString(canvas->filename()),
     tr("Windstille sectors (*.sexp *.txt);;All files (*)"));
   if (path.isEmpty()) {
     return;
   }
-  if (m_gl_widget->save_file(path.toStdString())) {
+  if (canvas->save_file(path.toStdString())) {
     update_title();
     statusBar()->showMessage(tr("Saved %1").arg(path), 5000);
   } else {
@@ -237,36 +302,36 @@ EditorWindow::on_save_as()
 void
 EditorWindow::on_undo()
 {
-  if (m_gl_widget) {
-    m_gl_widget->document().undo();
-    m_gl_widget->update();
+  if (GLWidget* canvas = gl_widget()) {
+    canvas->document().undo();
+    canvas->update();
   }
 }
 
 void
 EditorWindow::on_redo()
 {
-  if (m_gl_widget) {
-    m_gl_widget->document().redo();
-    m_gl_widget->update();
+  if (GLWidget* canvas = gl_widget()) {
+    canvas->document().redo();
+    canvas->update();
   }
 }
 
 void
 EditorWindow::on_delete()
 {
-  if (m_gl_widget) {
-    m_gl_widget->document().selection_delete();
-    m_gl_widget->update();
+  if (GLWidget* canvas = gl_widget()) {
+    canvas->document().selection_delete();
+    canvas->update();
   }
 }
 
 void
 EditorWindow::on_select_all()
 {
-  if (m_gl_widget) {
-    m_gl_widget->document().select_all();
-    m_gl_widget->update();
+  if (GLWidget* canvas = gl_widget()) {
+    canvas->document().select_all();
+    canvas->update();
   }
 }
 
@@ -284,11 +349,7 @@ EditorWindow::on_about()
     tr("About Windstille Editor (Qt)"),
     tr("Windstille level editor — Qt6 port.\n"
        "Runs side-by-side with the Gtk editor for comparison.\n\n"
-       "LMB: select / drag objects\n"
-       "Shift+LMB: add to selection\n"
-       "MMB or Alt+LMB: pan\n"
-       "Wheel: zoom\n"
-       "Del: delete selection\n\n"
+       "Multi-document tabs · select/drag/scale/rotate · layers · properties\n\n"
        "GPLv3+"));
 }
 

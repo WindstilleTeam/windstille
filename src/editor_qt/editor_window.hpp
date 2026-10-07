@@ -23,6 +23,8 @@
 
 #include <QMainWindow>
 
+class QTabWidget;
+
 namespace windstille {
 
 class GLWidget;
@@ -39,8 +41,9 @@ public:
   explicit EditorWindow(QWidget* parent = nullptr);
   ~EditorWindow() override;
 
-  GLWidget* gl_widget() const { return m_gl_widget; }
-  class ObjectSelector* object_selector() const { return m_object_selector; }
+  /** Active canvas (current tab); may be null if no tabs. */
+  GLWidget* gl_widget() const;
+  ObjectSelector* object_selector() const { return m_object_selector; }
   void load_file(std::string const& filename);
 
 private slots:
@@ -48,19 +51,25 @@ private slots:
   void on_open();
   void on_save();
   void on_save_as();
+  void on_close_tab();
   void on_quit();
   void on_about();
   void on_undo();
   void on_redo();
   void on_delete();
   void on_select_all();
+  void on_tab_changed(int index);
+  void on_tab_close_requested(int index);
 
 private:
   void build_menus();
   void build_toolbar();
   void update_title();
+  void sync_side_panels();
+  GLWidget* add_tab(std::string const& filename = {});
+  QString tab_label_for(GLWidget* widget) const;
 
-  GLWidget* m_gl_widget;
+  QTabWidget* m_tabs;
   LayerPanel* m_layer_panel;
   ObjectSelector* m_object_selector;
   PropertyPanel* m_property_panel;
