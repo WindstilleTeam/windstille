@@ -26,7 +26,9 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSlider>
+#include <QTimer>
 #include <QToolBar>
+#include <QAction>
 #include <QVBoxLayout>
 
 #include "editor/document.hpp"
@@ -64,6 +66,20 @@ void
 TimelineTrackWidget::set_cursor(float pos)
 {
   m_cursor = pos;
+  update();
+}
+
+void
+TimelineTrackWidget::zoom_in()
+{
+  m_pixels_per_unit = std::min(200.0f, m_pixels_per_unit * 1.25f);
+  update();
+}
+
+void
+TimelineTrackWidget::zoom_out()
+{
+  m_pixels_per_unit = std::max(8.0f, m_pixels_per_unit / 1.25f);
   update();
 }
 
@@ -153,6 +169,8 @@ TimelinePanel::TimelinePanel(QWidget* parent) :
   m_track(new TimelineTrackWidget(this)),
   m_cursor(new QDoubleSpinBox(this)),
   m_slider(new QSlider(Qt::Horizontal, this)),
+  m_play_timer(new QTimer(this)),
+  m_loop(false),
   m_updating(false)
 {
   m_cursor->setRange(0.0, 9999.0);
@@ -162,6 +180,15 @@ TimelinePanel::TimelinePanel(QWidget* parent) :
   m_slider->setValue(0);
 
   auto* toolbar = new QToolBar(this);
+  toolbar->addAction(tr("Play"), this, &TimelinePanel::on_play);
+  toolbar->addAction(tr("Stop"), this, &TimelinePanel::on_stop);
+  QAction* act_loop = toolbar->addAction(tr("Loop"));
+  act_loop->setCheckable(true);
+  connect(act_loop, &QAction::toggled, this, &TimelinePanel::on_loop_toggled);
+  toolbar->addSeparator();
+  toolbar->addAction(tr("Zoom+"), this, &TimelinePanel::on_zoom_in);
+  toolbar->addAction(tr("Zoom-"), this, &TimelinePanel::on_zoom_out);
+  toolbar->addSeparator();
   toolbar->addAction(tr("Add Layer"), this, &TimelinePanel::on_add_layer);
   toolbar->addSeparator();
   toolbar->addAction(tr("KF Pos"), this, &TimelinePanel::on_add_keyframe_pos);
@@ -201,6 +228,8 @@ TimelinePanel::TimelinePanel(QWidget* parent) :
     m_updating = false;
     on_apply();
   });
+  m_play_timer->setInterval(33); // ~30 fps
+  connect(m_play_timer, &QTimer::timeout, this, &TimelinePanel::on_play_tick);
 
   setMinimumHeight(140);
   setMaximumHeight(280);

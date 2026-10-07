@@ -47,6 +47,9 @@ ObjectSelector::ObjectSelector(QWidget* parent) :
   m_list->setViewMode(QListView::ListMode);
   m_list->setUniformItemSizes(true);
   m_list->setSelectionMode(QAbstractItemView::SingleSelection);
+  m_list->setDragEnabled(true);
+  m_list->setDragDropMode(QAbstractItemView::DragOnly);
+  m_list->setDefaultDropAction(Qt::CopyAction);
 
   auto* toolbar = new QToolBar(this);
   toolbar->addAction(tr("Refresh"), this, &ObjectSelector::refresh);

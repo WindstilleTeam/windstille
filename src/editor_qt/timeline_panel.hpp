@@ -21,6 +21,8 @@
 
 #include <QWidget>
 
+class QTimer;
+
 class QListWidget;
 class QDoubleSpinBox;
 class QSlider;
@@ -57,6 +59,12 @@ private slots:
   void on_add_keyframe_rot();
   void on_add_keyframe_scale();
   void on_apply();
+  void on_play();
+  void on_stop();
+  void on_loop_toggled(bool checked);
+  void on_zoom_in();
+  void on_zoom_out();
+  void on_play_tick();
 
 private:
   Document* m_document;
@@ -65,6 +73,8 @@ private:
   TimelineTrackWidget* m_track;
   QDoubleSpinBox* m_cursor;
   QSlider* m_slider;
+  QTimer* m_play_timer;
+  bool m_loop;
   bool m_updating;
 
   TimelinePanel(TimelinePanel const&) = delete;
@@ -82,6 +92,9 @@ public:
   void set_document(Document* document);
   void set_cursor(float pos);
   float cursor() const { return m_cursor; }
+  void zoom_in();
+  void zoom_out();
+  float duration() const { return m_duration; }
 
 signals:
   void cursor_scrubbed(float pos);

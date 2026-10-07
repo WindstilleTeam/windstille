@@ -23,7 +23,10 @@
 #include <set>
 #include <fstream>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QKeyEvent>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QSurfaceFormat>
 #include <QWheelEvent>
@@ -59,6 +62,7 @@ GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   m_click_world(),
   m_select_rect(),
   m_shift(false),
+  m_grid_enabled(false),
   m_drag_origins(),
   m_ctrl_point(),
   m_overlay()
@@ -73,6 +77,7 @@ GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   setMinimumSize(320, 240);
   setFocusPolicy(Qt::StrongFocus);
   setMouseTracking(true);
+  setAcceptDrops(true);
 
   m_scene_context->set_render_mask(
     m_scene_context->get_render_mask() & ~SceneContext::LIGHTMAP);
@@ -188,10 +193,26 @@ GLWidget::paintGL()
   m_renderer->clear(surf::Color(0.18f, 0.18f, 0.22f));
   draw_sector();
   m_scene_context->render(*m_renderer, m_view);
-  // Control handles in screen space (size independent of zoom).
+  // Control handles + optional grid (screen space).
   m_overlay.clear();
   for (auto const& cp : m_document->get_control_points()) {
     cp->draw(m_overlay, m_view);
+  }
+  if (m_grid_enabled) {
+    float const step = 128.0f * m_view.get_zoom();
+    if (step >= 4.0f) {
+      geom::isize const size = m_view.get_size();
+      geom::fpoint const origin = m_view.world_to_screen(geom::fpoint(0.0f, 0.0f));
+      surf::Color const grid_color(1.0f, 1.0f, 1.0f, 0.35f);
+      for (float x = std::fmod(origin.x(), step); x < size.width(); x += step) {
+        m_overlay.draw_line(geom::fpoint(x, 0.0f),
+                            geom::fpoint(x, static_cast<float>(size.height())), grid_color);
+      }
+      for (float y = std::fmod(origin.y(), step); y < size.height(); y += step) {
+        m_overlay.draw_line(geom::fpoint(0.0f, y),
+                            geom::fpoint(static_cast<float>(size.width()), y), grid_color);
+      }
+    }
   }
   m_renderer->render(m_overlay);
   m_overlay.clear();
@@ -484,6 +505,35 @@ GLWidget::keyPressEvent(QKeyEvent* event)
     return;
   }
   QOpenGLWidget::keyPressEvent(event);
+}
+
+
+void
+GLWidget::dragEnterEvent(QDragEnterEvent* event)
+{
+  if (event->mimeData()->hasText() || event->mimeData()->hasUrls() ||
+      event->mimeData()->hasFormat(QStringLiteral("application/x-qabstractitemmodeldatalist"))) {
+    event->acceptProposedAction();
+  }
+}
+
+void
+GLWidget::dropEvent(QDropEvent* event)
+{
+  std::string path;
+  // QListWidget default drag encodes internal model data; fall back to selected path.
+  if (m_editor && m_editor->object_selector()) {
+    path = m_editor->object_selector()->selected_path();
+  }
+  if (path.empty() && event->mimeData()->hasText()) {
+    path = event->mimeData()->text().toStdString();
+  }
+  if (path.empty()) {
+    return;
+  }
+  glm::vec2 const world = screen_to_world(event->position());
+  place_decal(path, world);
+  event->acceptProposedAction();
 }
 
 void

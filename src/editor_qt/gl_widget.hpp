@@ -67,6 +67,9 @@ public:
 
   SelectMask const& select_mask() const { return m_select_mask; }
 
+  void set_grid_enabled(bool v) { m_grid_enabled = v; update(); }
+  bool grid_enabled() const { return m_grid_enabled; }
+
   wstdisplay::View& view() { return m_view; }
   wstdisplay::View const& view() const { return m_view; }
 
@@ -82,6 +85,8 @@ protected:
   void mouseMoveEvent(QMouseEvent* event) override;
   void wheelEvent(QWheelEvent* event) override;
   void keyPressEvent(QKeyEvent* event) override;
+  void dragEnterEvent(QDragEnterEvent* event) override;
+  void dropEvent(QDropEvent* event) override;
 
 private:
   enum class Mode {
@@ -108,6 +113,7 @@ private:
   glm::vec2 m_click_world;
   geom::frect m_select_rect;
   bool m_shift;
+  bool m_grid_enabled;
   /** World positions at drag start for undo. */
   std::vector<std::pair<ObjectModelHandle, glm::vec2>> m_drag_origins;
   ControlPointHandle m_ctrl_point;

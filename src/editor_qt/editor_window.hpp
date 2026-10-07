@@ -59,6 +59,7 @@ private slots:
   void on_redo();
   void on_delete();
   void on_select_all();
+  void on_toggle_grid(bool checked);
   void on_tab_changed(int index);
   void on_tab_close_requested(int index);
 

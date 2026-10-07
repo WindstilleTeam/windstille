@@ -179,6 +179,12 @@ EditorWindow::build_menus()
   QAction* act_del = edit_menu->addAction(tr("&Delete"), this, &EditorWindow::on_delete);
   act_del->setShortcut(QKeySequence::Delete);
 
+  QMenu* view_menu = menuBar()->addMenu(tr("&View"));
+  QAction* act_grid = view_menu->addAction(tr("Show &Grid"));
+  act_grid->setCheckable(true);
+  act_grid->setShortcut(QKeySequence(Qt::Key_G));
+  connect(act_grid, &QAction::toggled, this, &EditorWindow::on_toggle_grid);
+
   QMenu* help_menu = menuBar()->addMenu(tr("&Help"));
   help_menu->addAction(tr("&About"), this, &EditorWindow::on_about);
 }
@@ -345,6 +351,17 @@ EditorWindow::on_select_all()
   if (GLWidget* canvas = gl_widget()) {
     canvas->document().select_all();
     canvas->update();
+  }
+}
+
+void
+EditorWindow::on_toggle_grid(bool checked)
+{
+  // Apply to all open canvases so tabs stay consistent.
+  for (int i = 0; i < m_tabs->count(); ++i) {
+    if (auto* canvas = qobject_cast<GLWidget*>(m_tabs->widget(i))) {
+      canvas->set_grid_enabled(checked);
+    }
   }
 }
 
