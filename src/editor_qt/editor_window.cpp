@@ -184,6 +184,10 @@ EditorWindow::build_menus()
   act_grid->setCheckable(true);
   act_grid->setShortcut(QKeySequence(Qt::Key_G));
   connect(act_grid, &QAction::toggled, this, &EditorWindow::on_toggle_grid);
+  view_menu->addSeparator();
+  QAction* act_fit = view_menu->addAction(tr("Zoom to &Fit"), this, &EditorWindow::on_zoom_to_fit);
+  act_fit->setShortcut(QKeySequence(tr("Ctrl+0")));
+  view_menu->addAction(tr("Zoom &100%"), this, &EditorWindow::on_zoom_reset);
 
   QMenu* help_menu = menuBar()->addMenu(tr("&Help"));
   help_menu->addAction(tr("&About"), this, &EditorWindow::on_about);
@@ -362,6 +366,22 @@ EditorWindow::on_toggle_grid(bool checked)
     if (auto* canvas = qobject_cast<GLWidget*>(m_tabs->widget(i))) {
       canvas->set_grid_enabled(checked);
     }
+  }
+}
+
+void
+EditorWindow::on_zoom_to_fit()
+{
+  if (GLWidget* canvas = gl_widget()) {
+    canvas->zoom_to_fit();
+  }
+}
+
+void
+EditorWindow::on_zoom_reset()
+{
+  if (GLWidget* canvas = gl_widget()) {
+    canvas->zoom_reset();
   }
 }
 

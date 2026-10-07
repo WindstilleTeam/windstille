@@ -69,6 +69,8 @@ public:
 
   void set_grid_enabled(bool v) { m_grid_enabled = v; update(); }
   bool grid_enabled() const { return m_grid_enabled; }
+  void zoom_to_fit();
+  void zoom_reset();
 
   wstdisplay::View& view() { return m_view; }
   wstdisplay::View const& view() const { return m_view; }

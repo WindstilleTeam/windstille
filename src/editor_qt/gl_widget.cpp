@@ -508,6 +508,48 @@ GLWidget::keyPressEvent(QKeyEvent* event)
 }
 
 
+
+void
+GLWidget::zoom_to_fit()
+{
+  // Fit around all objects in the sector; fall back to origin.
+  geom::frect bounds;
+  bool any = false;
+  for (auto const& layer : m_document->get_sector_model().get_layers()) {
+    for (auto const& obj : *layer) {
+      geom::frect const bb = obj->get_bounding_box();
+      if (!any) {
+        bounds = bb;
+        any = true;
+      } else {
+        bounds = geom::unite(bounds, bb);
+      }
+    }
+  }
+  geom::isize const size = m_view.get_size();
+  if (!any || size.width() <= 0 || size.height() <= 0) {
+    m_view.set_zoom(1.0f);
+    m_view.set_pos(geom::fpoint(0.0f, 0.0f));
+    update();
+    return;
+  }
+  float const zx = static_cast<float>(size.width()) / std::max(1.0f, bounds.width());
+  float const zy = static_cast<float>(size.height()) / std::max(1.0f, bounds.height());
+  float const zoom = std::min(zx, zy) * 0.9f;
+  m_view.set_zoom(zoom);
+  m_view.set_pos(geom::fpoint(
+    bounds.left() + bounds.width() * 0.5f,
+    bounds.top() + bounds.height() * 0.5f));
+  update();
+}
+
+void
+GLWidget::zoom_reset()
+{
+  m_view.set_zoom(1.0f);
+  update();
+}
+
 void
 GLWidget::dragEnterEvent(QDragEnterEvent* event)
 {

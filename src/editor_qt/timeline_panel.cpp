@@ -49,7 +49,12 @@ TimelineTrackWidget::TimelineTrackWidget(QWidget* parent) :
   m_document(nullptr),
   m_cursor(0.0f),
   m_pixels_per_unit(40.0f),
-  m_duration(20.0f)
+  m_duration(20.0f),
+  m_selected(),
+  m_dragging(),
+  m_drag_origin_pos(0.0f),
+  m_drag_click_pos(0.0f),
+  m_scrubbing(false)
 {
   setMinimumHeight(72);
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -118,11 +123,12 @@ TimelineTrackWidget::paintEvent(QPaintEvent* /*event*/)
       for (auto it = timeline->begin(); it != timeline->end(); ++it, ++row) {
         TimelineLayerHandle layer = *it;
         int const y = 8 + (row % 4) * 14;
-        p.setBrush(QColor(220, 180, 60));
-        p.setPen(Qt::NoPen);
         for (auto oit = layer->begin(); oit != layer->end(); ++oit) {
           int const x = pos_to_x((*oit)->get_pos());
-          p.drawEllipse(QPoint(x, y), 5, 5);
+          bool const sel = (m_selected && *oit == m_selected);
+          p.setBrush(sel ? QColor(255, 120, 60) : QColor(220, 180, 60));
+          p.setPen(sel ? QPen(Qt::white, 1) : Qt::NoPen);
+          p.drawEllipse(QPoint(x, y), sel ? 6 : 5, sel ? 6 : 5);
         }
       }
     }
@@ -139,11 +145,53 @@ TimelineTrackWidget::paintEvent(QPaintEvent* /*event*/)
   p.drawPolygon(tri);
 }
 
+TimelineObjectHandle
+TimelineTrackWidget::hit_test(int x, int y) const
+{
+  if (!m_document) {
+    return {};
+  }
+  TimelineHandle timeline = m_document->get_sector_model().get_timeline();
+  if (!timeline) {
+    return {};
+  }
+  int row = 0;
+  for (auto it = timeline->begin(); it != timeline->end(); ++it, ++row) {
+    TimelineLayerHandle layer = *it;
+    int const ky = 8 + (row % 4) * 14;
+    for (auto oit = layer->begin(); oit != layer->end(); ++oit) {
+      int const kx = pos_to_x((*oit)->get_pos());
+      int const dx = x - kx;
+      int const dy = y - ky;
+      if (dx * dx + dy * dy <= 8 * 8) {
+        return *oit;
+      }
+    }
+  }
+  return {};
+}
+
 void
 TimelineTrackWidget::mousePressEvent(QMouseEvent* event)
 {
-  float const pos = std::max(0.0f, x_to_pos(static_cast<int>(event->position().x())));
+  int const mx = static_cast<int>(event->position().x());
+  int const my = static_cast<int>(event->position().y());
+  TimelineObjectHandle hit = hit_test(mx, my);
+  if (hit) {
+    m_selected = hit;
+    m_dragging = hit;
+    m_drag_origin_pos = hit->get_pos();
+    m_drag_click_pos = x_to_pos(mx);
+    m_scrubbing = false;
+    emit selection_changed();
+    update();
+    return;
+  }
+  m_selected.reset();
+  emit selection_changed();
+  float const pos = std::max(0.0f, x_to_pos(mx));
   m_cursor = pos;
+  m_scrubbing = true;
   update();
   emit cursor_scrubbed(pos);
 }
@@ -151,12 +199,30 @@ TimelineTrackWidget::mousePressEvent(QMouseEvent* event)
 void
 TimelineTrackWidget::mouseMoveEvent(QMouseEvent* event)
 {
-  if (event->buttons() & Qt::LeftButton) {
-    float const pos = std::max(0.0f, x_to_pos(static_cast<int>(event->position().x())));
+  if (!(event->buttons() & Qt::LeftButton)) {
+    return;
+  }
+  int const mx = static_cast<int>(event->position().x());
+  if (m_dragging) {
+    float const delta = x_to_pos(mx) - m_drag_click_pos;
+    float const neu = std::max(0.0f, m_drag_origin_pos + delta);
+    m_dragging->set_pos(neu);
+    update();
+    return;
+  }
+  if (m_scrubbing) {
+    float const pos = std::max(0.0f, x_to_pos(mx));
     m_cursor = pos;
     update();
     emit cursor_scrubbed(pos);
   }
+}
+
+void
+TimelineTrackWidget::mouseReleaseEvent(QMouseEvent* /*event*/)
+{
+  m_dragging.reset();
+  m_scrubbing = false;
 }
 
 // --- TimelinePanel ---------------------------------------------------------
@@ -196,6 +262,7 @@ TimelinePanel::TimelinePanel(QWidget* parent) :
   toolbar->addAction(tr("KF Scale"), this, &TimelinePanel::on_add_keyframe_scale);
   toolbar->addSeparator();
   toolbar->addAction(tr("Apply"), this, &TimelinePanel::on_apply);
+  toolbar->addAction(tr("Del KF"), this, &TimelinePanel::on_delete_keyframe);
 
   auto* cursor_row = new QHBoxLayout;
   cursor_row->addWidget(new QLabel(tr("Time"), this));

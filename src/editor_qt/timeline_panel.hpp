@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_QT_TIMELINE_PANEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_QT_TIMELINE_PANEL_HPP
 
+#include <memory>
+
 #include <QWidget>
 
 class QTimer;
@@ -33,6 +35,8 @@ namespace windstille {
 class Document;
 class GLWidget;
 class TimelineTrackWidget;
+class TimelineObject;
+typedef std::shared_ptr<TimelineObject> TimelineObjectHandle;
 
 /** Bottom panel: timeline layers list, scrubber, keyframe actions. */
 class TimelinePanel final : public QWidget
@@ -65,6 +69,7 @@ private slots:
   void on_zoom_in();
   void on_zoom_out();
   void on_play_tick();
+  void on_delete_keyframe();
 
 private:
   Document* m_document;
@@ -95,23 +100,33 @@ public:
   void zoom_in();
   void zoom_out();
   float duration() const { return m_duration; }
+  TimelineObjectHandle selected_object() const { return m_selected; }
+  void clear_selection() { m_selected.reset(); update(); }
 
 signals:
   void cursor_scrubbed(float pos);
+  void selection_changed();
 
 protected:
   void paintEvent(QPaintEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
   float x_to_pos(int x) const;
   int pos_to_x(float pos) const;
+  TimelineObjectHandle hit_test(int x, int y) const;
 
   Document* m_document;
   float m_cursor;
   float m_pixels_per_unit;
   float m_duration;
+  TimelineObjectHandle m_selected;
+  TimelineObjectHandle m_dragging;
+  float m_drag_origin_pos;
+  float m_drag_click_pos;
+  bool m_scrubbing;
 };
 
 } // namespace windstille
