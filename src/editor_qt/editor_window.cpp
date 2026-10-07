@@ -18,6 +18,7 @@
 
 #include "editor_qt/editor_window.hpp"
 
+#include <glm/glm.hpp>
 #include <QAction>
 #include <QActionGroup>
 #include <QFileDialog>
@@ -31,10 +32,13 @@
 #include <QToolBar>
 
 #include "editor_qt/gl_widget.hpp"
+#include "editor/selection.hpp"
+#include "editor/sector_model.hpp"
 #include "editor_qt/layer_panel.hpp"
 #include "editor_qt/object_selector.hpp"
 #include "editor_qt/property_panel.hpp"
 #include "editor_qt/timeline_panel.hpp"
+#include "editor/particle_system_object_model.hpp"
 
 namespace windstille {
 
@@ -177,6 +181,16 @@ EditorWindow::build_menus()
   edit_menu->addSeparator();
   QAction* act_sel_all = edit_menu->addAction(tr("Select &All"), this, &EditorWindow::on_select_all);
   act_sel_all->setShortcut(QKeySequence::SelectAll);
+  edit_menu->addSeparator();
+  edit_menu->addAction(tr("Du&plicate"), this, &EditorWindow::on_duplicate, QKeySequence(tr("Ctrl+D")));
+  edit_menu->addAction(tr("Raise"), this, &EditorWindow::on_raise);
+  edit_menu->addAction(tr("Lower"), this, &EditorWindow::on_lower);
+  edit_menu->addAction(tr("Raise to Top"), this, &EditorWindow::on_raise_to_top);
+  edit_menu->addAction(tr("Lower to Bottom"), this, &EditorWindow::on_lower_to_bottom);
+  edit_menu->addSeparator();
+  edit_menu->addAction(tr("Flip &Horizontal"), this, &EditorWindow::on_hflip);
+  edit_menu->addAction(tr("Flip &Vertical"), this, &EditorWindow::on_vflip);
+  edit_menu->addSeparator();
   QAction* act_del = edit_menu->addAction(tr("&Delete"), this, &EditorWindow::on_delete);
   act_del->setShortcut(QKeySequence::Delete);
 
@@ -193,6 +207,13 @@ EditorWindow::build_menus()
   act_nav->setShortcut(QKeySequence(Qt::Key_N));
   act_nav->setActionGroup(tool_group);
   connect(act_nav, &QAction::triggered, this, &EditorWindow::on_tool_navgraph);
+  QAction* act_zoom = tools_menu->addAction(tr("&Zoom"));
+  act_zoom->setCheckable(true);
+  act_zoom->setShortcut(QKeySequence(Qt::Key_Z));
+  act_zoom->setActionGroup(tool_group);
+  connect(act_zoom, &QAction::triggered, this, &EditorWindow::on_tool_zoom);
+  tools_menu->addSeparator();
+  tools_menu->addAction(tr("Place &Particle System"), this, &EditorWindow::on_place_particle);
 
   QMenu* view_menu = menuBar()->addMenu(tr("&View"));
   QAction* act_grid = view_menu->addAction(tr("Show &Grid"));
@@ -435,6 +456,12 @@ EditorWindow::on_tool_navgraph()
   }
   statusBar()->showMessage(
     tr("Tool: Navgraph — click to place/select node, second click connects edge"), 5000);
+}
+
+void
+EditorWindow::show_coords(float x, float y)
+{
+  statusBar()->showMessage(tr("World: %1, %2").arg(x, 0, 'f', 1).arg(y, 0, 'f', 1));
 }
 
 void

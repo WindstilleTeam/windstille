@@ -51,7 +51,11 @@ Related: [PORTS.md](PORTS.md).
 - [x] Grid overlay, background pattern, zoom-to-fit / 100%
 - [x] Undo for keyframe moves
 - [x] Navgraph insert tool (nodes + edges)
-- [ ] Particle systems UI, other Gtk-only tools
+- [x] Zoom tool (rect / click / RMB out)
+- [x] Edit: duplicate, raise/lower, flip
+- [x] Status bar world coordinates
+- [x] Place particle system (basic)
+- [ ] Full particle system property UI
 
 
 ### Desktop quality

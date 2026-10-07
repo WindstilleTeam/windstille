@@ -286,6 +286,12 @@ GLWidget::mousePressEvent(QMouseEvent* event)
     event->accept();
     return;
   }
+  if (event->button() == Qt::RightButton && m_tool_mode == ToolMode::Zoom) {
+    m_view.set_zoom(m_click_world, m_view.get_zoom() / 1.25f);
+    update();
+    event->accept();
+    return;
+  }
 
   if (event->button() == Qt::MiddleButton ||
       (event->button() == Qt::LeftButton && (event->modifiers() & Qt::AltModifier))) {
@@ -296,6 +302,12 @@ GLWidget::mousePressEvent(QMouseEvent* event)
   }
 
   if (event->button() == Qt::LeftButton) {
+    if (m_tool_mode == ToolMode::Zoom) {
+      m_mode = Mode::SelectBox;
+      m_select_rect = geom::frect(m_click_world, m_click_world);
+      event->accept();
+      return;
+    }
     if (m_tool_mode == ToolMode::NavgraphInsert) {
       NavigationGraphModel& nav = m_document->get_sector_model().get_nav_graph();
       auto node = nav.find_closest_node(m_click_world, 16.0f);
@@ -410,8 +422,20 @@ GLWidget::mouseReleaseEvent(QMouseEvent* event)
 
   if (event->button() == Qt::LeftButton) {
     if (m_mode == Mode::SelectBox) {
-      update_selection_from_box();
-      m_document->create_control_points();
+      if (m_tool_mode == ToolMode::Zoom) {
+        float const l = std::min(m_select_rect.left(), m_select_rect.right());
+        float const r = std::max(m_select_rect.left(), m_select_rect.right());
+        float const top = std::min(m_select_rect.top(), m_select_rect.bottom());
+        float const bot = std::max(m_select_rect.top(), m_select_rect.bottom());
+        if (r - l > 1.0f && bot - top > 1.0f) {
+          m_view.zoom_to(geom::frect(geom::fpoint(l, top), geom::fpoint(r, bot)));
+        } else {
+          m_view.set_zoom(m_click_world, m_view.get_zoom() * 1.25f);
+        }
+      } else {
+        update_selection_from_box();
+        m_document->create_control_points();
+      }
     } else if (m_mode == Mode::ControlDrag) {
       if (m_ctrl_point) {
         glm::vec2 const world = screen_to_world(event->position());
@@ -452,6 +476,9 @@ GLWidget::mouseMoveEvent(QMouseEvent* event)
 {
   QPointF const pos = event->position();
   glm::vec2 const world = screen_to_world(pos);
+  if (m_editor) {
+    m_editor->show_coords(world.x, world.y);
+  }
 
   if (m_mode == Mode::Pan) {
     float const dpr = static_cast<float>(devicePixelRatioF());
@@ -621,7 +648,7 @@ GLWidget::set_tool_mode(ToolMode mode)
 {
   m_tool_mode = mode;
   m_nav_last_node.reset();
-  if (mode == ToolMode::NavgraphInsert) {
+  if (mode == ToolMode::NavgraphInsert || mode == ToolMode::Zoom) {
     setCursor(Qt::CrossCursor);
   } else {
     unsetCursor();

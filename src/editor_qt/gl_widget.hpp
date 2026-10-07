@@ -77,7 +77,8 @@ public:
 
   enum class ToolMode {
     Select,
-    NavgraphInsert
+    NavgraphInsert,
+    Zoom
   };
 
   void set_tool_mode(ToolMode mode);

@@ -65,6 +65,16 @@ private Q_SLOTS:
   void on_zoom_reset();
   void on_tool_select();
   void on_tool_navgraph();
+  void on_tool_zoom();
+  void on_place_particle();
+  void on_duplicate();
+  void on_raise();
+  void on_lower();
+  void on_raise_to_top();
+  void on_lower_to_bottom();
+  void on_hflip();
+  void on_vflip();
+  void show_coords(float x, float y);
   void on_tab_changed(int index);
   void on_tab_close_requested(int index);
 
