@@ -23,7 +23,6 @@
 #include <stdexcept>
 
 #include <surf/color.hpp>
-#include "editor/layer_manager_columns.hpp"
 #include "editor/navigation_graph_model.hpp"
 #include "editor/object_model_factory.hpp"
 #include "editor/sector_model.hpp"

@@ -24,7 +24,7 @@
 #include "display/scene_context.hpp"
 #include <wstdisplay/canvas.hpp>
 #include "editor/constants.hpp"
-#include "editor/editor_window.hpp"
+#include <logmich/log.hpp>
 #include "util/file_reader.hpp"
 
 namespace windstille {
@@ -102,7 +102,7 @@ ObjectModel::set_parent(ObjectModelHandle const& parent_, bool recalc_pos)
   {
     if (pptr.get() == this)
     {
-      EditorWindow::current()->print("Error: Trying to create parent loop");
+      log_error("Trying to create parent loop");
 
       parent_ptr = ObjectModelPtr();
       return;

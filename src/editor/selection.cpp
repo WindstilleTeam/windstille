@@ -20,8 +20,8 @@
 
 #include <logmich/log.hpp>
 
-#include "editor/windstille_widget.hpp"
-#include "editor/editor_window.hpp"
+
+#include "editor/document.hpp"
 #include "editor/selection.hpp"
 
 namespace windstille {
@@ -65,7 +65,7 @@ Selection::remove(ObjectModelHandle const& object)
   }
   else
   {
-    EditorWindow::current()->print("Selection:remove(): object not in selection");
+    log_warn("Selection::remove(): object not in selection");
   }
 }
 
@@ -151,22 +151,22 @@ Selection::on_move_update(glm::vec2 const& offset)
 }
 
 void
-Selection::on_move_end(WindstilleWidget& wst, glm::vec2 const& offset)
+Selection::on_move_end(Document& document, glm::vec2 const& offset)
 {
   log_debug("{} objects: {} object_orig_pos: {}", static_cast<void*>(this), objects.size(), object_orig_pos.size());
 
   moving = false;
 
-  wst.get_document().undo_group_begin();
+  document.undo_group_begin();
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
-      wst.get_document().execute(std::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()]),
+      document.execute(std::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()]),
                                  std::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()] + offset));
     }
   }
-  wst.get_document().undo_group_end();
+  document.undo_group_end();
 
   non_moveable_objects.clear();
   signal_changed();

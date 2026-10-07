@@ -31,7 +31,7 @@ namespace windstille {
 
 
 class Selection;
-class WindstilleWidget;
+class Document;
 typedef std::shared_ptr<Selection> SelectionHandle;
 
 
@@ -88,7 +88,7 @@ public:
 
   void on_move_start();
   void on_move_update(glm::vec2 const& offset);
-  void on_move_end(WindstilleWidget& wst, glm::vec2 const& offset);
+  void on_move_end(Document& document, glm::vec2 const& offset);
 
   /** Performs a deep clone of the selection */
   SelectionHandle clone() const;
