@@ -144,7 +144,9 @@ SectorModelBuilder::load_layer(ReaderMapping const& reader)
   (*it)[LayerManagerColumns::instance().locked]    = locked;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
 
-  layer->sync(*it);
+  layer->set_name(static_cast<Glib::ustring>((*it)[LayerManagerColumns::instance().name]).raw());
+  layer->set_visible((*it)[LayerManagerColumns::instance().visible]);
+  layer->set_locked((*it)[LayerManagerColumns::instance().locked]);
 }
 
 } // namespace windstille

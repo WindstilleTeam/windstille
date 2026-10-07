@@ -71,7 +71,9 @@ SectorModel::SectorModel() :
   (*it)[LayerManagerColumns::instance().visible]   = true;
   (*it)[LayerManagerColumns::instance().locked]    = false;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
-  layer->sync(*it);
+  layer->set_name(static_cast<Glib::ustring>((*it)[LayerManagerColumns::instance().name]).raw());
+  layer->set_visible((*it)[LayerManagerColumns::instance().visible]);
+  layer->set_locked((*it)[LayerManagerColumns::instance().locked]);
 }
 
 SectorModel::~SectorModel()
@@ -121,7 +123,9 @@ SectorModel::add_layer(std::string const& name, Gtk::TreeModel::Path const& path
   (*it)[LayerManagerColumns::instance().visible]   = true;
   (*it)[LayerManagerColumns::instance().locked]    = false;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
-  layer->sync(*it);
+  layer->set_name(static_cast<Glib::ustring>((*it)[LayerManagerColumns::instance().name]).raw());
+  layer->set_visible((*it)[LayerManagerColumns::instance().visible]);
+  layer->set_locked((*it)[LayerManagerColumns::instance().locked]);
 }
 
 void
@@ -414,14 +418,20 @@ struct PropSetFunctor
   bool set_visible(Gtk::TreeModel::iterator const& it)
   {
     (*it)[LayerManagerColumns::instance().visible] = v;
-    static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
+    LayerHandle layer = (*it)[LayerManagerColumns::instance().layer];
+    if (layer) {
+      layer->set_visible(v);
+    }
     return false;
   }
 
   bool set_locked(Gtk::TreeModel::iterator const& it)
   {
     (*it)[LayerManagerColumns::instance().locked] = v;
-    static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
+    LayerHandle layer = (*it)[LayerManagerColumns::instance().layer];
+    if (layer) {
+      layer->set_locked(v);
+    }
     return false;
   }
 };
@@ -473,7 +483,9 @@ SectorModel::on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::it
     LayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
     if (layer)
     {
-      layer->sync(*iter);
+      layer->set_name(static_cast<Glib::ustring>((*iter)[LayerManagerColumns::instance().name]).raw());
+      layer->set_visible((*iter)[LayerManagerColumns::instance().visible]);
+      layer->set_locked((*iter)[LayerManagerColumns::instance().locked]);
     }
   }
 }

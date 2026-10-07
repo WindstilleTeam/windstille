@@ -19,19 +19,31 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_HPP
 
-#include <gtkmm/treemodel.h>
+#include <list>
+#include <memory>
+#include <set>
+#include <string>
+
+#include <glm/glm.hpp>
+
+#include <geom/geom.hpp>
 
 #include "editor/selection.hpp"
+#include "editor/snap_data.hpp"
 
 namespace windstille {
 
 class SceneContext;
-
+class SectorModel;
+class FileWriter;
 
 class Layer;
 typedef std::shared_ptr<Layer> LayerHandle;
 
 
+/** Ordered list of objects that make up one drawing layer of a sector.
+    Toolkit-agnostic: UI frameworks keep their own view of name/visible/locked
+    and push changes through the setters. */
 class Layer
 {
 private:
@@ -47,10 +59,8 @@ public:
   typedef Objects::iterator iterator;
   typedef Objects::const_iterator const_iterator;
 
-  Layer(SectorModel& sector);
+  explicit Layer(SectorModel& sector);
   ~Layer();
-
-  void set_row_ptr(Gtk::TreeModel::Row* row_ptr);
 
   iterator begin() { return objects.begin(); }
   iterator end()   { return objects.end(); }
@@ -61,12 +71,11 @@ public:
   void set_name(std::string const& str) { name = str; }
   std::string get_name() const { return name; }
 
+  void set_visible(bool v) { visible = v; }
+  void set_locked(bool v) { locked = v; }
+
   bool is_visible() const { return visible; }
   bool is_locked() const { return locked; }
-
-  // These must not be used, since they don't update the Gtk::TreeModel::Row
-  //void set_visible(bool v) { visible = v; }
-  //void set_locked(bool v) { locked = v; }
 
   bool has_object(ObjectModelHandle const& object) const;
 
@@ -76,7 +85,6 @@ public:
 
   void draw(SceneContext& sc, SelectMask const& layers);
   void update(float delta);
-  void sync(Gtk::TreeModel::Row const& row);
 
   ObjectModelHandle get_object_at(glm::vec2 const& pos, SelectMask const& layers) const;
   SelectionHandle   get_selection(geom::frect const& rect, SelectMask const& layers) const;
@@ -91,8 +99,8 @@ public:
   void write(FileWriter& writer) const;
 
 private:
-  Layer(Layer const&);
-  Layer& operator=(Layer const&);
+  Layer(Layer const&) = delete;
+  Layer& operator=(Layer const&) = delete;
 };
 
 

@@ -20,7 +20,6 @@
 
 #include "display/scene_context.hpp"
 
-#include "editor/layer_manager_columns.hpp"
 #include "editor/sector_model.hpp"
 
 namespace windstille {
@@ -74,13 +73,6 @@ Layer::draw(SceneContext& sc, SelectMask const& select_mask)
   }
 }
 
-void
-Layer::sync(Gtk::TreeModel::Row const& row)
-{
-  name    = static_cast<Glib::ustring>(row[LayerManagerColumns::instance().name]).raw();
-  visible = row[LayerManagerColumns::instance().visible];
-  locked  = row[LayerManagerColumns::instance().locked];
-}
 
 void
 Layer::update(float delta)
