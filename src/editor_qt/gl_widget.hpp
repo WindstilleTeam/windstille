@@ -59,6 +59,8 @@ public:
   void load_file(std::string const& filename);
   void new_document();
   bool save_file(std::string const& filename);
+  /** Place a colormap decal at world position on the top layer. */
+  void place_decal(std::string const& data_path, glm::vec2 const& world_pos);
 
   std::string const& filename() const { return m_filename; }
   void set_filename(std::string const& path) { m_filename = path; }

@@ -30,6 +30,7 @@
 #include "editor_qt/gl_widget.hpp"
 #include "editor_qt/layer_panel.hpp"
 #include "editor_qt/object_selector.hpp"
+#include "editor_qt/property_panel.hpp"
 
 #include <QSplitter>
 
@@ -39,7 +40,8 @@ EditorWindow::EditorWindow(QWidget* parent) :
   QMainWindow(parent),
   m_gl_widget(nullptr),
   m_layer_panel(nullptr),
-  m_object_selector(nullptr)
+  m_object_selector(nullptr),
+  m_property_panel(nullptr)
 {
   setWindowTitle(QStringLiteral("Windstille Editor (Qt)"));
   resize(1280, 800);
@@ -50,6 +52,9 @@ EditorWindow::EditorWindow(QWidget* parent) :
   m_layer_panel->set_document(&m_gl_widget->document());
   m_object_selector = new ObjectSelector(this);
   m_object_selector->set_gl_widget(m_gl_widget);
+  m_property_panel = new PropertyPanel(this);
+  m_property_panel->set_gl_widget(m_gl_widget);
+  m_property_panel->set_document(&m_gl_widget->document());
 
   auto* left = new QSplitter(Qt::Vertical, this);
   left->addWidget(m_layer_panel);
@@ -60,15 +65,17 @@ EditorWindow::EditorWindow(QWidget* parent) :
   auto* splitter = new QSplitter(Qt::Horizontal, this);
   splitter->addWidget(left);
   splitter->addWidget(m_gl_widget);
+  splitter->addWidget(m_property_panel);
   splitter->setStretchFactor(0, 0);
   splitter->setStretchFactor(1, 1);
-  splitter->setSizes({240, 1040});
+  splitter->setStretchFactor(2, 0);
+  splitter->setSizes({220, 860, 220});
   setCentralWidget(splitter);
 
   build_menus();
   build_toolbar();
   statusBar()->showMessage(QStringLiteral(
-    "Double-click object to place · LMB select/drag · Shift add · Ctrl snap · MMB pan · Wheel zoom"));
+    "Select object then click canvas (or double-click list) · LMB select/drag · Shift add · Ctrl snap · MMB pan · Wheel zoom"));
   update_title();
 }
 
@@ -139,6 +146,9 @@ EditorWindow::load_file(std::string const& filename)
   if (m_layer_panel && m_gl_widget) {
     m_layer_panel->set_document(&m_gl_widget->document());
   }
+  if (m_property_panel && m_gl_widget) {
+    m_property_panel->set_document(&m_gl_widget->document());
+  }
   update_title();
 }
 
@@ -150,6 +160,9 @@ EditorWindow::on_new()
   }
   if (m_layer_panel && m_gl_widget) {
     m_layer_panel->set_document(&m_gl_widget->document());
+  }
+  if (m_property_panel && m_gl_widget) {
+    m_property_panel->set_document(&m_gl_widget->document());
   }
   update_title();
   statusBar()->showMessage(tr("New sector"), 3000);
@@ -171,6 +184,9 @@ EditorWindow::on_open()
   }
   if (m_layer_panel && m_gl_widget) {
     m_layer_panel->set_document(&m_gl_widget->document());
+  }
+  if (m_property_panel && m_gl_widget) {
+    m_property_panel->set_document(&m_gl_widget->document());
   }
   update_title();
   statusBar()->showMessage(tr("Opened %1").arg(path), 5000);

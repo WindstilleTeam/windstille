@@ -45,7 +45,8 @@ Related: [PORTS.md](PORTS.md).
 - [x] Layer panel (`QTreeWidget`: name/visible/locked, new/del/reverse)
 - [x] Object selector (list + double-click place at view centre)
 - [ ] Timeline / animation UI
-- [ ] Property dialogs, undo/redo chrome
+- [x] Property panel (pos/scale/angle for selection)
+- [x] Click-to-place from object palette
 
 
 ### Desktop quality

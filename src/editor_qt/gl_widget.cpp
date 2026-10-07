@@ -35,6 +35,9 @@
 
 #include "editor_qt/app.hpp"
 #include "editor_qt/editor_window.hpp"
+#include "editor_qt/object_selector.hpp"
+#include "editor/decal_object_model.hpp"
+#include "editor/layer.hpp"
 #include "editor/selection.hpp"
 #include "util/file_writer.hpp"
 
@@ -132,6 +135,25 @@ GLWidget::screen_to_world(QPointF const& pos) const
   return m_view.screen_to_world(geom::fpoint(
     static_cast<float>(pos.x()) * dpr,
     static_cast<float>(pos.y()) * dpr)).as_vec();
+}
+
+
+void
+GLWidget::place_decal(std::string const& data_path, glm::vec2 const& world_pos)
+{
+  auto const& layers = m_document->get_sector_model().get_layers();
+  if (layers.empty() || data_path.empty()) {
+    return;
+  }
+  LayerHandle layer = layers.back();
+  ObjectModelHandle object = DecalObjectModel::create(
+    data_path, world_pos, data_path, DecalObjectModel::COLORMAP);
+  m_document->object_add(layer, object);
+  SelectionHandle sel = Selection::create();
+  sel->add(object);
+  m_document->set_selection(sel);
+  m_document->create_control_points();
+  update();
 }
 
 void
@@ -258,6 +280,17 @@ GLWidget::mousePressEvent(QMouseEvent* event)
         }
       }
     } else {
+      // If the object palette has a selection, place at click.
+      std::string place_path;
+      if (m_editor && m_editor->object_selector()) {
+        place_path = m_editor->object_selector()->selected_path();
+      }
+      if (!place_path.empty() && !m_shift) {
+        place_decal(place_path, m_click_world);
+        m_mode = Mode::None;
+        event->accept();
+        return;
+      }
       if (!m_shift) {
         m_document->set_selection(Selection::create());
         m_document->clear_control_points();

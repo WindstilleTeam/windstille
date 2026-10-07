@@ -28,6 +28,7 @@ namespace windstille {
 class GLWidget;
 class LayerPanel;
 class ObjectSelector;
+class PropertyPanel;
 
 /** Main window of the Qt-based Windstille level editor. */
 class EditorWindow final : public QMainWindow
@@ -39,6 +40,7 @@ public:
   ~EditorWindow() override;
 
   GLWidget* gl_widget() const { return m_gl_widget; }
+  class ObjectSelector* object_selector() const { return m_object_selector; }
   void load_file(std::string const& filename);
 
 private slots:
@@ -61,6 +63,7 @@ private:
   GLWidget* m_gl_widget;
   LayerPanel* m_layer_panel;
   ObjectSelector* m_object_selector;
+  PropertyPanel* m_property_panel;
 
   EditorWindow(EditorWindow const&) = delete;
   EditorWindow& operator=(EditorWindow const&) = delete;
