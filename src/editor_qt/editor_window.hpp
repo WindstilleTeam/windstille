@@ -31,6 +31,7 @@ class GLWidget;
 class LayerPanel;
 class ObjectSelector;
 class PropertyPanel;
+class TimelinePanel;
 
 /** Main window of the Qt-based Windstille level editor. */
 class EditorWindow final : public QMainWindow
@@ -73,6 +74,7 @@ private:
   LayerPanel* m_layer_panel;
   ObjectSelector* m_object_selector;
   PropertyPanel* m_property_panel;
+  TimelinePanel* m_timeline_panel;
 
   EditorWindow(EditorWindow const&) = delete;
   EditorWindow& operator=(EditorWindow const&) = delete;

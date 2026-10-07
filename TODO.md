@@ -46,7 +46,7 @@ Related: [PORTS.md](PORTS.md).
 - [x] Object selector (list + double-click place at view centre)
 - [x] Multi-document tabs (QTabWidget)
 - [x] Property flip (h/v)
-- [ ] Timeline / animation UI
+- [x] Timeline panel (scrub, layers, keyframes pos/rot/scale)
 - [x] Property panel (pos/scale/angle for selection)
 - [x] Click-to-place from object palette
 

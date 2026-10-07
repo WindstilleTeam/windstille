@@ -33,6 +33,7 @@
 #include "editor_qt/layer_panel.hpp"
 #include "editor_qt/object_selector.hpp"
 #include "editor_qt/property_panel.hpp"
+#include "editor_qt/timeline_panel.hpp"
 
 namespace windstille {
 
@@ -41,7 +42,8 @@ EditorWindow::EditorWindow(QWidget* parent) :
   m_tabs(nullptr),
   m_layer_panel(nullptr),
   m_object_selector(nullptr),
-  m_property_panel(nullptr)
+  m_property_panel(nullptr),
+  m_timeline_panel(nullptr)
 {
   setWindowTitle(QStringLiteral("Windstille Editor (Qt)"));
   resize(1400, 850);
@@ -56,6 +58,7 @@ EditorWindow::EditorWindow(QWidget* parent) :
   m_layer_panel = new LayerPanel(this);
   m_object_selector = new ObjectSelector(this);
   m_property_panel = new PropertyPanel(this);
+  m_timeline_panel = new TimelinePanel(this);
 
   auto* left = new QSplitter(Qt::Vertical, this);
   left->addWidget(m_layer_panel);
@@ -63,15 +66,22 @@ EditorWindow::EditorWindow(QWidget* parent) :
   left->setStretchFactor(0, 1);
   left->setStretchFactor(1, 2);
 
-  auto* splitter = new QSplitter(Qt::Horizontal, this);
-  splitter->addWidget(left);
-  splitter->addWidget(m_tabs);
-  splitter->addWidget(m_property_panel);
-  splitter->setStretchFactor(0, 0);
-  splitter->setStretchFactor(1, 1);
-  splitter->setStretchFactor(2, 0);
-  splitter->setSizes({220, 960, 220});
-  setCentralWidget(splitter);
+  auto* mid = new QSplitter(Qt::Horizontal, this);
+  mid->addWidget(left);
+  mid->addWidget(m_tabs);
+  mid->addWidget(m_property_panel);
+  mid->setStretchFactor(0, 0);
+  mid->setStretchFactor(1, 1);
+  mid->setStretchFactor(2, 0);
+  mid->setSizes({220, 960, 220});
+
+  auto* root = new QSplitter(Qt::Vertical, this);
+  root->addWidget(mid);
+  root->addWidget(m_timeline_panel);
+  root->setStretchFactor(0, 1);
+  root->setStretchFactor(1, 0);
+  root->setSizes({650, 180});
+  setCentralWidget(root);
 
   build_menus();
   build_toolbar();
@@ -120,6 +130,7 @@ EditorWindow::sync_side_panels()
   if (!canvas) {
     m_layer_panel->set_document(nullptr);
     m_property_panel->set_document(nullptr);
+    m_timeline_panel->set_document(nullptr);
     m_object_selector->set_gl_widget(nullptr);
     return;
   }
@@ -127,6 +138,8 @@ EditorWindow::sync_side_panels()
   m_layer_panel->set_document(&canvas->document());
   m_property_panel->set_gl_widget(canvas);
   m_property_panel->set_document(&canvas->document());
+  m_timeline_panel->set_gl_widget(canvas);
+  m_timeline_panel->set_document(&canvas->document());
   m_object_selector->set_gl_widget(canvas);
 }
 
