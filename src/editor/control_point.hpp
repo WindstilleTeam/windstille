@@ -60,7 +60,7 @@ public:
 
   virtual void on_move_start();
   virtual void on_move_update(glm::vec2 const& offset);
-  virtual void on_move_end(GdkEventButton* event, glm::vec2 const& offset);
+  virtual void on_move_end(glm::vec2 const& offset);
 
 protected:
   /** Draw the surface centered on pos, rotated by \a angle radians */

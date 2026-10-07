@@ -53,7 +53,10 @@ GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   m_last_mouse(),
   m_click_world(),
   m_select_rect(),
-  m_shift(false)
+  m_shift(false),
+  m_drag_origins(),
+  m_ctrl_point(),
+  m_overlay()
 {
   QSurfaceFormat format;
   format.setVersion(3, 3);
@@ -161,6 +164,13 @@ GLWidget::paintGL()
   m_renderer->clear(surf::Color(0.18f, 0.18f, 0.22f));
   draw_sector();
   m_scene_context->render(*m_renderer, m_view);
+  // Control handles in screen space (size independent of zoom).
+  m_overlay.clear();
+  for (auto const& cp : m_document->get_control_points()) {
+    cp->draw(m_overlay, m_view);
+  }
+  m_renderer->render(m_overlay);
+  m_overlay.clear();
   m_renderer->end_frame();
 }
 
@@ -211,6 +221,17 @@ GLWidget::mousePressEvent(QMouseEvent* event)
   }
 
   if (event->button() == Qt::LeftButton) {
+    // Prefer control-point handles over objects.
+    m_ctrl_point = m_document->get_control_point(m_click_world);
+    if (m_ctrl_point) {
+      m_mode = Mode::ControlDrag;
+      m_document->clear_control_points();
+      m_ctrl_point->on_move_start();
+      update();
+      event->accept();
+      return;
+    }
+
     ObjectModelHandle object =
       m_document->get_sector_model().get_object_at(m_click_world, m_select_mask);
 
@@ -228,6 +249,7 @@ GLWidget::mousePressEvent(QMouseEvent* event)
         sel->remove(object);
       }
       m_mode = Mode::DragObject;
+      m_document->create_control_points();
       m_drag_origins.clear();
       SelectionHandle sel = m_document->get_selection();
       if (sel) {
@@ -238,6 +260,7 @@ GLWidget::mousePressEvent(QMouseEvent* event)
     } else {
       if (!m_shift) {
         m_document->set_selection(Selection::create());
+        m_document->clear_control_points();
       }
       m_select_rect = geom::frect(
         m_click_world.x, m_click_world.y,
@@ -266,6 +289,14 @@ GLWidget::mouseReleaseEvent(QMouseEvent* event)
   if (event->button() == Qt::LeftButton) {
     if (m_mode == Mode::SelectBox) {
       update_selection_from_box();
+      m_document->create_control_points();
+    } else if (m_mode == Mode::ControlDrag) {
+      if (m_ctrl_point) {
+        glm::vec2 const world = screen_to_world(event->position());
+        m_ctrl_point->on_move_end(world - m_click_world);
+        m_ctrl_point.reset();
+      }
+      m_document->create_control_points();
     } else if (m_mode == Mode::DragObject) {
       // Commit positions as undoable commands (group as one undo step).
       if (!m_drag_origins.empty()) {
@@ -320,6 +351,13 @@ GLWidget::mouseMoveEvent(QMouseEvent* event)
     float const top = std::min(m_click_world.y, world.y);
     float const bot = std::max(m_click_world.y, world.y);
     m_select_rect = geom::frect(l, top, r, bot);
+    update();
+    event->accept();
+    return;
+  }
+
+  if (m_mode == Mode::ControlDrag && m_ctrl_point) {
+    m_ctrl_point->on_move_update(world - m_click_world);
     update();
     event->accept();
     return;

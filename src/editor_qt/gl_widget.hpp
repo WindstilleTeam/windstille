@@ -28,9 +28,11 @@
 #include <QPointF>
 
 #include <geom/rect.hpp>
+#include <wstdisplay/canvas.hpp>
 #include <wstdisplay/view.hpp>
 
 #include "display/scene_context.hpp"
+#include "editor/control_point.hpp"
 #include "editor/document.hpp"
 #include "editor/select_mask.hpp"
 
@@ -84,7 +86,8 @@ private:
     None,
     Pan,
     SelectBox,
-    DragObject
+    DragObject,
+    ControlDrag
   };
 
   void draw_sector();
@@ -105,6 +108,8 @@ private:
   bool m_shift;
   /** World positions at drag start for undo. */
   std::vector<std::pair<ObjectModelHandle, glm::vec2>> m_drag_origins;
+  ControlPointHandle m_ctrl_point;
+  wstdisplay::Canvas m_overlay;
 
   GLWidget(GLWidget const&) = delete;
   GLWidget& operator=(GLWidget const&) = delete;
