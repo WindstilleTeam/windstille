@@ -19,6 +19,7 @@
 #include "editor/document.hpp"
 
 #include <functional>
+#include <map>
 #include <logmich/log.hpp>
 
 #include "editor/selection.hpp"
@@ -416,7 +417,7 @@ Document::selection_duplicate()
 
     if (!layer)
     {
-      logmich::warn("Couldn't find parent layer while duplicating");
+      log_warn("Couldn't find parent layer while duplicating");
     }
     else
     {

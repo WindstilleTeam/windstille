@@ -20,7 +20,9 @@
 #define HEADER_WINDSTILLE_EDITOR_NAVIGATION_GRAPH_MODEL_HPP
 
 #include <vector>
+#include <map>
 #include <memory>
+#include <map>
 #include <memory>
 
 #include "editor/selection.hpp"

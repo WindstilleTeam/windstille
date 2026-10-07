@@ -82,7 +82,7 @@ void
 SectorModel::delete_layer(std::size_t index)
 {
   if (index >= m_layers.size()) {
-    logmich::warn("SectorModel::delete_layer: index {} out of range", index);
+    log_warn("SectorModel::delete_layer: index {} out of range", index);
     return;
   }
   m_layers.erase(m_layers.begin() + static_cast<std::ptrdiff_t>(index));
@@ -94,7 +94,7 @@ SectorModel::delete_layer(LayerHandle layer)
 {
   auto it = std::find(m_layers.begin(), m_layers.end(), layer);
   if (it == m_layers.end()) {
-    logmich::warn("SectorModel::delete_layer: layer not found");
+    log_warn("SectorModel::delete_layer: layer not found");
     return;
   }
   m_layers.erase(it);
@@ -122,7 +122,7 @@ SectorModel::move_layer(std::size_t from_index, std::size_t to_index)
 void
 SectorModel::add(ObjectModelHandle const& object, LayerHandle layer)
 {
-  if (!layer) { logmich::warn("SectorModel::add: null layer"); return; }
+  if (!layer) { log_warn("SectorModel::add: null layer"); return; }
   layer->add(object);
   notify_layers_changed();
 }

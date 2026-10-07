@@ -33,6 +33,7 @@
 #include "editor/observable_signal.hpp"
 #include "editor/selection.hpp"
 #include "editor/timeline_handles.hpp"
+#include "util/file_writer.hpp"
 
 namespace windstille {
 
@@ -40,7 +41,6 @@ class SceneContext;
 class NavigationGraphModel;
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
-class FileWriter;
 
 class SectorModel
 {

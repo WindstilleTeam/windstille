@@ -30,12 +30,12 @@
 
 #include "editor/selection.hpp"
 #include "editor/snap_data.hpp"
+#include "util/file_writer.hpp"
 
 namespace windstille {
 
 class SceneContext;
 class SectorModel;
-class FileWriter;
 
 class Layer;
 typedef std::shared_ptr<Layer> LayerHandle;

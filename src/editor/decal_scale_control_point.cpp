@@ -74,7 +74,7 @@ DecalScaleControlPoint::on_move_update(glm::vec2 const& offset_)
 void
 DecalScaleControlPoint::on_move_end(glm::vec2 const& offset_)
 {
-  on_move_update(nullptr/*event*/, offset_);
+  on_move_update(offset_);
 }
 
 void

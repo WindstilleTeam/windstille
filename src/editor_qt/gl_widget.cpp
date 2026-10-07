@@ -116,9 +116,9 @@ GLWidget::load_file(std::string const& filename)
     m_document = std::make_unique<Document>(filename);
     m_filename = filename;
     m_document->signal_on_change().connect([this]() { update(); });
-    logmich::info("loaded {}", filename);
+    log_info("loaded {}", filename);
   } catch (std::exception const& err) {
-    logmich::error("failed to load {}: {}", filename, err.what());
+    log_error("failed to load {}: {}", filename, err.what());
   }
   update();
 }
@@ -129,16 +129,16 @@ GLWidget::save_file(std::string const& path)
   try {
     std::ofstream out(path.c_str());
     if (!out) {
-      logmich::error("cannot open {} for writing", path);
+      log_error("cannot open {} for writing", path);
       return false;
     }
     FileWriter writer(out);
     m_document->get_sector_model().write(writer);
     m_filename = path;
-    logmich::info("wrote {}", path);
+    log_info("wrote {}", path);
     return true;
   } catch (std::exception const& err) {
-    logmich::error("save failed: {}", err.what());
+    log_error("save failed: {}", err.what());
     return false;
   }
 }
@@ -181,7 +181,7 @@ GLWidget::initializeGL()
   try {
     m_background = g_app.surface().get(Pathname("editor/background_layer.png"));
   } catch (std::exception const& err) {
-    logmich::warn("background pattern: {}", err.what());
+    log_warn("background pattern: {}", err.what());
   }
 }
 

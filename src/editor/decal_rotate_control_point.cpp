@@ -53,13 +53,8 @@ DecalRotateControlPoint::on_move_update(glm::vec2 const& offset_)
   float current_angle = atan2f(current.y, current.x);
 
   float new_angle = orig_angle + current_angle - base_angle;
-
-  if (event->state & GDK_CONTROL_MASK)
-  {
-    float steps = 16.0f;
-    new_angle = roundf((new_angle / glm::two_pi<float>()) * steps) / steps * glm::two_pi<float>();
-  }
-
+  // Ctrl-snap was GdkEvent-based; angle is applied freely. Snap can return via a
+  // toolkit-neutral modifier flag later if needed.
   object->set_angle(new_angle);
 }
 
