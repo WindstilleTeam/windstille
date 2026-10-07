@@ -279,8 +279,17 @@ if(BUILD_EDITOR_QT)
     src/editor/undo_manager.cpp
   )
 
-  file(GLOB WINDSTILLE_EDITOR_QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    src/editor_qt/*.cpp)
+  set(WINDSTILLE_EDITOR_QT_SOURCES
+    src/editor_qt/app.cpp
+    src/editor_qt/editor_window.cpp
+    src/editor_qt/gl_device.cpp
+    src/editor_qt/gl_widget.cpp
+    src/editor_qt/layer_panel.cpp
+    src/editor_qt/main.cpp
+    src/editor_qt/object_selector.cpp
+    src/editor_qt/property_panel.cpp
+    src/editor_qt/timeline_panel.cpp
+  )
 
   add_executable(windstille-editor-qt
     ${WINDSTILLE_EDITOR_QT_SOURCES}

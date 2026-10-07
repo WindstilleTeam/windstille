@@ -421,6 +421,86 @@ TimelinePanel::on_apply()
   }
 }
 
+
+void
+TimelinePanel::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Delete || event->key() == Qt::Key_Backspace) {
+    on_delete_keyframe();
+    event->accept();
+    return;
+  }
+  QWidget::keyPressEvent(event);
+}
+
+void
+TimelinePanel::on_delete_keyframe()
+{
+  if (!m_document) return;
+  TimelineObjectHandle obj = m_track->selected_object();
+  if (!obj) return;
+  TimelineHandle timeline = m_document->get_sector_model().get_timeline();
+  if (!timeline) return;
+  for (auto it = timeline->begin(); it != timeline->end(); ++it) {
+    (*it)->remove_object(obj);
+  }
+  m_track->clear_selection();
+  rebuild();
+}
+
+void
+TimelinePanel::on_play()
+{
+  if (!m_play_timer->isActive()) {
+    m_play_timer->start();
+  }
+}
+
+void
+TimelinePanel::on_stop()
+{
+  m_play_timer->stop();
+}
+
+void
+TimelinePanel::on_loop_toggled(bool checked)
+{
+  m_loop = checked;
+}
+
+void
+TimelinePanel::on_zoom_in()
+{
+  m_track->zoom_in();
+}
+
+void
+TimelinePanel::on_zoom_out()
+{
+  m_track->zoom_out();
+}
+
+void
+TimelinePanel::on_play_tick()
+{
+  double pos = m_cursor->value() + 0.033;
+  float const dur = m_track->duration();
+  if (pos > dur) {
+    if (m_loop) {
+      pos = 0.0;
+    } else {
+      pos = dur;
+      m_play_timer->stop();
+    }
+  }
+  m_updating = true;
+  m_cursor->setValue(pos);
+  m_slider->setValue(static_cast<int>(pos * 100.0));
+  m_track->set_cursor(static_cast<float>(pos));
+  m_updating = false;
+  on_apply();
+}
+
 } // namespace windstille
 
 /* EOF */
