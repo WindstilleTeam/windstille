@@ -1,3 +1,7 @@
+## Develop shell
+
+- [x] `nix develop` helpers: windstille-configure/build/run/run-gdb, editor-run, editor-qt-run
+
 # Windstille — TODO
 
 Living checklist for packaging, ports, and build hygiene. Prefer completing
