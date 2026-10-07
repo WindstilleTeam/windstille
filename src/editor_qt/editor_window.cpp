@@ -20,6 +20,8 @@
 
 #include <QAction>
 #include <QFileDialog>
+#include <QFileInfo>
+#include <QKeySequence>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QStatusBar>
@@ -41,7 +43,9 @@ EditorWindow::EditorWindow(QWidget* parent) :
 
   build_menus();
   build_toolbar();
-  statusBar()->showMessage(QStringLiteral("Ready"));
+  statusBar()->showMessage(QStringLiteral(
+    "LMB select/drag · Shift add · MMB/Alt+LMB pan · Wheel zoom · Del delete"));
+  update_title();
 }
 
 EditorWindow::~EditorWindow() = default;
@@ -57,9 +61,26 @@ EditorWindow::build_menus()
   QAction* act_open = file_menu->addAction(tr("&Open…"), this, &EditorWindow::on_open);
   act_open->setShortcut(QKeySequence::Open);
 
+  QAction* act_save = file_menu->addAction(tr("&Save"), this, &EditorWindow::on_save);
+  act_save->setShortcut(QKeySequence::Save);
+
+  QAction* act_save_as = file_menu->addAction(tr("Save &As…"), this, &EditorWindow::on_save_as);
+  act_save_as->setShortcut(QKeySequence::SaveAs);
+
   file_menu->addSeparator();
   QAction* act_quit = file_menu->addAction(tr("&Quit"), this, &EditorWindow::on_quit);
   act_quit->setShortcut(QKeySequence::Quit);
+
+  QMenu* edit_menu = menuBar()->addMenu(tr("&Edit"));
+  QAction* act_undo = edit_menu->addAction(tr("&Undo"), this, &EditorWindow::on_undo);
+  act_undo->setShortcut(QKeySequence::Undo);
+  QAction* act_redo = edit_menu->addAction(tr("&Redo"), this, &EditorWindow::on_redo);
+  act_redo->setShortcut(QKeySequence::Redo);
+  edit_menu->addSeparator();
+  QAction* act_sel_all = edit_menu->addAction(tr("Select &All"), this, &EditorWindow::on_select_all);
+  act_sel_all->setShortcut(QKeySequence::SelectAll);
+  QAction* act_del = edit_menu->addAction(tr("&Delete"), this, &EditorWindow::on_delete);
+  act_del->setShortcut(QKeySequence::Delete);
 
   QMenu* help_menu = menuBar()->addMenu(tr("&Help"));
   help_menu->addAction(tr("&About"), this, &EditorWindow::on_about);
@@ -72,12 +93,35 @@ EditorWindow::build_toolbar()
   tb->setMovable(false);
   tb->addAction(tr("New"), this, &EditorWindow::on_new);
   tb->addAction(tr("Open"), this, &EditorWindow::on_open);
+  tb->addAction(tr("Save"), this, &EditorWindow::on_save);
+}
+
+void
+EditorWindow::update_title()
+{
+  QString name = QStringLiteral("Untitled");
+  if (m_gl_widget && !m_gl_widget->filename().empty()) {
+    name = QFileInfo(QString::fromStdString(m_gl_widget->filename())).fileName();
+  }
+  setWindowTitle(tr("%1 — Windstille Editor (Qt)").arg(name));
+}
+
+void
+EditorWindow::load_file(std::string const& filename)
+{
+  if (m_gl_widget) {
+    m_gl_widget->load_file(filename);
+  }
+  update_title();
 }
 
 void
 EditorWindow::on_new()
 {
-  if (m_gl_widget) m_gl_widget->new_document();
+  if (m_gl_widget) {
+    m_gl_widget->new_document();
+  }
+  update_title();
   statusBar()->showMessage(tr("New sector"), 3000);
 }
 
@@ -92,14 +136,89 @@ EditorWindow::on_open()
   if (path.isEmpty()) {
     return;
   }
-  if (m_gl_widget) m_gl_widget->load_file(path.toStdString());
+  if (m_gl_widget) {
+    m_gl_widget->load_file(path.toStdString());
+  }
+  update_title();
   statusBar()->showMessage(tr("Opened %1").arg(path), 5000);
 }
 
 void
-EditorWindow::load_file(std::string const& filename)
+EditorWindow::on_save()
 {
-  if (m_gl_widget) m_gl_widget->load_file(filename);
+  if (!m_gl_widget) {
+    return;
+  }
+  if (m_gl_widget->filename().empty()) {
+    on_save_as();
+    return;
+  }
+  if (m_gl_widget->save_file(m_gl_widget->filename())) {
+    statusBar()->showMessage(tr("Saved %1")
+      .arg(QString::fromStdString(m_gl_widget->filename())), 5000);
+  } else {
+    QMessageBox::warning(this, tr("Save failed"),
+                         tr("Could not write the sector file."));
+  }
+}
+
+void
+EditorWindow::on_save_as()
+{
+  if (!m_gl_widget) {
+    return;
+  }
+  QString const path = QFileDialog::getSaveFileName(
+    this,
+    tr("Save Sector"),
+    QString::fromStdString(m_gl_widget->filename()),
+    tr("Windstille sectors (*.sexp *.txt);;All files (*)"));
+  if (path.isEmpty()) {
+    return;
+  }
+  if (m_gl_widget->save_file(path.toStdString())) {
+    update_title();
+    statusBar()->showMessage(tr("Saved %1").arg(path), 5000);
+  } else {
+    QMessageBox::warning(this, tr("Save failed"),
+                         tr("Could not write the sector file."));
+  }
+}
+
+void
+EditorWindow::on_undo()
+{
+  if (m_gl_widget) {
+    m_gl_widget->document().undo();
+    m_gl_widget->update();
+  }
+}
+
+void
+EditorWindow::on_redo()
+{
+  if (m_gl_widget) {
+    m_gl_widget->document().redo();
+    m_gl_widget->update();
+  }
+}
+
+void
+EditorWindow::on_delete()
+{
+  if (m_gl_widget) {
+    m_gl_widget->document().selection_delete();
+    m_gl_widget->update();
+  }
+}
+
+void
+EditorWindow::on_select_all()
+{
+  if (m_gl_widget) {
+    m_gl_widget->document().select_all();
+    m_gl_widget->update();
+  }
 }
 
 void
@@ -115,7 +234,12 @@ EditorWindow::on_about()
     this,
     tr("About Windstille Editor (Qt)"),
     tr("Windstille level editor — Qt6 port.\n"
-       "Runs side-by-side with the Gtk editor for comparison.\n"
+       "Runs side-by-side with the Gtk editor for comparison.\n\n"
+       "LMB: select / drag objects\n"
+       "Shift+LMB: add to selection\n"
+       "MMB or Alt+LMB: pan\n"
+       "Wheel: zoom\n"
+       "Del: delete selection\n\n"
        "GPLv3+"));
 }
 

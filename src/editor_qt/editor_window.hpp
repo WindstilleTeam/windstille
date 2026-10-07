@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_QT_EDITOR_WINDOW_HPP
 
 #include <string>
+
 #include <QMainWindow>
 
 namespace windstille {
@@ -41,12 +42,19 @@ public:
 private slots:
   void on_new();
   void on_open();
+  void on_save();
+  void on_save_as();
   void on_quit();
   void on_about();
+  void on_undo();
+  void on_redo();
+  void on_delete();
+  void on_select_all();
 
 private:
   void build_menus();
   void build_toolbar();
+  void update_title();
 
   GLWidget* m_gl_widget;
 

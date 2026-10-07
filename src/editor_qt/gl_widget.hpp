@@ -20,16 +20,17 @@
 #define HEADER_WINDSTILLE_EDITOR_QT_GL_WIDGET_HPP
 
 #include <memory>
-
-#include <memory>
 #include <string>
 
 #include <QOpenGLWidget>
+#include <QPointF>
 
+#include <geom/rect.hpp>
 #include <wstdisplay/view.hpp>
 
 #include "display/scene_context.hpp"
 #include "editor/document.hpp"
+#include "editor/select_mask.hpp"
 
 namespace wstdisplay {
 class Renderer;
@@ -39,8 +40,7 @@ namespace windstille {
 
 class EditorWindow;
 
-/** Main level canvas (Qt counterpart of WindstilleWidget).
-    First realized instance initialises the process-wide QtGLDevice. */
+/** Main level canvas (Qt counterpart of WindstilleWidget). */
 class GLWidget final : public QOpenGLWidget
 {
   Q_OBJECT
@@ -50,11 +50,21 @@ public:
   ~GLWidget() override;
 
   Document& document() { return *m_document; }
+  Document const& document() const { return *m_document; }
+
   void load_file(std::string const& filename);
   void new_document();
+  bool save_file(std::string const& filename);
+
+  std::string const& filename() const { return m_filename; }
+  void set_filename(std::string const& path) { m_filename = path; }
+
+  SelectMask const& select_mask() const { return m_select_mask; }
 
   wstdisplay::View& view() { return m_view; }
   wstdisplay::View const& view() const { return m_view; }
+
+  glm::vec2 screen_to_world(QPointF const& pos) const;
 
 protected:
   void initializeGL() override;
@@ -65,15 +75,32 @@ protected:
   void mouseReleaseEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
   void wheelEvent(QWheelEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
 
 private:
+  enum class Mode {
+    None,
+    Pan,
+    SelectBox,
+    DragObject
+  };
+
+  void draw_sector();
+  void update_selection_from_box();
+
   EditorWindow* m_editor;
   std::unique_ptr<Document> m_document;
   std::unique_ptr<wstdisplay::Renderer> m_renderer;
   std::unique_ptr<SceneContext> m_scene_context;
   wstdisplay::View m_view;
+  std::string m_filename;
+  SelectMask m_select_mask;
 
-  void draw_sector();
+  Mode m_mode;
+  QPointF m_last_mouse;
+  glm::vec2 m_click_world;
+  geom::frect m_select_rect;
+  bool m_shift;
 
   GLWidget(GLWidget const&) = delete;
   GLWidget& operator=(GLWidget const&) = delete;
