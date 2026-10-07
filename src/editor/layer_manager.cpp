@@ -34,6 +34,9 @@
 
 namespace windstille {
 
+LayerManagerColumns* LayerManagerColumns::instance_ = nullptr;
+
+
 
 LayerManager::LayerManager(EditorWindow& editor_) :
   m_editor(editor_),
