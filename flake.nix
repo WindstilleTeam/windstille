@@ -312,6 +312,29 @@
           ];
         };
 
+        # Qt6 level editor (side-by-side with the Gtk editor while porting).
+        windstille-editor-qt = stdenv.mkDerivation {
+          pname = "windstille-editor-qt";
+          version = "0.3.0";
+          src = ./.;
+          cmakeFlags = [
+            "-DBUILD_EDITOR=OFF"
+            "-DBUILD_EDITOR_QT=ON"
+            "-DBUILD_EXTRA=OFF"
+          ] ++ commonCmakeFlags;
+          nativeBuildInputs = commonNative ++ [
+            miniswig
+            pkgs.qt6.wrapQtAppsHook
+          ] ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
+          buildInputs = commonBuildInputs ++ [
+            pkgs.qt6.qtbase
+          ];
+          meta = {
+            description = "Windstille level editor (Qt6)";
+            mainProgram = "windstille-editor-qt";
+          };
+        };
+
 
         # Desktop build that defaults to OpenGL ES 2.0, to validate the
         # embedded/WebGL path on Linux. wstdisplay picks the API at
@@ -496,6 +519,7 @@
             libwindstille
             windstille
             windstille-editor
+            windstille-editor-qt
             windstille-gles2;
           tinycmmc = tinycmmc_pkg;
           default = windstille;
@@ -535,6 +559,10 @@
           windstille-editor = {
             type = "app";
             program = "${windstille-editor}/bin/windstille-editor";
+          };
+          windstille-editor-qt = {
+            type = "app";
+            program = "${windstille-editor-qt}/bin/windstille-editor-qt";
           };
           windstille-gles2 = {
             type = "app";

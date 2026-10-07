@@ -24,6 +24,7 @@ include(CheckIncludeFile)
 include(InstallWithWrapper)
 
 option(BUILD_EDITOR "Build Windstille editor" ON)
+option(BUILD_EDITOR_QT "Build Windstille Qt6 editor" OFF)
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
 option(WINDSTILLE_USE_GLES "Use OpenGL ES 2.0 (embedded / wasm path)" OFF)
@@ -246,6 +247,24 @@ if(BUILD_EDITOR)
   install(FILES
     windstille-editor.desktop
     DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+endif()
+
+if(BUILD_EDITOR_QT)
+  set(CMAKE_AUTOMOC ON)
+  find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets)
+
+  file(GLOB WINDSTILLE_EDITOR_QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    src/editor_qt/*.cpp)
+
+  add_executable(windstille-editor-qt ${WINDSTILLE_EDITOR_QT_SOURCES})
+  target_compile_options(windstille-editor-qt PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
+  target_include_directories(windstille-editor-qt PRIVATE src/ ${CMAKE_CURRENT_BINARY_DIR}/src/)
+  target_link_libraries(windstille-editor-qt
+    libwindstille
+    Qt6::Widgets
+    Qt6::OpenGLWidgets)
+
+  install_with_wrapper(TARGETS windstille-editor-qt)
 endif()
 
 file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}

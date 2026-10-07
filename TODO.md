@@ -34,6 +34,19 @@ Related: [PORTS.md](PORTS.md).
 
 ## In progress / next
 
+### Qt6 editor (`src/editor_qt/`, `nix build .#windstille-editor-qt`)
+- [x] Scaffold: `BUILD_EDITOR_QT`, flake package/app, main window + menus
+- [x] Shared `QtGLDevice` + `QOpenGLWidget` canvas (clear + mouse-wheel zoom)
+- [x] `Layer` toolkit-agnostic (no Gtk row pointer; proper setters)
+- [ ] Decouple `SectorModel` / `Document` from `Gtk::ListStore` / `TreeModel::Path` / `sigc`
+- [ ] Wire level load/save into Qt editor
+- [ ] Port select / scroll / zoom tools + overlay drawing
+- [ ] Layer panel (`QTreeView` + model)
+- [ ] Object selector + drag-drop onto canvas
+- [ ] Timeline / animation UI
+- [ ] Property dialogs, undo/redo chrome
+
+
 ### Desktop quality
 - [ ] Confirm clean `nix build .#windstille` and `.#windstille-editor` end-to-end (install + run smoke)
 - [ ] Confirm plain CMake (no Nix) still works: `cmake -B build && cmake --build build`
