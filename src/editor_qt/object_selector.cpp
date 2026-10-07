@@ -171,7 +171,7 @@ ObjectSelector::on_item_activated(QListWidgetItem* item)
   doc.set_selection(sel);
   m_gl_widget->update();
 
-  emit path_activated(path);
+  Q_EMIT path_activated(path);
 }
 
 } // namespace windstille

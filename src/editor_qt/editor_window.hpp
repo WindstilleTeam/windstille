@@ -47,7 +47,7 @@ public:
   ObjectSelector* object_selector() const { return m_object_selector; }
   void load_file(std::string const& filename);
 
-private slots:
+private Q_SLOTS:
   void on_new();
   void on_open();
   void on_save();

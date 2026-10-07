@@ -286,6 +286,7 @@ if(BUILD_EDITOR_QT)
     ${WINDSTILLE_EDITOR_QT_SOURCES}
     ${WINDSTILLE_EDITOR_CORE_SOURCES})
   target_compile_options(windstille-editor-qt PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
+  target_compile_definitions(windstille-editor-qt PRIVATE QT_NO_KEYWORDS)
   target_include_directories(windstille-editor-qt PRIVATE src/ ${CMAKE_CURRENT_BINARY_DIR}/src/)
   target_link_libraries(windstille-editor-qt
     libwindstille

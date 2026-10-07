@@ -46,17 +46,17 @@ public:
   void set_document(Document* document);
   void set_gl_widget(GLWidget* widget) { m_gl_widget = widget; }
 
-public slots:
+public Q_SLOTS:
   void refresh_from_selection();
 
-private slots:
+private Q_SLOTS:
   void on_pos_x_changed(double v);
   void on_pos_y_changed(double v);
   void on_scale_x_changed(double v);
   void on_scale_y_changed(double v);
   void on_angle_changed(double v);
-  void on_hflip_changed(int state);
-  void on_vflip_changed(int state);
+  void on_hflip_changed(Qt::CheckState state);
+  void on_vflip_changed(Qt::CheckState state);
   void on_map_type_changed(int index);
   void on_select_mask_changed();
   void on_ambient_clicked();

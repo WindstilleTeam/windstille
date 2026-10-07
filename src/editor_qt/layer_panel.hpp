@@ -46,10 +46,10 @@ public:
   /** Layer currently selected in the tree (topmost first in UI). */
   class Layer* current_layer() const;
 
-public slots:
+public Q_SLOTS:
   void rebuild();
 
-private slots:
+private Q_SLOTS:
   void on_item_changed(QTreeWidgetItem* item, int column);
   void on_selection_changed();
   void on_new_layer();

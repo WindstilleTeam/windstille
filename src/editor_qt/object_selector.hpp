@@ -46,10 +46,10 @@ public:
   /** Relative data path of the currently selected item (empty if none). */
   std::string selected_path() const;
 
-signals:
+Q_SIGNALS:
   void path_activated(std::string const& path);
 
-private slots:
+private Q_SLOTS:
   void on_item_activated(QListWidgetItem* item);
 
 private:

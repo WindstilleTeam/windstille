@@ -185,17 +185,17 @@ TimelineTrackWidget::mousePressEvent(QMouseEvent* event)
     m_drag_origin_pos = hit->get_pos();
     m_drag_click_pos = x_to_pos(mx);
     m_scrubbing = false;
-    emit selection_changed();
+    Q_EMIT selection_changed();
     update();
     return;
   }
   m_selected.reset();
-  emit selection_changed();
+  Q_EMIT selection_changed();
   float const pos = std::max(0.0f, x_to_pos(mx));
   m_cursor = pos;
   m_scrubbing = true;
   update();
-  emit cursor_scrubbed(pos);
+  Q_EMIT cursor_scrubbed(pos);
 }
 
 void
@@ -216,7 +216,7 @@ TimelineTrackWidget::mouseMoveEvent(QMouseEvent* event)
     float const pos = std::max(0.0f, x_to_pos(mx));
     m_cursor = pos;
     update();
-    emit cursor_scrubbed(pos);
+    Q_EMIT cursor_scrubbed(pos);
   }
 }
 

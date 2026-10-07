@@ -55,10 +55,10 @@ public:
 protected:
   void keyPressEvent(QKeyEvent* event) override;
 
-public slots:
+public Q_SLOTS:
   void rebuild();
 
-private slots:
+private Q_SLOTS:
   void on_cursor_changed(double pos);
   void on_slider_changed(int value);
   void on_add_layer();
@@ -106,7 +106,7 @@ public:
   TimelineObjectHandle selected_object() const { return m_selected; }
   void clear_selection() { m_selected.reset(); update(); }
 
-signals:
+Q_SIGNALS:
   void cursor_scrubbed(float pos);
   void selection_changed();
 

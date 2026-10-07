@@ -95,7 +95,7 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
     m_mask_bits[static_cast<size_t>(i)] = new QCheckBox(QString::number(i), this);
     m_mask_bits[static_cast<size_t>(i)]->setToolTip(tr("Select mask bit %1").arg(i));
     mask_row->addWidget(m_mask_bits[static_cast<size_t>(i)]);
-    connect(m_mask_bits[static_cast<size_t>(i)], &QCheckBox::stateChanged,
+    connect(m_mask_bits[static_cast<size_t>(i)], &QCheckBox::checkStateChanged,
             this, &PropertyPanel::on_select_mask_changed);
   }
   object_form->addRow(tr("Mask"), mask_row);
@@ -121,8 +121,8 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
           this, &PropertyPanel::on_scale_y_changed);
   connect(m_angle, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
           this, &PropertyPanel::on_angle_changed);
-  connect(m_hflip, &QCheckBox::stateChanged, this, &PropertyPanel::on_hflip_changed);
-  connect(m_vflip, &QCheckBox::stateChanged, this, &PropertyPanel::on_vflip_changed);
+  connect(m_hflip, &QCheckBox::checkStateChanged, this, &PropertyPanel::on_hflip_changed);
+  connect(m_vflip, &QCheckBox::checkStateChanged, this, &PropertyPanel::on_vflip_changed);
   connect(m_map_type, QOverload<int>::of(&QComboBox::currentIndexChanged),
           this, &PropertyPanel::on_map_type_changed);
 
@@ -321,7 +321,7 @@ PropertyPanel::on_angle_changed(double v)
 }
 
 void
-PropertyPanel::on_hflip_changed(int state)
+PropertyPanel::on_hflip_changed(Qt::CheckState state)
 {
   if (m_updating || !m_document) return;
   ObjectModelHandle obj = *m_document->get_selection()->begin();
@@ -333,7 +333,7 @@ PropertyPanel::on_hflip_changed(int state)
 }
 
 void
-PropertyPanel::on_vflip_changed(int state)
+PropertyPanel::on_vflip_changed(Qt::CheckState state)
 {
   if (m_updating || !m_document) return;
   ObjectModelHandle obj = *m_document->get_selection()->begin();
