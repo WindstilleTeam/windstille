@@ -19,15 +19,23 @@
 #include "editor_qt/property_panel.hpp"
 
 #include <QCheckBox>
+#include <QColorDialog>
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
+#include <QGroupBox>
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <QVBoxLayout>
+
+#include <surf/color.hpp>
 
 #include "editor/decal_object_model.hpp"
 #include "editor/document.hpp"
+#include "editor/select_mask.hpp"
 #include "editor/selection.hpp"
+#include "editor/sector_model.hpp"
 #include "editor_qt/gl_widget.hpp"
 
 namespace windstille {
@@ -50,6 +58,7 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   m_document(nullptr),
   m_gl_widget(nullptr),
   m_updating(false),
+  m_ambient_btn(new QPushButton(this)),
   m_name_label(new QLabel(tr("(no selection)"), this)),
   m_pos_x(make_spin(this, -1e6, 1e6, 1.0)),
   m_pos_y(make_spin(this, -1e6, 1e6, 1.0)),
@@ -58,29 +67,50 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   m_angle(make_spin(this, -360.0, 360.0, 1.0)),
   m_hflip(new QCheckBox(tr("Horizontal flip"), this)),
   m_vflip(new QCheckBox(tr("Vertical flip"), this)),
-  m_map_type(new QComboBox(this))
+  m_map_type(new QComboBox(this)),
+  m_mask_bits{},
+  m_object_group(nullptr)
 {
   m_map_type->addItem(tr("Color map"), static_cast<int>(DecalObjectModel::COLORMAP));
   m_map_type->addItem(tr("Light map"), static_cast<int>(DecalObjectModel::LIGHTMAP));
   m_map_type->addItem(tr("Highlight map"), static_cast<int>(DecalObjectModel::HIGHLIGHTMAP));
 
-  auto* form = new QFormLayout;
-  form->addRow(tr("Object"), m_name_label);
-  form->addRow(tr("X"), m_pos_x);
-  form->addRow(tr("Y"), m_pos_y);
-  form->addRow(tr("Scale X"), m_scale_x);
-  form->addRow(tr("Scale Y"), m_scale_y);
-  form->addRow(tr("Angle °"), m_angle);
-  form->addRow(tr(""), m_hflip);
-  form->addRow(tr(""), m_vflip);
-  form->addRow(tr("Map"), m_map_type);
+  auto* sector_form = new QFormLayout;
+  sector_form->addRow(tr("Ambient"), m_ambient_btn);
+
+  auto* object_form = new QFormLayout;
+  object_form->addRow(tr("Object"), m_name_label);
+  object_form->addRow(tr("X"), m_pos_x);
+  object_form->addRow(tr("Y"), m_pos_y);
+  object_form->addRow(tr("Scale X"), m_scale_x);
+  object_form->addRow(tr("Scale Y"), m_scale_y);
+  object_form->addRow(tr("Angle °"), m_angle);
+  object_form->addRow(tr(""), m_hflip);
+  object_form->addRow(tr(""), m_vflip);
+  object_form->addRow(tr("Map"), m_map_type);
+
+  auto* mask_row = new QHBoxLayout;
+  mask_row->setSpacing(2);
+  for (int i = 0; i < 16; ++i) {
+    m_mask_bits[static_cast<size_t>(i)] = new QCheckBox(QString::number(i), this);
+    m_mask_bits[static_cast<size_t>(i)]->setToolTip(tr("Select mask bit %1").arg(i));
+    mask_row->addWidget(m_mask_bits[static_cast<size_t>(i)]);
+    connect(m_mask_bits[static_cast<size_t>(i)], &QCheckBox::stateChanged,
+            this, &PropertyPanel::on_select_mask_changed);
+  }
+  object_form->addRow(tr("Mask"), mask_row);
+
+  m_object_group = new QGroupBox(tr("Selection"), this);
+  m_object_group->setLayout(object_form);
 
   auto* layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 4, 4, 4);
-  layout->addWidget(new QLabel(tr("Properties"), this));
-  layout->addLayout(form);
+  layout->addWidget(new QLabel(tr("Sector"), this));
+  layout->addLayout(sector_form);
+  layout->addWidget(m_object_group);
   layout->addStretch(1);
 
+  connect(m_ambient_btn, &QPushButton::clicked, this, &PropertyPanel::on_ambient_clicked);
   connect(m_pos_x, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
           this, &PropertyPanel::on_pos_x_changed);
   connect(m_pos_y, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
@@ -96,9 +126,10 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   connect(m_map_type, QOverload<int>::of(&QComboBox::currentIndexChanged),
           this, &PropertyPanel::on_map_type_changed);
 
-  setMinimumWidth(180);
-  setMaximumWidth(320);
-  setEnabled(false);
+  setMinimumWidth(200);
+  setMaximumWidth(360);
+  set_object_widgets_enabled(false);
+  update_ambient_button();
 }
 
 PropertyPanel::~PropertyPanel() = default;
@@ -116,13 +147,40 @@ PropertyPanel::set_document(Document* document)
 }
 
 void
+PropertyPanel::set_object_widgets_enabled(bool on)
+{
+  m_object_group->setEnabled(on);
+}
+
+void
+PropertyPanel::update_ambient_button()
+{
+  if (!m_document) {
+    m_ambient_btn->setText(tr("(none)"));
+    m_ambient_btn->setEnabled(false);
+    return;
+  }
+  m_ambient_btn->setEnabled(true);
+  surf::Color const c = m_document->get_sector_model().get_ambient_color();
+  QColor qc;
+  qc.setRgbF(c.r, c.g, c.b, c.a);
+  m_ambient_btn->setText(qc.name(QColor::HexRgb));
+  QPalette pal = m_ambient_btn->palette();
+  pal.setColor(QPalette::Button, qc);
+  m_ambient_btn->setPalette(pal);
+  m_ambient_btn->setAutoFillBackground(true);
+}
+
+void
 PropertyPanel::refresh_from_selection()
 {
   m_updating = true;
+  update_ambient_button();
+
   if (!m_document || !m_document->get_selection() ||
       m_document->get_selection()->empty()) {
     m_name_label->setText(tr("(no selection)"));
-    setEnabled(false);
+    set_object_widgets_enabled(false);
     m_updating = false;
     return;
   }
@@ -132,6 +190,11 @@ PropertyPanel::refresh_from_selection()
   glm::vec2 const pos = obj->get_rel_pos();
   m_pos_x->setValue(pos.x);
   m_pos_y->setValue(pos.y);
+
+  SelectMask const mask = obj->get_select_mask();
+  for (int i = 0; i < 16; ++i) {
+    m_mask_bits[static_cast<size_t>(i)]->setChecked(mask.get(static_cast<unsigned>(i)));
+  }
 
   auto* decal = dynamic_cast<DecalObjectModel*>(obj.get());
   if (decal) {
@@ -156,8 +219,34 @@ PropertyPanel::refresh_from_selection()
     m_map_type->setEnabled(false);
   }
 
-  setEnabled(true);
+  set_object_widgets_enabled(true);
   m_updating = false;
+}
+
+void
+PropertyPanel::on_ambient_clicked()
+{
+  if (!m_document) {
+    return;
+  }
+  surf::Color const cur = m_document->get_sector_model().get_ambient_color();
+  QColor initial;
+  initial.setRgbF(cur.r, cur.g, cur.b, cur.a);
+  QColor const chosen = QColorDialog::getColor(
+    initial, this, tr("Sector ambient color"), QColorDialog::ShowAlphaChannel);
+  if (!chosen.isValid()) {
+    return;
+  }
+  m_document->get_sector_model().set_ambient_color(surf::Color(
+    static_cast<float>(chosen.redF()),
+    static_cast<float>(chosen.greenF()),
+    static_cast<float>(chosen.blueF()),
+    static_cast<float>(chosen.alphaF())));
+  m_document->signal_on_change()();
+  update_ambient_button();
+  if (m_gl_widget) {
+    m_gl_widget->update();
+  }
 }
 
 void
@@ -231,7 +320,6 @@ PropertyPanel::on_angle_changed(double v)
   }
 }
 
-
 void
 PropertyPanel::on_hflip_changed(int state)
 {
@@ -252,6 +340,34 @@ PropertyPanel::on_vflip_changed(int state)
   auto* decal = dynamic_cast<DecalObjectModel*>(obj.get());
   if (!decal) return;
   decal->set_vflip(state == Qt::Checked);
+  m_document->signal_on_change()();
+  if (m_gl_widget) m_gl_widget->update();
+}
+
+void
+PropertyPanel::on_map_type_changed(int index)
+{
+  if (m_updating || !m_document || index < 0) return;
+  ObjectModelHandle obj = *m_document->get_selection()->begin();
+  auto* decal = dynamic_cast<DecalObjectModel*>(obj.get());
+  if (!decal) return;
+  decal->set_map_type(static_cast<DecalObjectModel::MapType>(index));
+  m_document->signal_on_change()();
+  if (m_gl_widget) m_gl_widget->update();
+}
+
+void
+PropertyPanel::on_select_mask_changed()
+{
+  if (m_updating || !m_document) return;
+  if (!m_document->get_selection() || m_document->get_selection()->empty()) return;
+  ObjectModelHandle obj = *m_document->get_selection()->begin();
+  SelectMask mask(0);
+  for (int i = 0; i < 16; ++i) {
+    mask.set(static_cast<unsigned>(i),
+             m_mask_bits[static_cast<size_t>(i)]->isChecked());
+  }
+  obj->set_select_mask(mask);
   m_document->signal_on_change()();
   if (m_gl_widget) m_gl_widget->update();
 }

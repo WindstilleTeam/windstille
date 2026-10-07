@@ -19,20 +19,22 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_QT_PROPERTY_PANEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_QT_PROPERTY_PANEL_HPP
 
+#include <array>
+
 #include <QWidget>
 
 class QCheckBox;
 class QComboBox;
 class QDoubleSpinBox;
 class QLabel;
-class QFormLayout;
+class QPushButton;
 
 namespace windstille {
 
 class Document;
 class GLWidget;
 
-/** Shows and edits properties of the primary selected object. */
+/** Sector ambient + primary-selection properties. */
 class PropertyPanel final : public QWidget
 {
   Q_OBJECT
@@ -56,12 +58,15 @@ private slots:
   void on_hflip_changed(int state);
   void on_vflip_changed(int state);
   void on_map_type_changed(int index);
+  void on_select_mask_changed();
+  void on_ambient_clicked();
 
 private:
   Document* m_document;
   GLWidget* m_gl_widget;
   bool m_updating;
 
+  QPushButton* m_ambient_btn;
   QLabel* m_name_label;
   QDoubleSpinBox* m_pos_x;
   QDoubleSpinBox* m_pos_y;
@@ -71,6 +76,11 @@ private:
   QCheckBox* m_hflip;
   QCheckBox* m_vflip;
   QComboBox* m_map_type;
+  std::array<QCheckBox*, 16> m_mask_bits;
+  QWidget* m_object_group;
+
+  void set_object_widgets_enabled(bool on);
+  void update_ambient_button();
 
   PropertyPanel(PropertyPanel const&) = delete;
   PropertyPanel& operator=(PropertyPanel const&) = delete;
