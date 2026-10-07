@@ -29,6 +29,7 @@
 
 #include <geom/rect.hpp>
 #include <wstdisplay/canvas.hpp>
+#include <wstdisplay/surface.hpp>
 #include <wstdisplay/view.hpp>
 
 #include "display/scene_context.hpp"
@@ -69,6 +70,8 @@ public:
 
   void set_grid_enabled(bool v) { m_grid_enabled = v; update(); }
   bool grid_enabled() const { return m_grid_enabled; }
+  void set_background_pattern(bool v) { m_draw_background = v; update(); }
+  bool background_pattern() const { return m_draw_background; }
   void zoom_to_fit();
   void zoom_reset();
 
@@ -116,6 +119,8 @@ private:
   geom::frect m_select_rect;
   bool m_shift;
   bool m_grid_enabled;
+  bool m_draw_background;
+  wstdisplay::Surface m_background;
   /** World positions at drag start for undo. */
   std::vector<std::pair<ObjectModelHandle, glm::vec2>> m_drag_origins;
   ControlPointHandle m_ctrl_point;

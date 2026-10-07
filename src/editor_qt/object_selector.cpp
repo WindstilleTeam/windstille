@@ -22,11 +22,13 @@
 
 #include <QAbstractItemView>
 #include <QListView>
+#include <QDrag>
+#include <QLabel>
 #include <QListWidget>
 #include <QListWidgetItem>
-#include <QVBoxLayout>
-#include <QLabel>
+#include <QMimeData>
 #include <QToolBar>
+#include <QVBoxLayout>
 
 #include "editor/decal_object_model.hpp"
 #include "editor/document.hpp"
@@ -39,10 +41,39 @@
 
 namespace windstille {
 
+namespace {
+
+/** List that exports the data-relative path under our MIME type. */
+class DecalListWidget final : public QListWidget
+{
+public:
+  using QListWidget::QListWidget;
+
+protected:
+  QMimeData* mimeData(QList<QListWidgetItem*> const items) const override
+  {
+    QMimeData* mime = QListWidget::mimeData(items);
+    if (!items.isEmpty()) {
+      QString const path = items.front()->data(Qt::UserRole).toString();
+      mime->setText(path);
+      mime->setData(QStringLiteral("application/x-windstille-decal"), path.toUtf8());
+    }
+    return mime;
+  }
+
+  QStringList mimeTypes() const override
+  {
+    return {QStringLiteral("application/x-windstille-decal"),
+            QStringLiteral("text/plain")};
+  }
+};
+
+} // namespace
+
 ObjectSelector::ObjectSelector(QWidget* parent) :
   QWidget(parent),
   m_gl_widget(nullptr),
-  m_list(new QListWidget(this))
+  m_list(new DecalListWidget(this))
 {
   m_list->setViewMode(QListView::ListMode);
   m_list->setUniformItemSizes(true);

@@ -60,6 +60,7 @@ private slots:
   void on_delete();
   void on_select_all();
   void on_toggle_grid(bool checked);
+  void on_toggle_background(bool checked);
   void on_zoom_to_fit();
   void on_zoom_reset();
   void on_tab_changed(int index);

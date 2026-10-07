@@ -184,6 +184,10 @@ EditorWindow::build_menus()
   act_grid->setCheckable(true);
   act_grid->setShortcut(QKeySequence(Qt::Key_G));
   connect(act_grid, &QAction::toggled, this, &EditorWindow::on_toggle_grid);
+  QAction* act_bg = view_menu->addAction(tr("Background &Pattern"));
+  act_bg->setCheckable(true);
+  act_bg->setChecked(true);
+  connect(act_bg, &QAction::toggled, this, &EditorWindow::on_toggle_background);
   view_menu->addSeparator();
   QAction* act_fit = view_menu->addAction(tr("Zoom to &Fit"), this, &EditorWindow::on_zoom_to_fit);
   act_fit->setShortcut(QKeySequence(tr("Ctrl+0")));
@@ -365,6 +369,16 @@ EditorWindow::on_toggle_grid(bool checked)
   for (int i = 0; i < m_tabs->count(); ++i) {
     if (auto* canvas = qobject_cast<GLWidget*>(m_tabs->widget(i))) {
       canvas->set_grid_enabled(checked);
+    }
+  }
+}
+
+void
+EditorWindow::on_toggle_background(bool checked)
+{
+  for (int i = 0; i < m_tabs->count(); ++i) {
+    if (auto* canvas = qobject_cast<GLWidget*>(m_tabs->widget(i))) {
+      canvas->set_background_pattern(checked);
     }
   }
 }

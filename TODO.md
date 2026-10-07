@@ -36,19 +36,17 @@ Related: [PORTS.md](PORTS.md).
 
 ### Qt6 editor (`src/editor_qt/`, `nix build .#windstille-editor-qt`)
 - [x] Scaffold: `BUILD_EDITOR_QT`, flake package/app, main window + menus
-- [x] Shared `QtGLDevice` + `QOpenGLWidget` canvas (clear + mouse-wheel zoom)
-- [x] `Layer` toolkit-agnostic (no Gtk row pointer; proper setters)
-- [x] Decouple `SectorModel` / `Document` from `Gtk::ListStore` / `TreeModel::Path` / `sigc`
-- [x] Wire level load/save into Qt editor
-- [x] Port select / pan / zoom + selection overlay (basic)
-- [x] Undoable object drag + Ctrl object-snap + Shift grid-snap
-- [x] Layer panel (`QTreeWidget`: name/visible/locked, new/del/reverse)
-- [x] Object selector (list + double-click place at view centre)
-- [x] Multi-document tabs (QTabWidget)
-- [x] Property flip (h/v)
-- [x] Timeline panel (scrub, layers, keyframes pos/rot/scale)
-- [x] Property panel (pos/scale/angle for selection)
-- [x] Click-to-place from object palette
+- [x] Shared GL device + `QOpenGLWidget` canvas
+- [x] Toolkit-agnostic `Layer` / `SectorModel` / `Document` (+ `ObservableSignal`)
+- [x] Multi-document tabs, load/save
+- [x] Select, box-select, move (undoable), control-point scale/rotate
+- [x] Ctrl object-snap, Shift grid-snap
+- [x] Layer panel, object palette (click + DnD with custom MIME)
+- [x] Property panel (pos/scale/angle/flip/map/mask), sector ambient
+- [x] Timeline (scrub, play/loop, zoom, keyframe add/drag/delete)
+- [x] Grid overlay, background pattern, zoom-to-fit / 100%
+- [ ] Undo for keyframe moves, background pattern packing nuances
+- [ ] Full Gtk tool parity (navgraph tools, particle systems UI)
 
 
 ### Desktop quality

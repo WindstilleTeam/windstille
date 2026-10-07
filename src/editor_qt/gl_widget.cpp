@@ -45,6 +45,8 @@
 #include "editor/selection.hpp"
 #include "editor/snap_data.hpp"
 #include "util/file_writer.hpp"
+#include "util/pathname.hpp"
+#include "editor/app.hpp"
 
 namespace windstille {
 
@@ -63,6 +65,8 @@ GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   m_select_rect(),
   m_shift(false),
   m_grid_enabled(false),
+  m_draw_background(true),
+  m_background(),
   m_drag_origins(),
   m_ctrl_point(),
   m_overlay()
@@ -170,6 +174,11 @@ GLWidget::initializeGL()
     g_qt_app.init_gl(context());
   }
   m_renderer = std::make_unique<wstdisplay::Renderer>(g_qt_app.device());
+  try {
+    m_background = g_app.surface().get(Pathname("editor/background_layer.png"));
+  } catch (std::exception const& err) {
+    logmich::warn("background pattern: {}", err.what());
+  }
 }
 
 void
@@ -229,7 +238,15 @@ GLWidget::draw_sector()
     wstdisplay::Canvas::Scope scope(color);
     color.set_z(-1000.0f);
     color.set_space(wstdisplay::Space::Screen);
-    color.fill_screen(surf::Color(0.12f, 0.12f, 0.14f));
+    if (m_draw_background && m_background) {
+      geom::isize const size = m_view.get_size();
+      geom::fpoint const origin = m_view.world_to_screen(geom::fpoint(0.0f, 0.0f));
+      color.fill_pattern(m_background,
+                         geom::frect(geom::fpoint(0.0f, 0.0f), size),
+                         geom::foffset(origin.x(), origin.y()));
+    } else {
+      color.fill_screen(surf::Color(0.12f, 0.12f, 0.14f));
+    }
   }
   sector.draw_content(*m_scene_context);
   sector.draw(*m_scene_context, m_select_mask);
@@ -553,8 +570,10 @@ GLWidget::zoom_reset()
 void
 GLWidget::dragEnterEvent(QDragEnterEvent* event)
 {
-  if (event->mimeData()->hasText() || event->mimeData()->hasUrls() ||
-      event->mimeData()->hasFormat(QStringLiteral("application/x-qabstractitemmodeldatalist"))) {
+  QMimeData const* mime = event->mimeData();
+  if (mime->hasFormat(QStringLiteral("application/x-windstille-decal")) ||
+      mime->hasText() ||
+      mime->hasFormat(QStringLiteral("application/x-qabstractitemmodeldatalist"))) {
     event->acceptProposedAction();
   }
 }
@@ -563,12 +582,20 @@ void
 GLWidget::dropEvent(QDropEvent* event)
 {
   std::string path;
-  // QListWidget default drag encodes internal model data; fall back to selected path.
-  if (m_editor && m_editor->object_selector()) {
+  QMimeData const* mime = event->mimeData();
+  if (mime->hasFormat(QStringLiteral("application/x-windstille-decal"))) {
+    path = QString::fromUtf8(
+      mime->data(QStringLiteral("application/x-windstille-decal"))).toStdString();
+  } else if (mime->hasText()) {
+    // QListWidget DisplayRole is the data-relative path.
+    path = mime->text().trimmed().toStdString();
+  }
+  if (path.empty() && m_editor && m_editor->object_selector()) {
     path = m_editor->object_selector()->selected_path();
   }
-  if (path.empty() && event->mimeData()->hasText()) {
-    path = event->mimeData()->text().toStdString();
+  // Strip accidental file:// prefix
+  if (path.rfind("file://", 0) == 0) {
+    path = path.substr(7);
   }
   if (path.empty()) {
     return;
