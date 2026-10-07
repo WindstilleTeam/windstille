@@ -29,6 +29,7 @@
 
 #include "editor_qt/gl_widget.hpp"
 #include "editor_qt/layer_panel.hpp"
+#include "editor_qt/object_selector.hpp"
 
 #include <QSplitter>
 
@@ -37,7 +38,8 @@ namespace windstille {
 EditorWindow::EditorWindow(QWidget* parent) :
   QMainWindow(parent),
   m_gl_widget(nullptr),
-  m_layer_panel(nullptr)
+  m_layer_panel(nullptr),
+  m_object_selector(nullptr)
 {
   setWindowTitle(QStringLiteral("Windstille Editor (Qt)"));
   resize(1280, 800);
@@ -46,19 +48,27 @@ EditorWindow::EditorWindow(QWidget* parent) :
   m_layer_panel = new LayerPanel(this);
   m_layer_panel->set_gl_widget(m_gl_widget);
   m_layer_panel->set_document(&m_gl_widget->document());
+  m_object_selector = new ObjectSelector(this);
+  m_object_selector->set_gl_widget(m_gl_widget);
+
+  auto* left = new QSplitter(Qt::Vertical, this);
+  left->addWidget(m_layer_panel);
+  left->addWidget(m_object_selector);
+  left->setStretchFactor(0, 1);
+  left->setStretchFactor(1, 2);
 
   auto* splitter = new QSplitter(Qt::Horizontal, this);
-  splitter->addWidget(m_layer_panel);
+  splitter->addWidget(left);
   splitter->addWidget(m_gl_widget);
   splitter->setStretchFactor(0, 0);
   splitter->setStretchFactor(1, 1);
-  splitter->setSizes({220, 1060});
+  splitter->setSizes({240, 1040});
   setCentralWidget(splitter);
 
   build_menus();
   build_toolbar();
   statusBar()->showMessage(QStringLiteral(
-    "LMB select/drag · Shift add · Ctrl snap · MMB/Alt+LMB pan · Wheel zoom · Del delete"));
+    "Double-click object to place · LMB select/drag · Shift add · Ctrl snap · MMB pan · Wheel zoom"));
   update_title();
 }
 

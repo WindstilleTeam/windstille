@@ -28,6 +28,7 @@
 #include "editor_qt/gl_device.hpp"
 #include "sprite2d/manager.hpp"
 #include "sprite3d/manager.hpp"
+#include "editor/app.hpp"
 
 namespace windstille {
 
@@ -60,6 +61,13 @@ QtApp::init_gl(QOpenGLContext* context)
   m_surface_manager = std::make_unique<wstdisplay::SurfaceManager>(m_gl_device->device());
   m_sprite_manager = std::make_unique<SpriteManager>(*m_surface_manager);
   m_sprite3d_manager = std::make_unique<sprite3d::Manager>();
+
+  // DecalObjectModel and control points still use the shared g_app facade.
+  g_app.bind_resources(&m_gl_device->device(),
+                       m_texture_manager.get(),
+                       m_surface_manager.get(),
+                       m_sprite_manager.get(),
+                       m_sprite3d_manager.get());
 }
 
 void

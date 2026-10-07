@@ -254,6 +254,7 @@ if(BUILD_EDITOR_QT)
   find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets)
 
   set(WINDSTILLE_EDITOR_CORE_SOURCES
+    src/editor/app.cpp
     src/editor/constants.cpp
     src/editor/control_point.cpp
     src/editor/decal_object_model.cpp

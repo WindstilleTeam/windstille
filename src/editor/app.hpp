@@ -36,6 +36,14 @@ class App
 public:
   App();
 
+  /** Bind shared resource managers (used by both Gtk and Qt editors).
+      GLDevice remains Gtk-specific and may stay null under Qt. */
+  void bind_resources(wstdisplay::Device* device,
+                      wstdisplay::TextureManager* texture,
+                      wstdisplay::SurfaceManager* surface,
+                      SpriteManager* sprite,
+                      sprite3d::Manager* sprite3d);
+
   GLDevice& gl_device() const;
   wstdisplay::Device& device() const;
   wstdisplay::TextureManager& texture() const;

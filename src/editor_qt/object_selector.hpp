@@ -16,54 +16,50 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_QT_EDITOR_WINDOW_HPP
-#define HEADER_WINDSTILLE_EDITOR_QT_EDITOR_WINDOW_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_QT_OBJECT_SELECTOR_HPP
+#define HEADER_WINDSTILLE_EDITOR_QT_OBJECT_SELECTOR_HPP
 
 #include <string>
 
-#include <QMainWindow>
+#include <QWidget>
+
+class QListWidget;
+class QListWidgetItem;
 
 namespace windstille {
 
 class GLWidget;
-class LayerPanel;
-class ObjectSelector;
 
-/** Main window of the Qt-based Windstille level editor. */
-class EditorWindow final : public QMainWindow
+/** Palette of decal images from the data tree; double-click places at
+    the view centre, or the path can be read for canvas placement. */
+class ObjectSelector final : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit EditorWindow(QWidget* parent = nullptr);
-  ~EditorWindow() override;
+  explicit ObjectSelector(QWidget* parent = nullptr);
+  ~ObjectSelector() override;
 
-  GLWidget* gl_widget() const { return m_gl_widget; }
-  void load_file(std::string const& filename);
+  void set_gl_widget(GLWidget* widget) { m_gl_widget = widget; }
+  void refresh();
+
+  /** Relative data path of the currently selected item (empty if none). */
+  std::string selected_path() const;
+
+signals:
+  void path_activated(std::string const& path);
 
 private slots:
-  void on_new();
-  void on_open();
-  void on_save();
-  void on_save_as();
-  void on_quit();
-  void on_about();
-  void on_undo();
-  void on_redo();
-  void on_delete();
-  void on_select_all();
+  void on_item_activated(QListWidgetItem* item);
 
 private:
-  void build_menus();
-  void build_toolbar();
-  void update_title();
+  void add_directory(std::string const& relative_dir);
 
   GLWidget* m_gl_widget;
-  LayerPanel* m_layer_panel;
-  ObjectSelector* m_object_selector;
+  QListWidget* m_list;
 
-  EditorWindow(EditorWindow const&) = delete;
-  EditorWindow& operator=(EditorWindow const&) = delete;
+  ObjectSelector(ObjectSelector const&) = delete;
+  ObjectSelector& operator=(ObjectSelector const&) = delete;
 };
 
 } // namespace windstille

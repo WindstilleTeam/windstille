@@ -34,6 +34,20 @@ App::App() :
 {
 }
 
+void
+App::bind_resources(wstdisplay::Device* device,
+                    wstdisplay::TextureManager* texture,
+                    wstdisplay::SurfaceManager* surface,
+                    SpriteManager* sprite,
+                    sprite3d::Manager* sprite3d)
+{
+  m_device = device;
+  m_texture_manager = texture;
+  m_surface_manager = surface;
+  m_sprite_manager = sprite;
+  m_sprite3d_manager = sprite3d;
+}
+
 GLDevice&
 App::gl_device() const
 {

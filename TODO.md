@@ -43,7 +43,7 @@ Related: [PORTS.md](PORTS.md).
 - [x] Port select / pan / zoom + selection overlay (basic)
 - [x] Undoable object drag + Ctrl grid-snap
 - [x] Layer panel (`QTreeWidget`: name/visible/locked, new/del/reverse)
-- [ ] Object selector + drag-drop onto canvas
+- [x] Object selector (list + double-click place at view centre)
 - [ ] Timeline / animation UI
 - [ ] Property dialogs, undo/redo chrome
 
