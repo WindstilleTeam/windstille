@@ -18,6 +18,7 @@
 
 
 #include "editor/windstille_widget.hpp"
+#include "editor/layer_manager_columns.hpp"
 
 #include <cmath>
 #include <iostream>

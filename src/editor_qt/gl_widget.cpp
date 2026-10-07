@@ -36,6 +36,7 @@
 #include <surf/color.hpp>
 #include <wstdisplay/canvas.hpp>
 #include <wstdisplay/renderer.hpp>
+#include <wstdisplay/surface_manager.hpp>
 
 #include "editor_qt/app.hpp"
 #include "editor_qt/editor_window.hpp"
@@ -44,6 +45,7 @@
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/navigation_graph_model.hpp"
 #include "editor/layer.hpp"
+#include "editor/sector_model.hpp"
 #include "editor/selection.hpp"
 #include "editor/snap_data.hpp"
 #include "util/file_writer.hpp"
@@ -246,7 +248,7 @@ GLWidget::draw_sector()
       geom::isize const size = m_view.get_size();
       geom::fpoint const origin = m_view.world_to_screen(geom::fpoint(0.0f, 0.0f));
       color.fill_pattern(m_background,
-                         geom::frect(geom::fpoint(0.0f, 0.0f), size),
+                         geom::frect(geom::fpoint(0.0f, 0.0f), geom::fsize(static_cast<float>(size.width()), static_cast<float>(size.height()))),
                          geom::foffset(origin.x(), origin.y()));
     } else {
       color.fill_screen(surf::Color(0.12f, 0.12f, 0.14f));
@@ -352,6 +354,7 @@ GLWidget::mousePressEvent(QMouseEvent* event)
           SelectionHandle neu = Selection::create();
           neu->add(object);
           m_document->set_selection(neu);
+          sel = neu;
         }
       } else if (m_shift) {
         sel->remove(object);
@@ -359,7 +362,7 @@ GLWidget::mousePressEvent(QMouseEvent* event)
       m_mode = Mode::DragObject;
       m_document->create_control_points();
       m_drag_origins.clear();
-      SelectionHandle sel = m_document->get_selection();
+      sel = m_document->get_selection();
       if (sel) {
         for (auto it = sel->begin(); it != sel->end(); ++it) {
           m_drag_origins.emplace_back(*it, (*it)->get_rel_pos());

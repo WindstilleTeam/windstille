@@ -19,6 +19,7 @@
 #include "editor_qt/editor_window.hpp"
 
 #include <QAction>
+#include <QActionGroup>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QKeySequence>

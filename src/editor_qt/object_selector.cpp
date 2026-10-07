@@ -50,7 +50,7 @@ public:
   using QListWidget::QListWidget;
 
 protected:
-  QMimeData* mimeData(QList<QListWidgetItem*> const items) const override
+  QMimeData* mimeData(QList<QListWidgetItem*> const& items) const override
   {
     QMimeData* mime = QListWidget::mimeData(items);
     if (!items.isEmpty()) {
