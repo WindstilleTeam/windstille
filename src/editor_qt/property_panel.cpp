@@ -19,6 +19,7 @@
 #include "editor_qt/property_panel.hpp"
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QLabel>
@@ -56,8 +57,13 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   m_scale_y(make_spin(this, 0.01, 100.0, 0.05)),
   m_angle(make_spin(this, -360.0, 360.0, 1.0)),
   m_hflip(new QCheckBox(tr("Horizontal flip"), this)),
-  m_vflip(new QCheckBox(tr("Vertical flip"), this))
+  m_vflip(new QCheckBox(tr("Vertical flip"), this)),
+  m_map_type(new QComboBox(this))
 {
+  m_map_type->addItem(tr("Color map"), static_cast<int>(DecalObjectModel::COLORMAP));
+  m_map_type->addItem(tr("Light map"), static_cast<int>(DecalObjectModel::LIGHTMAP));
+  m_map_type->addItem(tr("Highlight map"), static_cast<int>(DecalObjectModel::HIGHLIGHTMAP));
+
   auto* form = new QFormLayout;
   form->addRow(tr("Object"), m_name_label);
   form->addRow(tr("X"), m_pos_x);
@@ -67,6 +73,7 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
   form->addRow(tr("Angle °"), m_angle);
   form->addRow(tr(""), m_hflip);
   form->addRow(tr(""), m_vflip);
+  form->addRow(tr("Map"), m_map_type);
 
   auto* layout = new QVBoxLayout(this);
   layout->setContentsMargins(4, 4, 4, 4);
@@ -86,6 +93,8 @@ PropertyPanel::PropertyPanel(QWidget* parent) :
           this, &PropertyPanel::on_angle_changed);
   connect(m_hflip, &QCheckBox::stateChanged, this, &PropertyPanel::on_hflip_changed);
   connect(m_vflip, &QCheckBox::stateChanged, this, &PropertyPanel::on_vflip_changed);
+  connect(m_map_type, QOverload<int>::of(&QComboBox::currentIndexChanged),
+          this, &PropertyPanel::on_map_type_changed);
 
   setMinimumWidth(180);
   setMaximumWidth(320);
@@ -131,17 +140,20 @@ PropertyPanel::refresh_from_selection()
     m_angle->setEnabled(true);
     m_hflip->setEnabled(true);
     m_vflip->setEnabled(true);
+    m_map_type->setEnabled(true);
     m_scale_x->setValue(decal->get_scale().x);
     m_scale_y->setValue(decal->get_scale().y);
     m_angle->setValue(decal->get_angle() * 180.0 / 3.14159265358979323846);
     m_hflip->setChecked(decal->get_hflip());
     m_vflip->setChecked(decal->get_vflip());
+    m_map_type->setCurrentIndex(static_cast<int>(decal->get_map_type()));
   } else {
     m_scale_x->setEnabled(false);
     m_scale_y->setEnabled(false);
     m_angle->setEnabled(false);
     m_hflip->setEnabled(false);
     m_vflip->setEnabled(false);
+    m_map_type->setEnabled(false);
   }
 
   setEnabled(true);

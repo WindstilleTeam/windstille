@@ -67,6 +67,9 @@ public:
   void set_angle(float angle);
   float get_angle() const { return angle; }
 
+  MapType get_map_type() const { return type; }
+  void set_map_type(MapType t) { type = t; }
+
   bool is_snappable() const override { return type == COLORMAP; }
 
   void draw_select(SceneContext& sc, bool highlight) override;

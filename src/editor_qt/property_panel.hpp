@@ -22,6 +22,7 @@
 #include <QWidget>
 
 class QCheckBox;
+class QComboBox;
 class QDoubleSpinBox;
 class QLabel;
 class QFormLayout;
@@ -54,6 +55,7 @@ private slots:
   void on_angle_changed(double v);
   void on_hflip_changed(int state);
   void on_vflip_changed(int state);
+  void on_map_type_changed(int index);
 
 private:
   Document* m_document;
@@ -68,6 +70,7 @@ private:
   QDoubleSpinBox* m_angle;
   QCheckBox* m_hflip;
   QCheckBox* m_vflip;
+  QComboBox* m_map_type;
 
   PropertyPanel(PropertyPanel const&) = delete;
   PropertyPanel& operator=(PropertyPanel const&) = delete;

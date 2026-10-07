@@ -76,7 +76,7 @@ EditorWindow::EditorWindow(QWidget* parent) :
   build_menus();
   build_toolbar();
   statusBar()->showMessage(QStringLiteral(
-    "Select object then click canvas · LMB select/drag · Ctrl snap · MMB pan · Wheel zoom"));
+    "Select object then click canvas · LMB select/drag · Ctrl object-snap · Shift grid-snap · MMB pan · Wheel zoom"));
 
   add_tab();
   update_title();

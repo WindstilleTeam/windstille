@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <set>
 #include <fstream>
 
 #include <QKeyEvent>
@@ -39,6 +40,7 @@
 #include "editor/decal_object_model.hpp"
 #include "editor/layer.hpp"
 #include "editor/selection.hpp"
+#include "editor/snap_data.hpp"
 #include "util/file_writer.hpp"
 
 namespace windstille {
@@ -397,21 +399,39 @@ GLWidget::mouseMoveEvent(QMouseEvent* event)
   }
 
   if (m_mode == Mode::DragObject) {
-    glm::vec2 delta = world - m_click_world;
-    m_click_world = world;
-    // Ctrl: snap delta to 32px grid.
-    if (event->modifiers() & Qt::ControlModifier) {
-      constexpr float grid = 32.0f;
-      delta.x = std::round(delta.x / grid) * grid;
-      delta.y = std::round(delta.y / grid) * grid;
+    // Absolute offset from drag start (matches Gtk SelectTool).
+    glm::vec2 offset = world - m_click_world;
+    // Apply base positions from drag origins.
+    for (auto const& pair : m_drag_origins) {
+      pair.first->set_rel_pos(pair.second + offset);
     }
-    SelectionHandle sel = m_document->get_selection();
-    if (sel) {
-      for (auto it = sel->begin(); it != sel->end(); ++it) {
-        (*it)->set_rel_pos((*it)->get_rel_pos() + delta);
+    // Ctrl: object-to-object snap (Gtk convention).
+    // Shift: 32px grid snap.
+    if ((event->modifiers() & Qt::ControlModifier) && !m_drag_origins.empty()) {
+      std::set<ObjectModelHandle> ignore;
+      for (auto const& pair : m_drag_origins) {
+        ignore.insert(pair.first);
       }
-      m_document->signal_on_change()();
+      SnapData best;
+      for (auto const& pair : m_drag_origins) {
+        best.merge(m_document->get_sector_model().snap_object(pair.first, ignore));
+      }
+      offset = offset + best.offset;
+      for (auto const& pair : m_drag_origins) {
+        pair.first->set_rel_pos(pair.second + offset);
+      }
+    } else if (event->modifiers() & Qt::ShiftModifier) {
+      constexpr float grid = 32.0f;
+      SnapData best;
+      for (auto const& pair : m_drag_origins) {
+        best.merge(pair.first->snap_to_grid(grid));
+      }
+      offset = offset + best.offset;
+      for (auto const& pair : m_drag_origins) {
+        pair.first->set_rel_pos(pair.second + offset);
+      }
     }
+    m_document->signal_on_change()();
     update();
     event->accept();
     return;
