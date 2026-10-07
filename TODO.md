@@ -45,7 +45,7 @@ Related: [PORTS.md](PORTS.md).
 - [x] Property panel (pos/scale/angle/flip/map/mask), sector ambient
 - [x] Timeline (scrub, play/loop, zoom, keyframe add/drag/delete)
 - [x] Grid overlay, background pattern, zoom-to-fit / 100%
-- [ ] Undo for keyframe moves, background pattern packing nuances
+- [x] Undo for keyframe moves
 - [ ] Full Gtk tool parity (navgraph tools, particle systems UI)
 
 

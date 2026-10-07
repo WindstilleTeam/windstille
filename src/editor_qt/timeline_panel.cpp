@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QListWidget>
 #include <QMouseEvent>
@@ -58,6 +59,7 @@ TimelineTrackWidget::TimelineTrackWidget(QWidget* parent) :
 {
   setMinimumHeight(72);
   setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  setFocusPolicy(Qt::ClickFocus);
 }
 
 void
@@ -221,8 +223,17 @@ TimelineTrackWidget::mouseMoveEvent(QMouseEvent* event)
 void
 TimelineTrackWidget::mouseReleaseEvent(QMouseEvent* /*event*/)
 {
+  if (m_dragging && m_document) {
+    float const neu = m_dragging->get_pos();
+    if (neu != m_drag_origin_pos) {
+      // Reset to origin so the command records the correct old position.
+      m_dragging->set_pos(m_drag_origin_pos);
+      m_document->timeline_set_object_pos(m_dragging, neu);
+    }
+  }
   m_dragging.reset();
   m_scrubbing = false;
+  update();
 }
 
 // --- TimelinePanel ---------------------------------------------------------
@@ -300,6 +311,7 @@ TimelinePanel::TimelinePanel(QWidget* parent) :
 
   setMinimumHeight(140);
   setMaximumHeight(280);
+  setFocusPolicy(Qt::StrongFocus);
 }
 
 TimelinePanel::~TimelinePanel() = default;

@@ -52,6 +52,9 @@ public:
 
   float cursor_pos() const;
 
+protected:
+  void keyPressEvent(QKeyEvent* event) override;
+
 public slots:
   void rebuild();
 

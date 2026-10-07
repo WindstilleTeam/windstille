@@ -248,6 +248,12 @@ Document::timeline_add_layer(std::string const& name)
 }
 
 void
+Document::timeline_set_object_pos(TimelineObjectHandle object, float new_pos)
+{
+  execute(CommandHandle(new TimelineSetObjectPosCommand(object, new_pos)));
+}
+
+void
 Document::selection_raise()
 {
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)

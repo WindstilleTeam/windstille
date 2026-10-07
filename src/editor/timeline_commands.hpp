@@ -23,6 +23,7 @@
 #include "editor/object_model.hpp"
 #include "editor/command.hpp"
 #include "editor/timeline.hpp"
+#include "editor/timeline_object.hpp"
 #include "editor/timeline_object_layer.hpp"
 #include "editor/timeline_properties.hpp"
 
@@ -75,6 +76,32 @@ public:
     {
       m_sector.get_timeline()->remove_layer(m_layer);
     }
+  }
+};
+
+
+class TimelineSetObjectPosCommand : public Command
+{
+private:
+  TimelineObjectHandle m_object;
+  float m_old_pos;
+  float m_new_pos;
+
+public:
+  TimelineSetObjectPosCommand(TimelineObjectHandle object, float new_pos) :
+    m_object(std::move(object)),
+    m_old_pos(m_object->get_pos()),
+    m_new_pos(new_pos)
+  {}
+
+  void redo() override
+  {
+    m_object->set_pos(m_new_pos);
+  }
+
+  void undo() override
+  {
+    m_object->set_pos(m_old_pos);
   }
 };
 

@@ -26,6 +26,7 @@
 #include "editor/command.hpp"
 #include "editor/layer.hpp"
 #include "editor/observable_signal.hpp"
+#include "editor/timeline_handles.hpp"
 #include "editor/timeline_properties.hpp"
 
 namespace windstille {
@@ -105,6 +106,7 @@ public:
    * @{*/
   void timeline_add_keyframe(ObjectModelHandle object, TimelineProperty property, float pos);
   void timeline_add_layer(std::string const& name);
+  void timeline_set_object_pos(TimelineObjectHandle object, float new_pos);
   /** @} */
 
   /* Selection Commands
