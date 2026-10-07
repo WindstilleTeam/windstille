@@ -37,12 +37,12 @@ DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, floa
 }
 
 void
-DecalRotateControlPoint::on_move_start(GdkEventButton* event)
+DecalRotateControlPoint::on_move_start()
 {
 }
 
 void
-DecalRotateControlPoint::on_move_update(GdkEventMotion* event, glm::vec2 const& offset_)
+DecalRotateControlPoint::on_move_update(glm::vec2 const& offset_)
 {
   offset = offset_;
 
@@ -64,11 +64,11 @@ DecalRotateControlPoint::on_move_update(GdkEventMotion* event, glm::vec2 const& 
 }
 
 void
-DecalRotateControlPoint::on_move_end(GdkEventButton* event, glm::vec2 const& offset_)
+DecalRotateControlPoint::on_move_end(glm::vec2 const& offset_)
 {
   // FIXME: The cast there is a really bad idea, but should work due
   // to both structures being mostly the same
-  on_move_update(reinterpret_cast<GdkEventMotion*>(event), offset_);
+  on_move_update(offset_);
 }
 
 void

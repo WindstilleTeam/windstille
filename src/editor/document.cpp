@@ -19,11 +19,11 @@
 #include "editor/document.hpp"
 
 #include <functional>
+#include <logmich/log.hpp>
 
 #include "editor/selection.hpp"
 #include "editor/undo_manager.hpp"
 #include "editor/sector_model.hpp"
-#include "editor/editor_window.hpp"
 #include "editor/object_model.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
@@ -49,11 +49,6 @@ Document::Document() :
   m_control_points(),
   m_sig_on_change()
 {
-  m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
-  m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));
-  m_sector_model->get_layer_tree()->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &Document::on_row_has_child_toggled));
-  m_sector_model->get_layer_tree()->signal_row_inserted().connect(sigc::mem_fun(*this, &Document::on_row_inserted));
-  m_sector_model->get_layer_tree()->signal_rows_reordered().connect(sigc::mem_fun(*this, &Document::on_rows_reordered));
 }
 
 Document::Document(std::string const& filename) :
@@ -65,11 +60,6 @@ Document::Document(std::string const& filename) :
   m_control_points(),
   m_sig_on_change()
 {
-  m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
-  m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));
-  m_sector_model->get_layer_tree()->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &Document::on_row_has_child_toggled));
-  m_sector_model->get_layer_tree()->signal_row_inserted().connect(sigc::mem_fun(*this, &Document::on_row_inserted));
-  m_sector_model->get_layer_tree()->signal_rows_reordered().connect(sigc::mem_fun(*this, &Document::on_rows_reordered));
 }
 
 Document::~Document()
@@ -79,7 +69,6 @@ Document::~Document()
 void
 Document::on_change()
 {
-  EditorWindow::current()->update_undo_state();
   m_sig_on_change();
 }
 
@@ -161,15 +150,15 @@ Document::execute(const std::function<void ()>& undo_callback,
 }
 
 void
-Document::layer_add(Gtk::TreeModel::Path const& path)
+Document::layer_add(std::size_t insert_index)
 {
-  execute(CommandHandle(new LayerAddCommand(*m_sector_model, path)));
+  execute(CommandHandle(new LayerAddCommand(*m_sector_model, insert_index)));
 }
 
 void
-Document::layer_remove(Gtk::TreeModel::Path const& path)
+Document::layer_remove(LayerHandle layer)
 {
-  execute(CommandHandle(new LayerDeleteCommand(*m_sector_model, path)));
+  execute(CommandHandle(new LayerDeleteCommand(*m_sector_model, layer)));
 }
 
 void
@@ -421,7 +410,7 @@ Document::selection_duplicate()
 
     if (!layer)
     {
-      EditorWindow::current()->print("Couldn't find parent layer while duplicating");
+      logmich::warn("Couldn't find parent layer while duplicating");
     }
     else
     {
@@ -536,7 +525,7 @@ void
 Document::set_selection(SelectionHandle const& selection)
 {
   m_selection = selection;
-  m_selection->signal_changed.connect(sigc::mem_fun(*this, &Document::on_selection_change));
+  m_selection->signal_changed.connect([this]() { on_selection_change(); });
   on_selection_change();
 }
 
@@ -577,35 +566,6 @@ Document::create_control_points()
   m_selection->add_control_points(m_control_points);
 }
 
-void
-Document::on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
-{
-  m_sig_on_change();
-}
-
-void
-Document::on_row_deleted(Gtk::TreeModel::Path const& path)
-{
-  m_sig_on_change();
-}
-
-void
-Document::on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
-{
-  m_sig_on_change();
-}
-
-void
-Document::on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
-{
-  m_sig_on_change();
-}
-
-void
-Document::on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order)
-{
-  m_sig_on_change();
-}
 
 } // namespace windstille
 

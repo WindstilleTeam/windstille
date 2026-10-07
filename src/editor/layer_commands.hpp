@@ -19,70 +19,48 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_COMMANDS_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_COMMANDS_HPP
 
-#include "editor/layer.hpp"
+#include <cstddef>
 #include "editor/command.hpp"
+#include "editor/layer.hpp"
 #include "editor/sector_model.hpp"
 
 namespace windstille {
-
 
 class LayerAddCommand : public Command
 {
 private:
   SectorModel& sector;
-  Gtk::TreeModel::Path path;
-
+  std::size_t insert_index;
+  LayerHandle layer;
 public:
-  LayerAddCommand(SectorModel& sector_, Gtk::TreeModel::Path const& path_)
-    : sector(sector_),
-      path(path_)
-  {}
-
+  LayerAddCommand(SectorModel& sector_, std::size_t insert_index_ = SectorModel::npos)
+    : sector(sector_), insert_index(insert_index_), layer() {}
   void redo() override {
-    // FIXME: We should recycle the actual layer object instead of creating a new one
-    sector.add_layer("New Layer", path);
+    if (!layer) layer = sector.add_layer("New Layer", insert_index);
+    else sector.add_layer(layer, insert_index);
   }
-
-  void undo() override {
-    sector.delete_layer(path);
-  }
-
+  void undo() override { if (layer) sector.delete_layer(layer); }
 private:
-  LayerAddCommand(LayerAddCommand const&);
-  LayerAddCommand& operator=(LayerAddCommand const&);
+  LayerAddCommand(LayerAddCommand const&) = delete;
+  LayerAddCommand& operator=(LayerAddCommand const&) = delete;
 };
-
 
 class LayerDeleteCommand : public Command
 {
 private:
   SectorModel& sector;
-  Gtk::TreeModel::Path path;
   LayerHandle layer;
-
+  std::size_t index;
 public:
-  LayerDeleteCommand(SectorModel& sector_, Gtk::TreeModel::Path const& path_)
-    : sector(sector_),
-      path(path_),
-      layer(sector.get_layer(path))
-  {}
-
-  void redo() override {
-    sector.delete_layer(path);
-  }
-
-  void undo() override {
-    sector.add_layer(layer/*, path*/);
-  }
-
+  LayerDeleteCommand(SectorModel& sector_, LayerHandle layer_)
+    : sector(sector_), layer(layer_), index(sector_.get_layer_index(layer_)) {}
+  void redo() override { sector.delete_layer(layer); }
+  void undo() override { sector.add_layer(layer, index); }
 private:
-  LayerDeleteCommand(LayerDeleteCommand const&);
-  LayerDeleteCommand& operator=(LayerDeleteCommand const&);
+  LayerDeleteCommand(LayerDeleteCommand const&) = delete;
+  LayerDeleteCommand& operator=(LayerDeleteCommand const&) = delete;
 };
 
-
 } // namespace windstille
-
 #endif
-
 /* EOF */

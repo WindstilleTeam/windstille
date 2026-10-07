@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_EDITOR_CONTROL_POINT_HPP
 
 #include <memory>
-#include <gdkmm/event.h>
 
 #include <glm/glm.hpp>
 
@@ -59,8 +58,8 @@ public:
 
   virtual geom::frect get_bounding_box() const;
 
-  virtual void on_move_start(GdkEventButton* event);
-  virtual void on_move_update(GdkEventMotion* event, glm::vec2 const& offset);
+  virtual void on_move_start();
+  virtual void on_move_update(glm::vec2 const& offset);
   virtual void on_move_end(GdkEventButton* event, glm::vec2 const& offset);
 
 protected:

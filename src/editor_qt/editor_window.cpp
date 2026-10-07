@@ -77,10 +77,8 @@ EditorWindow::build_toolbar()
 void
 EditorWindow::on_new()
 {
-  statusBar()->showMessage(tr("New document (sector model not yet wired)"), 3000);
-  if (m_gl_widget) {
-    m_gl_widget->update();
-  }
+  if (m_gl_widget) m_gl_widget->new_document();
+  statusBar()->showMessage(tr("New sector"), 3000);
 }
 
 void
@@ -94,8 +92,14 @@ EditorWindow::on_open()
   if (path.isEmpty()) {
     return;
   }
-  // Level loading requires toolkit-agnostic SectorModel — next milestone.
-  statusBar()->showMessage(tr("Open: %1 (loading not yet implemented)").arg(path), 5000);
+  if (m_gl_widget) m_gl_widget->load_file(path.toStdString());
+  statusBar()->showMessage(tr("Opened %1").arg(path), 5000);
+}
+
+void
+EditorWindow::load_file(std::string const& filename)
+{
+  if (m_gl_widget) m_gl_widget->load_file(filename);
 }
 
 void

@@ -16,42 +16,36 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_QT_EDITOR_WINDOW_HPP
-#define HEADER_WINDSTILLE_EDITOR_QT_EDITOR_WINDOW_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_OBSERVABLE_SIGNAL_HPP
+#define HEADER_WINDSTILLE_EDITOR_OBSERVABLE_SIGNAL_HPP
 
-#include <string>
-#include <QMainWindow>
+#include <functional>
+#include <vector>
 
 namespace windstille {
 
-class GLWidget;
+template<typename Signature>
+class ObservableSignal;
 
-/** Main window of the Qt-based Windstille level editor. */
-class EditorWindow final : public QMainWindow
+template<typename... Args>
+class ObservableSignal<void(Args...)>
 {
-  Q_OBJECT
-
 public:
-  explicit EditorWindow(QWidget* parent = nullptr);
-  ~EditorWindow() override;
+  using Slot = std::function<void(Args...)>;
 
-  GLWidget* gl_widget() const { return m_gl_widget; }
-  void load_file(std::string const& filename);
+  void connect(Slot slot) { m_slots.push_back(std::move(slot)); }
 
-private slots:
-  void on_new();
-  void on_open();
-  void on_quit();
-  void on_about();
+  void operator()(Args... args) const
+  {
+    for (auto const& slot : m_slots) {
+      if (slot) slot(args...);
+    }
+  }
+
+  void clear() { m_slots.clear(); }
 
 private:
-  void build_menus();
-  void build_toolbar();
-
-  GLWidget* m_gl_widget;
-
-  EditorWindow(EditorWindow const&) = delete;
-  EditorWindow& operator=(EditorWindow const&) = delete;
+  std::vector<Slot> m_slots;
 };
 
 } // namespace windstille

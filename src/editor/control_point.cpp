@@ -50,19 +50,19 @@ ControlPoint::~ControlPoint()
 }
 
 void
-ControlPoint::on_move_start(GdkEventButton* /*event*/)
+ControlPoint::on_move_start()
 {
 }
 
 void
-ControlPoint::on_move_update(GdkEventMotion* /*event*/, glm::vec2 const& offset_)
+ControlPoint::on_move_update(glm::vec2 const& offset_)
 {
   offset = offset_;
   std::cout << "on_move_update: " << offset << std::endl;
 }
 
 void
-ControlPoint::on_move_end(GdkEventButton* /*event*/, glm::vec2 const& offset_)
+ControlPoint::on_move_end(glm::vec2 const& offset_)
 {
   offset = offset_;
   offset = glm::vec2();

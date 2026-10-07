@@ -138,7 +138,6 @@ public:
   bool get_enable_grid() const { return grid_enabled; }
 
   LayerHandle get_current_layer();
-  Gtk::TreeModel::Path get_current_layer_path();
 
   std::string get_filename() const { return filename; }
   void set_filename(std::string const& filename_) { filename = filename_; }

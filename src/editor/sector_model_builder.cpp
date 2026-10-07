@@ -37,8 +37,6 @@ SectorModelBuilder::SectorModelBuilder(std::string const& filename, SectorModel&
   m_id_table(),
   m_parent_table()
 {
-  m_sector.get_layer_tree()->clear();
-
   ReaderDocument doc = ReaderDocument::from_file(filename);
   if (doc.get_name() == "windstille-sector")
   {
@@ -135,18 +133,10 @@ SectorModelBuilder::load_layer(ReaderMapping const& reader)
     }
   }
 
-  // Append the layer to the tree
-  Gtk::ListStore::iterator it = m_sector.get_layer_tree()->append();
-
-  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
-  (*it)[LayerManagerColumns::instance().name]      = name;
-  (*it)[LayerManagerColumns::instance().visible]   = visible;
-  (*it)[LayerManagerColumns::instance().locked]    = locked;
-  (*it)[LayerManagerColumns::instance().layer]     = layer;
-
-  layer->set_name(static_cast<Glib::ustring>((*it)[LayerManagerColumns::instance().name]).raw());
-  layer->set_visible((*it)[LayerManagerColumns::instance().visible]);
-  layer->set_locked((*it)[LayerManagerColumns::instance().locked]);
+  layer->set_name(name);
+  layer->set_visible(visible);
+  layer->set_locked(locked);
+  m_sector.add_layer(layer);
 }
 
 } // namespace windstille

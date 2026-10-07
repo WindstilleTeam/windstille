@@ -25,6 +25,7 @@
 
 #include "editor/control_point.hpp"
 #include "editor/object_model.hpp"
+#include "editor/observable_signal.hpp"
 
 namespace windstille {
 
@@ -98,7 +99,7 @@ public:
 
   void reset();
 
-  sigc::signal<void> signal_changed;
+  ObservableSignal<void()> signal_changed;
 
 private:
   Selection(Selection const&);

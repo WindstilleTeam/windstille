@@ -21,6 +21,7 @@
 
 #include <gtkmm/box.h>
 #include <gtkmm/label.h>
+#include <gtkmm/liststore.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/treeview.h>
@@ -38,6 +39,9 @@ private:
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView treeview;
+  Glib::RefPtr<Gtk::ListStore> m_store;
+  SectorModel* m_model;
+  bool m_updating;
 
   Glib::RefPtr<Gtk::ToggleAction> auto_lock;
 
@@ -46,6 +50,7 @@ public:
   ~LayerManager() override;
 
   void set_model(SectorModel* model);
+  void rebuild();
 
   void on_cursor_changed();
   void on_columns_changed();

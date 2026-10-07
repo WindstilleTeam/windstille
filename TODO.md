@@ -38,8 +38,8 @@ Related: [PORTS.md](PORTS.md).
 - [x] Scaffold: `BUILD_EDITOR_QT`, flake package/app, main window + menus
 - [x] Shared `QtGLDevice` + `QOpenGLWidget` canvas (clear + mouse-wheel zoom)
 - [x] `Layer` toolkit-agnostic (no Gtk row pointer; proper setters)
-- [ ] Decouple `SectorModel` / `Document` from `Gtk::ListStore` / `TreeModel::Path` / `sigc`
-- [ ] Wire level load/save into Qt editor
+- [x] Decouple `SectorModel` / `Document` from `Gtk::ListStore` / `TreeModel::Path` / `sigc`
+- [ ] Wire level load/save into Qt editor (core sources linked; GLWidget Document wiring partial)
 - [ ] Port select / scroll / zoom tools + overlay drawing
 - [ ] Layer panel (`QTreeView` + model)
 - [ ] Object selector + drag-drop onto canvas

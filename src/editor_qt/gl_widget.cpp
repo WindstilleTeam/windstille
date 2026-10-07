@@ -28,6 +28,7 @@
 
 #include "editor_qt/app.hpp"
 #include "editor_qt/editor_window.hpp"
+#include "editor/select_mask.hpp"
 #include "editor_qt/gl_device.hpp"
 
 namespace windstille {
@@ -35,7 +36,9 @@ namespace windstille {
 GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   QOpenGLWidget(parent),
   m_editor(editor),
+  m_document(std::make_unique<Document>()),
   m_renderer(),
+  m_scene_context(std::make_unique<SceneContext>()),
   m_view()
 {
   QSurfaceFormat format;
@@ -48,6 +51,31 @@ GLWidget::GLWidget(EditorWindow* editor, QWidget* parent) :
   setMinimumSize(320, 240);
   setFocusPolicy(Qt::StrongFocus);
   setMouseTracking(true);
+
+  m_scene_context->set_render_mask(
+    m_scene_context->get_render_mask() & ~SceneContext::LIGHTMAP);
+  m_document->signal_on_change().connect([this]() { update(); });
+}
+
+void
+GLWidget::new_document()
+{
+  m_document = std::make_unique<Document>();
+  m_document->signal_on_change().connect([this]() { update(); });
+  update();
+}
+
+void
+GLWidget::load_file(std::string const& filename)
+{
+  try {
+    m_document = std::make_unique<Document>(filename);
+    m_document->signal_on_change().connect([this]() { update(); });
+  } catch (std::exception const& err) {
+    // leave previous document
+    (void)err;
+  }
+  update();
 }
 
 GLWidget::~GLWidget()
@@ -82,9 +110,26 @@ GLWidget::paintGL()
   }
 
   m_renderer->begin_frame(m_view.get_size());
-  // Placeholder clear — sector drawing lands once Document is toolkit-agnostic.
   m_renderer->clear(surf::Color(0.18f, 0.18f, 0.22f));
+  draw_sector();
+  m_scene_context->render(*m_renderer, m_view);
   m_renderer->end_frame();
+}
+
+void
+GLWidget::draw_sector()
+{
+  SectorModel& sector = m_document->get_sector_model();
+  m_scene_context->light().fill_screen(sector.get_ambient_color());
+  {
+    wstdisplay::Canvas& color = m_scene_context->color();
+    wstdisplay::Canvas::Scope scope(color);
+    color.set_z(-1000.0f);
+    color.set_space(wstdisplay::Space::Screen);
+    color.fill_screen(surf::Color(0.12f, 0.12f, 0.14f));
+  }
+  sector.draw_content(*m_scene_context);
+  sector.draw(*m_scene_context, SelectMask());
 }
 
 void

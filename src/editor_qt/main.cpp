@@ -89,8 +89,7 @@ static int run_editor(int argc, char** argv)
   window.show();
 
   if (!rest_args.empty()) {
-    // Path will be opened once SectorModel is toolkit-agnostic.
-    logmich::info("level argument present but loading not yet wired: {}", rest_args.front());
+    window.load_file(rest_args.front());
   }
 
   return qapp.exec();

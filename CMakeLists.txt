@@ -253,10 +253,37 @@ if(BUILD_EDITOR_QT)
   set(CMAKE_AUTOMOC ON)
   find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets)
 
+  set(WINDSTILLE_EDITOR_CORE_SOURCES
+    src/editor/constants.cpp
+    src/editor/control_point.cpp
+    src/editor/decal_object_model.cpp
+    src/editor/decal_rotate_control_point.cpp
+    src/editor/decal_scale_control_point.cpp
+    src/editor/document.cpp
+    src/editor/layer.cpp
+    src/editor/navgraph_edge_object_model.cpp
+    src/editor/navgraph_node_object_model.cpp
+    src/editor/navigation_graph_model.cpp
+    src/editor/node_selection.cpp
+    src/editor/object_model.cpp
+    src/editor/object_model_factory.cpp
+    src/editor/particle_system_object_model.cpp
+    src/editor/sector_model.cpp
+    src/editor/sector_model_builder.cpp
+    src/editor/selection.cpp
+    src/editor/sprite_object_model.cpp
+    src/editor/timeline.cpp
+    src/editor/timeline_layer.cpp
+    src/editor/timeline_object_layer.cpp
+    src/editor/undo_manager.cpp
+  )
+
   file(GLOB WINDSTILLE_EDITOR_QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     src/editor_qt/*.cpp)
 
-  add_executable(windstille-editor-qt ${WINDSTILLE_EDITOR_QT_SOURCES})
+  add_executable(windstille-editor-qt
+    ${WINDSTILLE_EDITOR_QT_SOURCES}
+    ${WINDSTILLE_EDITOR_CORE_SOURCES})
   target_compile_options(windstille-editor-qt PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
   target_include_directories(windstille-editor-qt PRIVATE src/ ${CMAKE_CURRENT_BINARY_DIR}/src/)
   target_link_libraries(windstille-editor-qt

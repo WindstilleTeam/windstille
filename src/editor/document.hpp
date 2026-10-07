@@ -25,6 +25,7 @@
 #include "editor/selection.hpp"
 #include "editor/command.hpp"
 #include "editor/layer.hpp"
+#include "editor/observable_signal.hpp"
 #include "editor/timeline_properties.hpp"
 
 namespace windstille {
@@ -51,7 +52,7 @@ private:
 
   std::vector<ControlPointHandle> m_control_points;
 
-  sigc::signal<void> m_sig_on_change;
+  ObservableSignal<void()> m_sig_on_change;
 
 public:
   Document();
@@ -78,8 +79,8 @@ public:
 
   /* Layer Commands
    * @{*/
-  void layer_add(Gtk::TreeModel::Path const& path);
-  void layer_remove(Gtk::TreeModel::Path const& path);
+  void layer_add(std::size_t insert_index = static_cast<std::size_t>(-1));
+  void layer_remove(LayerHandle layer);
   /** @} */
 
   /* NavGraph Commands
@@ -142,17 +143,12 @@ public:
   std::vector<ControlPointHandle> const& get_control_points() const { return m_control_points; }
   /** @} */
 
-  sigc::signal<void>& signal_on_change() { return m_sig_on_change; }
+  ObservableSignal<void()>& signal_on_change() { return m_sig_on_change; }
 
 private:
   void on_selection_change();
   void on_change();
 
-  void on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
-  void on_row_deleted(Gtk::TreeModel::Path const& path);
-  void on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
-  void on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
-  void on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order);
 
 private:
   Document(Document const&);

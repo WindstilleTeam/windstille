@@ -19,77 +19,66 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_SECTOR_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_SECTOR_MODEL_HPP
 
-#include <set>
+#include <cstddef>
 #include <memory>
-#include <gtkmm/liststore.h>
-#include <gdkmm/pixbuf.h>
+#include <set>
+#include <string>
 #include <vector>
 
+#include <glm/glm.hpp>
 #include <surf/color.hpp>
+
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
+#include "editor/observable_signal.hpp"
 #include "editor/selection.hpp"
 #include "editor/timeline_handles.hpp"
-#include <glm/glm.hpp>
 
 namespace windstille {
 
 class SceneContext;
-
-
 class NavigationGraphModel;
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
-
+class FileWriter;
 
 class SectorModel
 {
-private:
-  std::unique_ptr<NavigationGraphModel> nav_graph;
-  Glib::RefPtr<Gtk::ListStore> layer_tree;
-  TimelineHandle m_timeline;
-  surf::Color ambient_color;
-
 public:
   typedef std::vector<LayerHandle> Layers;
+  static constexpr std::size_t npos = static_cast<std::size_t>(-1);
 
   SectorModel();
-  SectorModel(std::string const& filename);
+  explicit SectorModel(std::string const& filename);
   ~SectorModel();
 
   void draw(SceneContext& sc, SelectMask const& layers);
-
+  void draw_content(SceneContext& sc);
   void update(float delta);
 
   void set_all_visible(bool v);
   void set_all_locked(bool v);
 
-  void add_layer(std::string const& name, Gtk::TreeModel::Path const& path = Gtk::TreeModel::Path());
-  void add_layer(LayerHandle layer, Gtk::TreeModel::Path const& path = Gtk::TreeModel::Path());
-  void delete_layer(Gtk::TreeModel::Path const& path);
+  LayerHandle add_layer(std::string const& name, std::size_t index = npos);
+  LayerHandle add_layer(LayerHandle layer, std::size_t index = npos);
+  void delete_layer(std::size_t index);
+  void delete_layer(LayerHandle layer);
   void reverse_layers();
+  void move_layer(std::size_t from_index, std::size_t to_index);
 
-  void add(ObjectModelHandle const& object, Gtk::TreeModel::Path const& path);
+  void add(ObjectModelHandle const& object, LayerHandle layer);
   void remove(ObjectModelHandle const& object);
   LayerHandle get_layer(ObjectModelHandle const& object) const;
 
-  void  set_ambient_color(surf::Color const& color) { ambient_color = color; }
+  void set_ambient_color(surf::Color const& color) { ambient_color = color; }
   surf::Color get_ambient_color() const { return ambient_color; }
 
-  LayerHandle get_layer(Gtk::TreeModel::Path const& path) const;
-  Layers get_layers() const;
-  LayerHandle get_layer(ObjectModelHandle object);
-
-  Glib::RefPtr<Gtk::ListStore> get_layer_tree() { return layer_tree; }
-
-  void on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
-  void on_row_deleted(Gtk::TreeModel::Path const& path);
-  void on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
-  void on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
-  void on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order);
+  Layers const& get_layers() const { return m_layers; }
+  LayerHandle get_layer(std::size_t index) const;
+  std::size_t get_layer_index(LayerHandle layer) const;
 
   ObjectModelHandle get_object_at(glm::vec2 const& pos, SelectMask const& layers) const;
-  SelectionHandle   get_selection(geom::frect const& rect, SelectMask const& layers) const;
+  SelectionHandle get_selection(geom::frect const& rect, SelectMask const& layers) const;
 
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);
@@ -105,17 +94,20 @@ public:
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
-  /** Draw the objects of the visible layers as they look in the game */
-  void draw_content(SceneContext& sc);
+  ObservableSignal<void()>& signal_layers_changed() { return m_signal_layers_changed; }
 
 private:
-  void register_callbacks();
+  std::unique_ptr<NavigationGraphModel> nav_graph;
+  Layers m_layers;
+  TimelineHandle m_timeline;
+  surf::Color ambient_color;
+  ObservableSignal<void()> m_signal_layers_changed;
 
-private:
-  SectorModel(SectorModel const&);
-  SectorModel& operator=(SectorModel const&);
+  void notify_layers_changed();
+
+  SectorModel(SectorModel const&) = delete;
+  SectorModel& operator=(SectorModel const&) = delete;
 };
-
 
 } // namespace windstille
 

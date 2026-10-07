@@ -120,7 +120,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   targets.push_back(Gtk::TargetEntry("application/x-windstille-decal"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
-  m_document->signal_on_change().connect(sigc::mem_fun(*this, &WindstilleWidget::on_document_change));
+  m_document->signal_on_change().connect([this]() { on_document_change(); });
 }
 
 WindstilleWidget::~WindstilleWidget()
@@ -467,18 +467,11 @@ WindstilleWidget::on_drag_data_received(Glib::RefPtr<Gdk::DragContext> const& /*
   else
     object->set_select_mask(select_mask);
 
-  Gtk::TreeModel::Path path_;
-  Gtk::TreeViewColumn* focus_column;
-
-  m_editor.get_layer_manager().get_treeview().get_cursor(path_, focus_column);
-
-  if (!path_.gobj())
-  {
-    std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
-  }
-  else
-  {
-    get_document().object_add(m_document->get_sector_model().get_layer(path_), object);
+  LayerHandle layer = get_current_layer();
+  if (!layer) {
+    std::cout << "WindstilleWidget::on_drag_data_received(): Error: no current layer" << std::endl;
+  } else {
+    get_document().object_add(layer, object);
   }
 }
 
@@ -520,34 +513,13 @@ WindstilleWidget::get_current_layer()
   Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
   m_editor.get_layer_manager().get_treeview().get_cursor(path_, focus_column);
-
-  if (!path_.gobj())
-  {
+  if (!path_.gobj()) {
     std::cout << "WindstilleWidget::get_current_layer(): Error: Couldn't get path" << std::endl;
     return LayerHandle();
   }
-  else
-  {
-    return m_document->get_sector_model().get_layer(path_);
-  }
-}
-
-Gtk::TreeModel::Path
-WindstilleWidget::get_current_layer_path()
-{
-  Gtk::TreeModel::Path path_;
-  Gtk::TreeViewColumn* focus_column;
-  m_editor.get_layer_manager().get_treeview().get_cursor(path_, focus_column);
-
-  if (!path_.gobj())
-  {
-    std::cout << "WindstilleWidget::get_current_layer_path(): Error: Couldn't get path" << std::endl;
-    return Gtk::TreeModel::Path();
-  }
-  else
-  {
-    return path_;
-  }
+  auto it = m_editor.get_layer_manager().get_treeview().get_model()->get_iter(path_);
+  if (!it) return LayerHandle();
+  return (*it)[LayerManagerColumns::instance().layer];
 }
 
 void
@@ -577,7 +549,7 @@ WindstilleWidget::load_file(std::string const& filename_)
 {
   filename = filename_;
   m_document.reset(new Document(filename));
-  m_document->signal_on_change().connect(sigc::mem_fun(*this, &WindstilleWidget::on_document_change));
+  m_document->signal_on_change().connect([this]() { on_document_change(); });
   on_document_change();
 }
 

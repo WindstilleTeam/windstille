@@ -21,9 +21,15 @@
 
 #include <memory>
 
+#include <memory>
+#include <string>
+
 #include <QOpenGLWidget>
 
 #include <wstdisplay/view.hpp>
+
+#include "display/scene_context.hpp"
+#include "editor/document.hpp"
 
 namespace wstdisplay {
 class Renderer;
@@ -43,6 +49,10 @@ public:
   explicit GLWidget(EditorWindow* editor, QWidget* parent = nullptr);
   ~GLWidget() override;
 
+  Document& document() { return *m_document; }
+  void load_file(std::string const& filename);
+  void new_document();
+
   wstdisplay::View& view() { return m_view; }
   wstdisplay::View const& view() const { return m_view; }
 
@@ -58,8 +68,12 @@ protected:
 
 private:
   EditorWindow* m_editor;
+  std::unique_ptr<Document> m_document;
   std::unique_ptr<wstdisplay::Renderer> m_renderer;
+  std::unique_ptr<SceneContext> m_scene_context;
   wstdisplay::View m_view;
+
+  void draw_sector();
 
   GLWidget(GLWidget const&) = delete;
   GLWidget& operator=(GLWidget const&) = delete;

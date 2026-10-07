@@ -41,9 +41,9 @@ public:
   DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, glm::vec2 const& pos_, bool
                          x_scale_ = true, bool y_scale_ = true);
 
-  void on_move_start(GdkEventButton* event) override;
-  void on_move_update(GdkEventMotion* event, glm::vec2 const& offset_) override;
-  void on_move_end(GdkEventButton* event, glm::vec2 const& offset_) override;
+  void on_move_start() override;
+  void on_move_update(glm::vec2 const& offset_) override;
+  void on_move_end(glm::vec2 const& offset_) override;
 
   void draw(wstdisplay::Canvas& overlay, wstdisplay::View const& view) override;
 

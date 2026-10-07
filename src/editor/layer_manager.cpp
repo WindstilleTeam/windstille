@@ -28,7 +28,9 @@
 
 #include "editor/editor_window.hpp"
 #include "editor/sector_model.hpp"
+#include "editor/layer.hpp"
 #include "editor/layer_manager_columns.hpp"
+#include "util/pathname.hpp"
 
 namespace windstille {
 
@@ -38,6 +40,9 @@ LayerManager::LayerManager(EditorWindow& editor_) :
   label("Layer Manager", Gtk::ALIGN_START),
   scrolled(),
   treeview(),
+  m_store(Gtk::ListStore::create(LayerManagerColumns::instance())),
+  m_model(nullptr),
+  m_updating(false),
   auto_lock()
 {
   treeview.set_headers_clickable();
@@ -110,25 +115,47 @@ LayerManager::~LayerManager()
 void
 LayerManager::set_model(SectorModel* model)
 {
+  m_model = model;
   if (model)
   {
-    treeview.set_model(model->get_layer_tree());
-
-    // Recreate all the columns, since if we don't do that, we lose
-    // editability for some reason
+    rebuild();
+    treeview.set_model(m_store);
     treeview.remove_all_columns();
     treeview.append_column("Type", LayerManagerColumns::instance().type_icon);
     treeview.append_column_editable("Name", LayerManagerColumns::instance().name);
     treeview.append_column_editable("Visible", LayerManagerColumns::instance().visible);
     treeview.append_column_editable("Locked", LayerManagerColumns::instance().locked);
-
     treeview.expand_all();
-    treeview.set_cursor(Gtk::TreeModel::Path("0"));
+    if (!m_store->children().empty())
+      treeview.set_cursor(Gtk::TreeModel::Path("0"));
+    model->signal_layers_changed().connect([this]() { rebuild(); });
   }
   else
   {
     treeview.set_model(Glib::RefPtr<Gtk::ListStore>());
   }
+}
+
+void
+LayerManager::rebuild()
+{
+  if (!m_model) return;
+  m_updating = true;
+  m_store->clear();
+  auto const& layers = m_model->get_layers();
+  for (auto it = layers.rbegin(); it != layers.rend(); ++it) {
+    LayerHandle layer = *it;
+    auto row = m_store->append();
+    try {
+      (*row)[LayerManagerColumns::instance().type_icon] =
+        Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
+    } catch (...) {}
+    (*row)[LayerManagerColumns::instance().name] = Glib::ustring(layer->get_name());
+    (*row)[LayerManagerColumns::instance().visible] = layer->is_visible();
+    (*row)[LayerManagerColumns::instance().locked] = layer->is_locked();
+    (*row)[LayerManagerColumns::instance().layer] = layer;
+  }
+  m_updating = false;
 }
 
 void
@@ -152,7 +179,7 @@ LayerManager::on_cursor_changed()
       {
         m_editor.on_lock_all(true);
         (*it)[LayerManagerColumns::instance().locked] = false;
-        static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
+        LayerHandle layer = (*it)[LayerManagerColumns::instance().layer]; if (layer) layer->set_locked(false);
       }
     }
   }

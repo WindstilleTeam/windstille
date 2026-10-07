@@ -1070,7 +1070,7 @@ EditorWindow::on_delete_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    wst->get_document().layer_remove(wst->get_current_layer_path());
+    wst->get_document().layer_remove(wst->get_current_layer());
     queue_draw();
   }
 }
@@ -1089,7 +1089,7 @@ EditorWindow::on_new_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    wst->get_document().layer_add(wst->get_current_layer_path());
+    wst->get_document().layer_add();
     m_layer_manager.get_treeview().expand_all();
   }
 }
